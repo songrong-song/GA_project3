@@ -1,5 +1,6 @@
 # GA_project3
 - This is a shared repository between Sandy and Songrong for GA_project3
+- test
 
 
 _Define the Purpose and Goals: Start by clearly defining the purpose of your app and the goals you want to achieve with it. Understand your target audience, their needs, and how your app can solve their problems._
