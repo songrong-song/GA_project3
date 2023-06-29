@@ -9,13 +9,26 @@ To design an app that helps tourists plan their travel based on preferences such
 
 Research and Ideation: Conduct thorough research to gather insights about your target audience, competitors, and current market trends. Generate ideas and brainstorm potential features and functionalities for your app.
 
-TimeLine for this project: 
-Stage 1: Create User account creation and user login journey (Front End: Sandy, BackEnd: SR)
-   - Sandy (todolist)
-   - Songrong (todolist(=)
+TimeLine
+Stage 1 (Week 1): 
+Sandy to fill:
+Front-end Features
 
-Stage 2: 
-Stage 3: 
+- Create User account creation and user login journey (Front End: Sandy, BackEnd: SR)
+   - Sandy (todolist)
+   - Songrong (todolist)
+
+Songrong to fill: 
+- Backend database setup
+ 
+
+Stage 2 (Week 2):
+
+Stage 3 (Week 3): 
+
+Features to be added: 
+
+
 
 
 
