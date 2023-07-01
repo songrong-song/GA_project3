@@ -11,8 +11,11 @@ import { GoogleMap, LoadScript, useJsApiLoader } from "@react-google-maps/api";
 const configuration = new Configuration({
   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
 });
+
 delete configuration.baseOptions.headers['User-Agent'];
 const openai = new OpenAIApi(configuration);
+console.log("here")
+
 
 const ItineraryGenerator = () => {
   const { selectedActivities, destinationValue, durationValue, selectedFood } = useContext(ItineraryContext);
@@ -34,6 +37,7 @@ const ItineraryGenerator = () => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries: ['geometry', 'drawing', 'places'],
   });
+  
 
   const mapContainerStyle = {
   width: '40vw', 
@@ -167,6 +171,7 @@ const formatResult = (result) => {
        </div>
         <div className="container-left" >
       
+
             <GoogleMap
               mapContainerStyle={mapContainerStyle}
               center={center}

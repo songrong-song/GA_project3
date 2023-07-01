@@ -1,0 +1,28 @@
+<%- include('../partials/header') %>
+
+    <div class="container">
+        <h1>Awesome Drinks</h1>
+
+        <ul>
+            <% drinks.forEach((drink, idx) => { %>
+
+                <li>
+                    <div class="row">
+                        <div class="col-3">
+                            <figure>
+                                <img src="<%= drink.image %>" class="img-fluid" />
+                            </figure>
+                        </div>
+                        <div class="col-9">
+                            <h2><a href="/drinks/<%= idx %>"><%= drink.name %></a></h2>
+                            <p>Price <%= drink.price %></p>
+                        </div>
+                    </div>
+                </li>
+
+            <% }) %>
+        </ul>
+    </div>
+
+<%- include('../partials/footer') %>
+

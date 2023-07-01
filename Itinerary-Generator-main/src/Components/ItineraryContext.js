@@ -3,6 +3,9 @@ import React, { createContext, useState } from 'react';
 export const ItineraryContext = createContext();
 
 export const ItineraryProvider = ({ children }) => {
+  console.log("hey")
+  console.log(children)
+  
   const [selectedActivities, setSelectedActivities] = useState([]);
   const [destinationValue, setDestinationValue] = useState('');
   const [durationValue, setDurationValue] = useState('');
@@ -40,4 +43,5 @@ export const ItineraryProvider = ({ children }) => {
       {children}
     </ItineraryContext.Provider>
   );
+
 };

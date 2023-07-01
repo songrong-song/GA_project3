@@ -1,0 +1,23 @@
+<%- include('../partials/header') %>
+
+    <div class="container">
+        
+        <!-- form will be sent to http://localhost:3000/drinks -->
+        <form action="/drinks" method="post">
+            <div class="mb-3">
+              <label for="drink_name" class="form-label">Name</label>
+              <input type="text" class="form-control" id="drink_name" name="drink_name">
+            </div>
+
+            <div class="mb-3">
+              <label for="price" class="form-label">Price</label>
+              <input type="number" min="1" class="form-control" id="price" name="price">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+    </div>
+
+<%- include('../partials/footer') %>
+

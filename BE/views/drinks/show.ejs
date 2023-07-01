@@ -1,0 +1,29 @@
+<%- include('../partials/header') %>
+
+    <div class="container">
+        <aside class="back mb-5">
+            <a href="/drinks">< Back to Index</a>
+        </aside>
+
+        <div class="row">
+            <div class="col-6">
+                <figure>
+                    <img src="<%= drink.image %>" class="img-fluid" />
+                </figure>
+            </div>
+            <div class="col-6">
+                <div class="drink-details">
+                    <h1><%= drink.name %></h1>
+                    <p>Price <%= drink.price %></p>
+                </div>
+                <div class="delete-drink">
+                    <form action="/drinks/<%= drinkID %>?_method=delete" method="post">
+                        <input type="submit" value="DELETE" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<%- include('../partials/footer') %>
+
