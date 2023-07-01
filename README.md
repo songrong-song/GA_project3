@@ -21,8 +21,6 @@ The goal is to simplify the travel planning process, save time, and enhance the 
   Home/Saved trips [for users who are logged in]
   - User account creation and login via email
 
-
-
   - Trip creation
   - Allow users to have multiple saved trips with each containing its own details page containing the itinerary (stretch or week 3)
   - Log-in Verification (Front-End) 
@@ -31,6 +29,7 @@ The goal is to simplify the travel planning process, save time, and enhance the 
   - Edit trip created in case of user input error (stretch goal)
 
 - Backend (Songrong)
+  - Design of the data format
   - GPT gives you the right prompt
   - API is not very fast 
   - API cleansing into the correct format
