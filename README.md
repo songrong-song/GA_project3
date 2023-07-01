@@ -28,6 +28,7 @@ The goal is to simplify the travel planning process, save time, and enhance the 
   - Edit trip created in case of user input error (stretch goal)
 
 - Backend (Songrong)
+  - Reorganise the structure of the App
   - Database set-up
   - Cluster set-up for the user accounts
   - Google API set-up for the location
