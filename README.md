@@ -13,11 +13,14 @@ The goal is to simplify the travel planning process, save time, and enhance the 
 
 - Front-end (Sandy)
 
+
   - Wireframe of the web-app
+  - Create the loading icon when waiting GPT
   - Homepage and header with the following menu items:
   Home/login 
   Home/Saved trips [for users who are logged in]
   - User account creation and login via email
+
 
 
   - Trip creation
