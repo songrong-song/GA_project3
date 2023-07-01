@@ -1,0 +1,18 @@
+.step-component {
+  position: absolute;
+  width: 800px;
+  left: 480px;
+  top: 64px;
+  }
+
+  .next {
+  top: 400px;
+  }
+
+  .back {
+  top: 400px;
+  }
+
+  .submit {
+  top: 400px;
+  }
