@@ -11,6 +11,10 @@ The goal is to simplify the travel planning process, save time, and enhance the 
 ## TimeLine
 ### Stage 1 (Week 1): 
 
+
+01/07/2023 WireFrame, API design for Data Base
+
+
 - Front-end (Sandy)
 
 
