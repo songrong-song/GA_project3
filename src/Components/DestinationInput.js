@@ -9,6 +9,7 @@ const { Option } = Select;
 const DestinationInput = () => {
   const { destinationValue, updateDestinationValue, durationValue, updateDurationValue } = useContext(ItineraryContext);
   const autocomplete = useRef(null);
+  
 
   const handleNumDaysChange = (value) => {
     updateDurationValue(value);
