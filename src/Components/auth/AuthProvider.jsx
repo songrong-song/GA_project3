@@ -1,6 +1,7 @@
 import { createContext } from "react"
 import { useCookies } from "react-cookie"
 import jwt_decode from "jwt-decode";
+import React from "react";
 
 const AUTH_TOKEN_NAME = 'userAuthToken'
 

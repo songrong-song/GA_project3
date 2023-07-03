@@ -1,7 +1,8 @@
 import axios from "axios"
 import { useState, useContext } from "react"
 import { useNavigate } from "react-router-dom";
-import {AuthContext} from '../components/auth/AuthProvider'
+import {AuthContext} from './auth/AuthProvider';
+import React from "react";
 
 export default function Login() {
     const navigate = useNavigate();
