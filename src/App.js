@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PathOne from './Components/PathOne';
 import ItineraryGenerator from './pages/Itinerary';
 import { ItineraryProvider } from './Components/ItineraryContext';
+import Register from './Components/RegisterPage';
 
 function App() {
   const [destinationValue, setDestinationValue] = useState('');
@@ -20,6 +21,9 @@ function App() {
         <Routes>
           <Route path="/" element={<PathOne />} />
           <Route path="/generator" element={<ItineraryGenerator />} />
+          <Route path="/register" element={<Register />} />
+          {/* <Route path="/login" element={<Login />} /> */}
+          {/* <Route path="/guest" element={<GuestBrowsing />} /> */}
         </Routes>
       </ItineraryProvider>
   );

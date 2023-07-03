@@ -1,11 +1,13 @@
 import React from 'react';
 import LeftSidebar from './LeftSideBar';
 import StepComponent from './StepComponent';
+import MenuPage from './Header';
 
 const PathOne = (props) => {
     return (
 <>
-<LeftSidebar />
+<MenuPage />
+{/* <LeftSidebar /> */}
 <StepComponent /> 
 </>
     ); 
