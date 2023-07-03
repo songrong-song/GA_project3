@@ -2,6 +2,7 @@ import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from 'react-router-dom';
 import React from "react";
+import MenuPage from './Header';
 
 export default function Register() {
     const navigate = useNavigate();
@@ -28,6 +29,7 @@ export default function Register() {
 
     return (
         <div className="container">
+        <MenuPage activeMenu="register"/>
             <h2>Register</h2>
             
             <form onSubmit={handleSubmit}>

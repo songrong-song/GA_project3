@@ -4,6 +4,7 @@ import PathOne from './Components/PathOne';
 import ItineraryGenerator from './pages/Itinerary';
 import { ItineraryProvider } from './Components/ItineraryContext';
 import Register from './Components/RegisterPage';
+import Login from './Components/LoginPage'
 
 function App() {
   const [destinationValue, setDestinationValue] = useState('');
@@ -22,7 +23,7 @@ function App() {
           <Route path="/" element={<PathOne />} />
           <Route path="/generator" element={<ItineraryGenerator />} />
           <Route path="/register" element={<Register />} />
-          {/* <Route path="/login" element={<Login />} /> */}
+          <Route path="/login" element={<Login />} />
           {/* <Route path="/guest" element={<GuestBrowsing />} /> */}
         </Routes>
       </ItineraryProvider>
