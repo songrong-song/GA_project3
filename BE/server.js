@@ -9,6 +9,7 @@ const drinksController = require('./controllers/drinks_controller')
 const menuItemController = require('./controllers/menu_item_controller')
 const menuItemRouter = require('./routers/menu_item_router')
 const userRouter = require('./routers/user_router')
+const GPTRouter = require('./routers/chatGPT_router')
 
 app.set('view engine', 'ejs') // FE + BE -> in a single app
 app.use(express.static('public'))
@@ -17,9 +18,7 @@ app.use(express.static('public'))
 // app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.urlencoded({extended: true})) // same as above
 app.use(express.json())
-
 app.use(methodOverride('_method'))
-
 app.use(cors({
   origin: '*'
 }))
@@ -29,8 +28,9 @@ app.options('*', cors())
 
 // API endpoint routes
 
-// app.use('/api/menu-items', menuItemRouter)
 app.use('/api/users', userRouter)
+app.use('/api/gpt', GPTRouter)
+app.use('/api/intenary', intenaryRouter)
 
 // LISTENER
 mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_HOST}/${process.env.MONGO_DB}?retryWrites=true&w=majority`)
@@ -49,19 +49,5 @@ mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PA
   })
 
 
-  // // App routes
-// // READ routes
-// app.get('/drinks', drinksController.index)
-// // create drink form
-// app.get('/drinks/new', drinksController.newDrinkForm)
-// app.get('/drinks/:drinkID', drinksController.show)
 
-// // CREATE route
-// app.post('/drinks', drinksController.createDrink)
 
-// // UPDATE routes
-// app.get('/drinks/:drinkID/edit', drinksController.editDrinkForm)
-// app.patch('/drinks/:drinkID', drinksController.updateDrink)
-
-// // DELETE route
-// app.delete('/drinks/:drinkID', drinksController.deleteDrink)
