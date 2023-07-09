@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from './auth/AuthProvider';
 import React from "react";
 import MenuPage from './Header';
@@ -42,7 +42,7 @@ export default function Login() {
             <Form onFinish={handleSubmit} className="login-form">
               <Form.Item
                 name="email"
-                label="E-mail"
+                label="Email"
                 rules={[
                   { required: true, message: 'Please input your email!' },
                   { type: 'email', message: 'Please enter a valid email address!' }
@@ -81,7 +81,7 @@ export default function Login() {
                 <Button type="primary" htmlType="submit" className="login-form-button">
                   Log in
                 </Button>
-                Or <a href="">register now!</a>
+                Or <Link to="/register">register now!</Link>
               </Form.Item>
             </Form>
           </div>
