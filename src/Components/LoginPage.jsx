@@ -4,8 +4,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from './auth/AuthProvider';
 import React from "react";
 import MenuPage from './Header';
-import { Button, Form, Checkbox, Input, Col, Row } from 'antd';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Form, Checkbox, Input, Col, Row, message } from 'antd';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import './LoginPage.css';
 
 export default function Login() {
@@ -23,8 +23,10 @@ export default function Login() {
       const response = await axios.post('http://localhost:3000/api/users/login', formData);
       loginSuccess(response.data.token);
       navigate('/profile');
+      message.success('Logged in successfully!');
     } catch (error) {
       console.log(error);
+      message.error('Failed to log in. Please check your credentials.');
     }
   };
 
@@ -48,7 +50,9 @@ export default function Login() {
                   { type: 'email', message: 'Please enter a valid email address!' }
                 ]}
               >
-                <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Email" onChange={(e) => handleFormChange('email', e.target.value)} />
+                <Input prefix={<MailOutlined className="site-form-item-icon" />}
+
+                placeholder="Email" onChange={(e) => handleFormChange('email', e.target.value)} />
               </Form.Item>
 
               <Form.Item
