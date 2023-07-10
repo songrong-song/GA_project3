@@ -1,53 +1,98 @@
-import axios from "axios"
-import { useState } from "react"
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate, Link } from 'react-router-dom';
+import { Button, Form, Input, Col, Row, message } from 'antd';
+import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
+import axios from 'axios';
 import React from "react";
 import MenuPage from './Header';
 
 export default function Register() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    // create state to store form data
-    const [formData, setFormData] = useState({})
+  // create state to store form data
+  const [formData, setFormData] = useState({});
 
-    const handleFormChange = (e, fieldName) => {
-        console.log(e.target.value)
-        setFormData({...formData, [fieldName]: e.target.value})
-    }
+  const handleFormChange = (fieldName, value) => {
+    setFormData({ ...formData, [fieldName]: value });
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
+  const handleSubmit = () => {
+    axios.post('http://localhost:3000/api/users/register', formData)
+      .then(response => {
+        message.success('Registration successful!');
+        navigate('/profile');
+      })
+      .catch(err => {
+        console.log(err);
+        message.error('Registration failed. Please try again.');
+      });
+  };
 
-        axios.post('http://localhost:3000/api/users/register', formData)
-            .then(response => {
-                navigate('/login')
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
+  return (
+    <div className="container">
+      <MenuPage activeMenu="register" />
 
-    return (
-        <div className="container">
-        <MenuPage activeMenu="register"/>
-            <h2>Register</h2>
-            
-            <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="name" className="form-label">Name</label>
-                    <input type="text" className="form-control" id="name" name="name" onChange={ (e) => { handleFormChange(e, 'name') } } />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="email" className="form-label">Email</label>
-                    <input type="email" className="form-control" id="email" name="email" onChange={ (e) => { handleFormChange(e, 'email') } } />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="password" className="form-label">Password</label>
-                    <input type="password" className="form-control" id="password" name="password" onChange={ (e) => { handleFormChange(e, 'password') } } />
-                </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
-            </form>
-        </div>
-    )
+      <Row justify="center">
+        <Col xs={24} sm={20} md={16} lg={12} xl={8}>
+          <h2>Register</h2>
+
+          <Form onFinish={handleSubmit}>
+            <Form.Item
+              label="Name"
+              name="name"
+              rules={[
+                { required: true, message: 'Please enter your name' }
+              ]}
+            >
+              <Input
+                prefix={<UserOutlined className="site-form-item-icon" />}
+                placeholder="Name"
+                onChange={(e) => handleFormChange('name', e.target.value)}
+              />
+            </Form.Item>
+
+            <Form.Item
+              label="Email"
+              name="email"
+              rules={[
+                { required: true, message: 'Please enter your email' },
+                { type: 'email', message: 'Please enter a valid email' }
+              ]}
+            >
+              <Input
+                prefix={<MailOutlined className="site-form-item-icon" />}
+                placeholder="Email"
+                onChange={(e) => handleFormChange('email', e.target.value)}
+              />
+            </Form.Item>
+
+            <Form.Item
+              label="Password"
+              name="password"
+              rules={[
+                { required: true, message: 'Please enter your password' },
+                { min: 6, message: 'Password must be at least 6 characters long' },
+                { pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/, message: 'Password must contain at least one lowercase letter, one uppercase letter, and one digit' }
+              ]}
+            >
+              <Input.Password
+                prefix={<LockOutlined className="site-form-item-icon" />}
+                placeholder="Password"
+                onChange={(e) => handleFormChange('password', e.target.value)}
+              />
+            </Form.Item>
+
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+              <span className="login-link">
+                Already have an account? <Link to="/login">Login</Link>
+              </span>
+            </Form.Item>
+          </Form>
+        </Col>
+      </Row>
+    </div>
+  );
 }
- 

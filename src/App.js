@@ -5,6 +5,8 @@ import ItineraryGenerator from './pages/Itinerary';
 import { ItineraryProvider } from './Components/ItineraryContext';
 import Register from './Components/RegisterPage';
 import Login from './Components/LoginPage'
+import Guest from './Components/auth/GuestOnly';
+import ProfilePage from './Components/ProfilePage';
 
 function App() {
   const [destinationValue, setDestinationValue] = useState('');
@@ -25,7 +27,9 @@ function App() {
           <Route path="/generator" element={<ItineraryGenerator />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          {/* <Route path="/guest" element={<GuestBrowsing />} /> */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/guest" element={<Guest component={PathOne} />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Routes>
 
       </ItineraryProvider>

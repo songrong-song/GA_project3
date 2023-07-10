@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from './auth/AuthProvider';
 import React from "react";
 import MenuPage from './Header';
-import { Button, Form, Checkbox, Input, Col, Row } from 'antd';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Form, Checkbox, Input, Col, Row, message } from 'antd';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import './LoginPage.css';
 
 export default function Login() {
@@ -23,8 +23,10 @@ export default function Login() {
       const response = await axios.post('http://localhost:3000/api/users/login', formData);
       loginSuccess(response.data.token);
       navigate('/profile');
+      message.success('Logged in successfully!');
     } catch (error) {
       console.log(error);
+      message.error('Failed to log in. Please check your credentials.');
     }
   };
 
@@ -42,13 +44,15 @@ export default function Login() {
             <Form onFinish={handleSubmit} className="login-form">
               <Form.Item
                 name="email"
-                label="E-mail"
+                label="Email"
                 rules={[
                   { required: true, message: 'Please input your email!' },
                   { type: 'email', message: 'Please enter a valid email address!' }
                 ]}
               >
-                <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Email" onChange={(e) => handleFormChange('email', e.target.value)} />
+                <Input prefix={<MailOutlined className="site-form-item-icon" />}
+
+                placeholder="Email" onChange={(e) => handleFormChange('email', e.target.value)} />
               </Form.Item>
 
               <Form.Item
@@ -81,7 +85,7 @@ export default function Login() {
                 <Button type="primary" htmlType="submit" className="login-form-button">
                   Log in
                 </Button>
-                Or <a href="">register now!</a>
+                Or <Link to="/register">register now!</Link>
               </Form.Item>
             </Form>
           </div>
