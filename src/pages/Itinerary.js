@@ -9,6 +9,7 @@ const { Meta } = Card;
 
 const ItineraryGenerator = () => {
   const { selectedActivities, destinationValue, durationValue, selectedFood } = useContext(ItineraryContext);
+
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [latitude, setLatitude] = useState(null);
@@ -40,24 +41,34 @@ const ItineraryGenerator = () => {
   }
 
   const handleSubmit = async () => {
+    console.log("click")
     setIsLoading(true);
     try {
-      const response = await axios.post('/api/gpt/prompt', {
+      const response = await axios.post('http://localhost:3000/api/itinerary', {
         selectedActivities,
         destinationValue,
         durationValue,
         selectedFood,
-      });
-
-      const { completion, attractionName } = response.data;
-      console.log("--------------------");
-      console.log(completion);
-      console.log(response.data);
-      console.log("--------------------");
-      
-      setResult(completion);
-      // Do something with attractionName if needed
+      }).then(response => {
+        console.log("see response here")
+        // Handle the response
+        console.log(response.data);
+        const { completion, attractionName } = response.data;
+        console.log("--------------------");
+        console.log(completion);
+        console.log(response.data);
+        console.log("--------------------");
+        
+        setResult(completion);
+        // Do something with attractionName if needed
+        setIsLoading(false);
+      })
+      .catch(error => {
+        // Handle the error
+        console.log('Error generating itinerary:', error);
+      setResult("Something went wrong. Please try again.");
       setIsLoading(false);
+      });
     } catch (error) {
       console.log('Error generating itinerary:', error);
       setResult("Something went wrong. Please try again.");

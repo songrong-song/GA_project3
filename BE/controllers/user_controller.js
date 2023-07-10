@@ -63,7 +63,9 @@ const userControllers = {
         }
         
         // return response
-        res.json()
+        return res.json({
+            msg: 'register successfully'})
+            
     },
 
     login: async (req, res) => {
@@ -108,6 +110,7 @@ const userControllers = {
         const validLogin = await bcrypt.compare(data.password, user.password)
 
         if (!validLogin) {
+
             res.statusCode = 401
             return res.json({
                 msg: "login failed, please check login details"
