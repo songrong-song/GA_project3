@@ -1,8 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { Menu, message } from 'antd';
-import { UserAddOutlined, AppstoreOutlined, SettingOutlined, LogoutOutlined, UserOutlined, HomeOutlined, LoginOutlined } from '@ant-design/icons';
+import { UserAddOutlined, LogoutOutlined, UserOutlined, HomeOutlined, LoginOutlined } from '@ant-design/icons';
 import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from './auth/AuthProvider'; // Import AuthContext from the AuthProvider file
+import './Header.css';
+
 
 const Header = () => {
   const location = useLocation();

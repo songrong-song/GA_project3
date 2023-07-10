@@ -2,6 +2,7 @@
 
 .ant-menu-horizontal {
   justify-content: flex-end;
+  background-color: rgb(239, 249, 252);
 }
 
 .ant-menu-horizontal .ant-menu-item {
@@ -10,9 +11,4 @@
 
 .ant-menu-horizontal .ant-menu-item:last-child {
   margin-right: 0;
-}
-
-.ant-menu-horizontal .ant-menu-item-selected {
-  color: red; /* Customize the color for the selected state */
-  font-weight: bold; /* Customize the font weight for the selected state */
 }

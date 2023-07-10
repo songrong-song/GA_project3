@@ -1,8 +1,26 @@
-.destination-input {
+/* .destination-input {
   width: auto;
   font-size: 16px;
 }
 
 .destination-input-field {
     width: 400px;
+} */
+
+.heading {
+  font-size: 24px;
+}
+
+@media (max-width: 768px) {
+  .heading {
+    font-size: 18px;
+  }
+}
+
+#destination {
+  width: 100%;
+}
+
+.num-days-container {
+  margin-top: 16px;
 }

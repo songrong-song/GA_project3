@@ -1,6 +1,5 @@
 import React from 'react';
 import { Row, Col } from 'antd';
-import LeftSidebar from './LeftSideBar';
 import StepComponent from './StepComponent';
 import MenuPage from './Header';
 

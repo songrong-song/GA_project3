@@ -30,6 +30,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/guest" element={<Guest component={PathOne} />} />
           <Route path="/profile" element={<ProfilePage />} />
+          {/* <Route path="/mytrips" element={</MyTrip />} /> */}
         </Routes>
 
       </ItineraryProvider>
