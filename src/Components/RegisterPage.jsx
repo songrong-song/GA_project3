@@ -5,6 +5,8 @@ import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import React from "react";
 import MenuPage from './Header';
+import Cookies from 'js-cookie';
+
 
 export default function Register() {
   const navigate = useNavigate();
@@ -20,7 +22,8 @@ export default function Register() {
     axios.post('http://localhost:3000/api/users/register', formData)
       .then(response => {
         message.success('Registration successful!');
-        navigate('/profile');
+        Cookies.set('token', response.data.token);
+        navigate('/');
       })
       .catch(err => {
         console.log(err);
