@@ -3,8 +3,7 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const itenaryModel = require("../models/ItineraryModel")
 const userValidators = require("./validators/userValidator")
-const gptControllers = require("./GPT_controller")
-// const GPT_controller = require("./validators/GPT_Validator")
+const gptControllers = require("./GPT_controller.js")
 
 const itineraryControllers = {
 
@@ -14,15 +13,17 @@ const itineraryControllers = {
         
         // generate the ChatGPT result
         try {
-            await gptControllers.generateDestinationPrompt1(data.destinationValue)
-            })
+            const result1 = await gptControllers.generateDestinationResult1(data.destinationValue);
+            // Code to handle the successful result1
+            return res.json({
+                result: result1
+            });
         } catch(err) {
-            res.statusCode = 500
+            res.statusCode = 500;
             return res.json({
                 msg: "failed to create user"
-            })
+            });
         }
-
         
         // use user model to create a new user
         try {
