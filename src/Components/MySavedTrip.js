@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from './Header';
-import { Empty, Col, Row, Radio, Timeline, Card } from 'antd';
+import { Empty, Col, Row, Card, Timeline } from 'antd';
 import { DragOutlined, DeleteOutlined } from '@ant-design/icons';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -8,33 +8,60 @@ const { Meta } = Card;
 
 const MySavedTrip = () => {
   const isTripSaved = true; // Replace with your logic to check if a trip is saved
-  const tripDuration = 5;
 
-  // Array of timeline items with draggable cards
-  const timelineItems = Array.from({ length: tripDuration }, (_, index) => ({
-    id: `day-${index + 1}`,
-    label: `Day ${index + 1}`,
-    content: (
-      <Draggable draggableId={`day-${index + 1}`} index={index}>
-        {(provided) => (
-          <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-            <Card
-              style={{
-                width: 300,
-              }}
-              cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
-              actions={[
-                <DragOutlined key="drag" />,
-                <DeleteOutlined key="delete" />,
-              ]}
-            >
-              <Meta title={`Activities for Day ${index + 1}`} description="This is the description" />
-            </Card>
-          </div>
-        )}
-      </Draggable>
-    ),
-  }));
+  const [droppableCards, setDroppableCards] = useState([
+    {
+      id: 'droppable1',
+      title: 'Droppable 1',
+      cards: [
+        { id: 'card1', title: 'Card 1', description: 'This is Card 1', day: 1 },
+        { id: 'card2', title: 'Card 2', description: 'This is Card 2', day: 1 },
+      ],
+    },
+    {
+      id: 'droppable2',
+      title: 'Droppable 2',
+      cards: [
+        { id: 'card3', title: 'Card 3', description: 'This is Card 3', day: 2 },
+        { id: 'card4', title: 'Card 4', description: 'This is Card 4', day: 2 },
+      ],
+    },
+  ]);
+
+  const handleDragEnd = (result) => {
+    if (!result.destination) return; // Dragged outside of a drop area
+
+    const sourceDroppableId = result.source.droppableId;
+    const destinationDroppableId = result.destination.droppableId;
+    const draggableId = result.draggableId;
+
+    if (sourceDroppableId === destinationDroppableId) {
+      // Reorder cards within the same droppable container
+      const droppableIndex = droppableCards.findIndex((item) => item.id === sourceDroppableId);
+      const cards = [...droppableCards[droppableIndex].cards];
+      const [draggedCard] = cards.splice(result.source.index, 1);
+      cards.splice(result.destination.index, 0, draggedCard);
+
+      const updatedDroppableCards = [...droppableCards];
+      updatedDroppableCards[droppableIndex].cards = cards;
+
+      setDroppableCards(updatedDroppableCards);
+    } else {
+      // Move card between droppable containers
+      const sourceDroppableIndex = droppableCards.findIndex((item) => item.id === sourceDroppableId);
+      const destinationDroppableIndex = droppableCards.findIndex((item) => item.id === destinationDroppableId);
+      const sourceCards = [...droppableCards[sourceDroppableIndex].cards];
+      const destinationCards = [...droppableCards[destinationDroppableIndex].cards];
+      const [draggedCard] = sourceCards.splice(result.source.index, 1);
+      destinationCards.splice(result.destination.index, 0, draggedCard);
+
+      const updatedDroppableCards = [...droppableCards];
+      updatedDroppableCards[sourceDroppableIndex].cards = sourceCards;
+      updatedDroppableCards[destinationDroppableIndex].cards = destinationCards;
+
+      setDroppableCards(updatedDroppableCards);
+    }
+  };
 
   return (
     <div>
@@ -44,21 +71,46 @@ const MySavedTrip = () => {
           <div className="my-trip-container">
             <h2>My Saved Trip</h2>
             {isTripSaved ? (
-              <DragDropContext>
-                <Droppable droppableId="timeline">
-                  {(provided) => (
-                    <div ref={provided.innerRef} {...provided.droppableProps}>
-                      <Timeline mode="left">
-                        {timelineItems.map((item, index) => (
-                          <Timeline.Item key={item.id} label={item.label}>
-                            <span>{item.content}</span>
-                          </Timeline.Item>
-                        ))}
-                      </Timeline>
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
+              <DragDropContext onDragEnd={handleDragEnd}>
+                <Timeline>
+                  {droppableCards.map((droppable) => (
+                    <Timeline.Item key={droppable.id}>
+                      <h3>{droppable.title}</h3>
+                      <Droppable droppableId={droppable.id}>
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            style={{ background: '#f5f5f5', padding: 16 }}
+                          >
+                            {droppable.cards.map((card, index) => (
+                              <Draggable key={card.id} draggableId={card.id} index={index}>
+                                {(provided) => (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                  >
+                                    <Card
+                                      style={{ width: '100%' }}
+                                      actions={[
+                                        <DragOutlined key="drag" />,
+                                        <DeleteOutlined key="delete" />,
+                                      ]}
+                                    >
+                                      <Meta title={card.title} description={card.description} />
+                                    </Card>
+                                  </div>
+                                )}
+                              </Draggable>
+                            ))}
+                            {provided.placeholder}
+                          </div>
+                        )}
+                      </Droppable>
+                    </Timeline.Item>
+                  ))}
+                </Timeline>
               </DragDropContext>
             ) : (
               <Empty description="No trip saved" />
