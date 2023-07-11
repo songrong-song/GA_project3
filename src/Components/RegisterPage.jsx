@@ -4,7 +4,9 @@ import { Button, Form, Input, Col, Row, message } from 'antd';
 import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import React from "react";
-import MenuPage from './Header';
+import Header from './Header';
+import Cookies from 'js-cookie';
+
 
 export default function Register() {
   const navigate = useNavigate();
@@ -20,7 +22,8 @@ export default function Register() {
     axios.post('http://localhost:3000/api/users/register', formData)
       .then(response => {
         message.success('Registration successful!');
-        navigate('/profile');
+        Cookies.set('token', response.data.token);
+        navigate('/');
       })
       .catch(err => {
         console.log(err);
@@ -30,7 +33,7 @@ export default function Register() {
 
   return (
     <div className="container">
-      <MenuPage activeMenu="register" />
+      <Header activeMenu="register" />
 
       <Row justify="center">
         <Col xs={24} sm={20} md={16} lg={12} xl={8}>

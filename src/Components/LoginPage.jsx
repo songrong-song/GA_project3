@@ -3,10 +3,11 @@ import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from './auth/AuthProvider';
 import React from "react";
-import MenuPage from './Header';
+import Header from './Header';
 import { Button, Form, Checkbox, Input, Col, Row, message } from 'antd';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import './LoginPage.css';
+import Cookies from 'js-cookie';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -20,10 +21,10 @@ export default function Login() {
 
   const handleSubmit = async () => {
     try {
-      
       const response = await axios.post('http://localhost:3000/api/users/login', formData);
       loginSuccess(response.data.token);
-      navigate('/profile');
+      Cookies.set('token', response.data.token);
+      navigate('/home');
       message.success('Logged in successfully!');
     } catch (error) {
       console.log(error);
@@ -32,11 +33,7 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <div className="header">
-        <MenuPage />
-      </div>
-
+  <div>
       <Row justify="center">
         <Col xs={24} sm={20} md={16} lg={12} xl={8}>
           <div className="form-container">
@@ -51,9 +48,7 @@ export default function Login() {
                   { type: 'email', message: 'Please enter a valid email address!' }
                 ]}
               >
-                <Input prefix={<MailOutlined className="site-form-item-icon" />}
-
-                placeholder="Email" onChange={(e) => handleFormChange('email', e.target.value)} />
+                <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" onChange={(e) => handleFormChange('email', e.target.value)} />
               </Form.Item>
 
               <Form.Item
