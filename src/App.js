@@ -8,6 +8,7 @@ import Login from './Components/LoginPage'
 import Guest from './Components/auth/GuestOnly';
 import ProfilePage from './Components/ProfilePage';
 import jwt from 'jsonwebtoken';
+import MySavedTrip from './Components/MySavedTrip';
 
 // PrivateRoute component
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -56,13 +57,13 @@ function App() {
       
         <Routes>
           {!isLoggedIn && <Route path="/" element={<Login />} />}
-          {isLoggedIn && <PrivateRoute path="/" component={PathOne} />}
           <Route path="/generator" element={<ItineraryGenerator />} />
+          <Route path="/home" element= {<PathOne />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           {/* <Route path="/guest" element={<Guest component={PathOne} />} /> */}
           <Route path="/profile" element={<ProfilePage />} />
-          {/* <Route path="/mytrips" element={</MyTrip />} /> */}
+          <Route path="/my-saved-trip" element={<MySavedTrip />} />
         </Routes>
     
       </ItineraryProvider>

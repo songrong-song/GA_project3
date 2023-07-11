@@ -3,7 +3,7 @@ import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from './auth/AuthProvider';
 import React from "react";
-import MenuPage from './Header';
+import Header from './Header';
 import { Button, Form, Checkbox, Input, Col, Row, message } from 'antd';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import './LoginPage.css';
@@ -24,7 +24,7 @@ export default function Login() {
       const response = await axios.post('http://localhost:3000/api/users/login', formData);
       loginSuccess(response.data.token);
       Cookies.set('token', response.data.token);
-      navigate('/');
+      navigate('/home');
       message.success('Logged in successfully!');
     } catch (error) {
       console.log(error);
@@ -33,11 +33,7 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <div className="header">
-        <MenuPage />
-      </div>
-
+  <div>
       <Row justify="center">
         <Col xs={24} sm={20} md={16} lg={12} xl={8}>
           <div className="form-container">
