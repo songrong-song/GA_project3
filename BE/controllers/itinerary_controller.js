@@ -9,66 +9,52 @@ const itineraryControllers = {
 
     createItinerary: async (req, res) => {
         // get the registration data in the req
-        const data = req.body
+        data = req.body
+        console.log(data)
         
         // generate the ChatGPT result
         try {
-            const result1 = await gptControllers.generateDestinationResult1(data.destinationValue);
+            
+            if (!data.hasOwnProperty('destinationValue') || data.destinationValue === '') {
+                const destinations = ['New York', 'Paris', 'Tokyo', 'London'];
+                const randomIndex = Math.floor(Math.random() * destinations.length);
+                data.destinationValue = destinations[randomIndex];
+            }
+
+            const attraction1 = await gptControllers.generateDestinationResult1(data.destinationValue);
+            const attraction2 = await gptControllers.generateDestinationResult2(data.destinationValue);
+            const restaurant1 = await gptControllers.generateRestaurantResult(attraction1);
+            const restaurant2 = await gptControllers.generateRestaurantResult(attraction2);
+
+            Day1 = {'attraction1': attraction1, 
+            'attraction2': attraction2, 
+            'restaurant1': restaurant1, 
+            'restaurant2': restaurant2 }
+
+
+            storeData = 
+            {
+                 "Day1": Day1
+            };
+            
+         
             // Code to handle the successful result1
             return res.json({
-                result: result1
+                storeData
             });
+
         } catch(err) {
             res.statusCode = 500;
             return res.json({
                 msg: "failed to create user"
             });
         }
-        
-        // use user model to create a new user
-        try {
-            await userModel.create({
-                name: data.name,
-                email: data.email,
-                password: hash,
-            })
-        } catch(err) {
-            res.statusCode = 500
-            return res.json({
-                msg: "failed to create user"
-            })
-        }
-        
-        // return response
-        res.json()
+   
     },
 
+    storeItinerary: async ()=>{
 
-    getItenary: async (req, res) => {
-        // // validate query param: menu_item_id
-        // const userID = req.query.user_id
-        // if (!menuItemID) {
-        //     res.statusCode = 400
-        //     return res.json({
-        //         msg: "menu item ID not specified"
-        //     })
-        // }
 
-        // // fetch data
-        // let reviews = []
-
-        // try {
-        //     reviews = await reviewModel
-        //         .find({
-        //             menu_item: menuItemID
-        //         })
-        //         .populate(['menu_item', 'reviewer'])
-        // } catch(err) {
-        //     res.statusCode = 500
-        //     return res.json()
-        // }
-        console.log("hey")
-        res.json({ message: 'Hello World' })
     }
 
 

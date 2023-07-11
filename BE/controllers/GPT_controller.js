@@ -3,7 +3,7 @@ const { MongoClient } = require('mongodb');
 // const GPTValidators = require("./validators/GPTValidator")
 
 const gptControllers = {
-  apiKey: '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', // Replace 'YOUR_API_KEY' with your actual OpenAI API key
+  apiKey: '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', // Replace 'YOUR_API_KEY' with your actual OpenAI API key
   apiUrl: 'https://api.openai.com/v1/completions',
   mongoUrl: 'mongodb://localhost:27017',
   dbName: 'Itenary',
@@ -11,6 +11,7 @@ const gptControllers = {
 
 
   generateDestinationPrompt1: async function(destinationValue) {
+
     let prompt = `Generate recommended attraction on below information for ${destinationValue} following the JSON format:
     - Attraction Name: 
     - Summary: 
