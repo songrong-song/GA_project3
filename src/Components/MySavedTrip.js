@@ -37,27 +37,42 @@ const MySavedTrip = () => {
 
     if (sourceDroppableId === destinationDroppableId) {
       // Reorder cards within the same droppable container
-      const droppableIndex = droppableCards.findIndex((item) => item.id === sourceDroppableId);
-      const cards = [...droppableCards[droppableIndex].cards];
-      const [draggedCard] = cards.splice(result.source.index, 1);
-      cards.splice(result.destination.index, 0, draggedCard);
+      const updatedDroppableCards = droppableCards.map((droppable) => {
+        if (droppable.id === sourceDroppableId) {
+          const cards = [...droppable.cards];
+          const [draggedCard] = cards.splice(result.source.index, 1);
+          cards.splice(result.destination.index, 0, draggedCard);
 
-      const updatedDroppableCards = [...droppableCards];
-      updatedDroppableCards[droppableIndex].cards = cards;
+          return {
+            ...droppable,
+            cards: cards,
+          };
+        } else {
+          return droppable;
+        }
+      });
 
       setDroppableCards(updatedDroppableCards);
     } else {
       // Move card between droppable containers
       const sourceDroppableIndex = droppableCards.findIndex((item) => item.id === sourceDroppableId);
       const destinationDroppableIndex = droppableCards.findIndex((item) => item.id === destinationDroppableId);
-      const sourceCards = [...droppableCards[sourceDroppableIndex].cards];
-      const destinationCards = [...droppableCards[destinationDroppableIndex].cards];
+      const sourceDroppable = droppableCards[sourceDroppableIndex];
+      const destinationDroppable = droppableCards[destinationDroppableIndex];
+      const sourceCards = [...sourceDroppable.cards];
+      const destinationCards = [...destinationDroppable.cards];
       const [draggedCard] = sourceCards.splice(result.source.index, 1);
       destinationCards.splice(result.destination.index, 0, draggedCard);
 
       const updatedDroppableCards = [...droppableCards];
-      updatedDroppableCards[sourceDroppableIndex].cards = sourceCards;
-      updatedDroppableCards[destinationDroppableIndex].cards = destinationCards;
+      updatedDroppableCards[sourceDroppableIndex] = {
+        ...sourceDroppable,
+        cards: sourceCards,
+      };
+      updatedDroppableCards[destinationDroppableIndex] = {
+        ...destinationDroppable,
+        cards: destinationCards,
+      };
 
       setDroppableCards(updatedDroppableCards);
     }
@@ -81,7 +96,7 @@ const MySavedTrip = () => {
                           <div
                             ref={provided.innerRef}
                             {...provided.droppableProps}
-                            style={{ background: '#f5f5f5', padding: 16 }}
+                            className="card-container" // Add className for styling
                           >
                             {droppable.cards.map((card, index) => (
                               <Draggable key={card.id} draggableId={card.id} index={index}>
