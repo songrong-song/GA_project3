@@ -13,7 +13,6 @@ const itineraryControllers = {
 
         storeItierary_ = async (data) => {
             try {
-                console.log("here")
                 await ItineraryModel.create({
                     User: data.User,
                     Destination: data.destinationValue,
@@ -35,7 +34,7 @@ const itineraryControllers = {
                 const randomIndex = Math.floor(Math.random() * destinations.length);
                 data.destinationValue = destinations[randomIndex];
             }
-            
+
             let attraction1_, attractionName1_, attraction2_, attractionName2_, restaurant1_, restaurant2_;
 
             try {
