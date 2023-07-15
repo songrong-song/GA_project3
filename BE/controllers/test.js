@@ -6,7 +6,7 @@ async function a(a) {
   try {
 
 
-    const result = await ItineraaryControllers.generateDestinationResult1(a);
+    const result = await ItineraryControllers.generateDestinationResult1(a);
 
     return result;
   } catch (error) {
