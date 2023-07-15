@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Button, Card, Col, Empty, Input, Row, Timeline } from 'antd';
-import { DragOutlined, DeleteOutlined, EditOutlined, SettingOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { Button, Card, Col, Empty, Input, Row, Timeline, config } from 'antd';
+import { DragOutlined, DeleteOutlined, EditOutlined, SyncOutlined } from '@ant-design/icons';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import axios from 'axios';
@@ -141,10 +141,11 @@ const Itinerary = () => {
           />
         }
           actions={[
-          <SettingOutlined key="setting" />,
-          <EditOutlined key="edit" />,
-          <EllipsisOutlined key="ellipsis" />,
+          // <SettingOutlined key="setting" />,
+          // <EditOutlined key="edit" />,
+          // <EllipsisOutlined key="ellipsis" />,
         ]}
+         bordered={false}
       >
         <Meta
           description={
@@ -250,7 +251,9 @@ const Itinerary = () => {
                                     style={{ width: '100%' }}
                                     actions={[
                                       <DragOutlined key="drag" />,
-                                      <DeleteOutlined key="delete" />,
+                                      // <DeleteOutlined key="delete" />,
+                                      <EditOutlined key ="edit" />,
+                                      <SyncOutlined key ="" />
                                     ]}
                                   >
                                     <Meta title={card.title} description={card.description} />
