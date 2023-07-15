@@ -1,9 +1,12 @@
 const axios = require('axios');
 const { MongoClient } = require('mongodb');
+const CircularJSON = require('circular-json');
 // const GPTValidators = require("./validators/GPTValidator")
 
 const gptControllers = {
-  apiKey: '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', // Replace 'YOUR_API_KEY' with your actual OpenAI API key
+  // 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
+  // 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
+  apiKey: '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', // Replace 'YOUR_API_KEY' with your actual OpenAI API key
   apiUrl: 'https://api.openai.com/v1/completions',
   mongoUrl: 'mongodb://localhost:27017',
   dbName: 'Itenary',
@@ -68,10 +71,12 @@ const gptControllers = {
 
       );
 
-      const completion = result.data.choices[0].text.trim();
-      console.log(completion);
-      let attractionName = completion["Attraction Name"]
-      return [completion, attractionName];
+      const completion_ = await result.data.choices[0].text.trim();
+      // completion  = CircularJSON.stringify(completion_)
+      // completion = JSON.parse(completion_)
+      const attractionName = completion_.match(/"Attraction Name":\s*"([^"]*)"/)[1];
+      
+      return [completion_, attractionName];
 
     } catch (error) {
       console.error('Error generating API result:', error);
@@ -82,6 +87,7 @@ const gptControllers = {
   generateDestinationResult2: async function(destinationValue, excludeValue) {
     try {
       const prompt = await this.generateDestinationPrompt2(destinationValue, excludeValue);
+      console.log(prompt)
       const result = await axios.post(
         this.apiUrl,
         {
@@ -132,7 +138,6 @@ const gptControllers = {
       );
 
       const completion = response.data.choices[0].text.trim();
-      // console.log('API Result:', completion);
       return completion;
     } catch (error) {
       console.error('Error generating API result:', error);
