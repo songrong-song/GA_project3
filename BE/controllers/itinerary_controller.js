@@ -11,7 +11,7 @@ const itineraryControllers = {
 
     createItinerary: async (req, res) => {
 
-        storeItierary_ = async (data) => {
+        let storeItierary_ = async (data) => {
             try {
                 await ItineraryModel.create({
                     User: data.User,
@@ -105,7 +105,7 @@ const itineraryControllers = {
             storeData = 
             {   "User": "",
                 "Desination":data.destinationValue,
-                "Itinerary": Itinerary
+                "Itinerary": [Itinerary]
             };
 
             storeItierary_(storeData)

@@ -6,7 +6,8 @@ const CircularJSON = require('circular-json');
 const gptControllers = {
   // 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
   // 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
-  apiKey: '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', // Replace 'YOUR_API_KEY' with your actual OpenAI API key
+
+  apiKey: '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', // Replace 'YOUR_API_KEY' with your actual OpenAI API key
   apiUrl: 'https://api.openai.com/v1/completions',
   mongoUrl: 'mongodb://localhost:27017',
   dbName: 'Itenary',
@@ -145,25 +146,6 @@ const gptControllers = {
     }
   },
 
-
-  storeResultInDatabase: async function(result) {
-    try {
-      const client = new MongoClient(this.mongoUrl);
-      await client.connect();
-      const db = client.db(this.dbName);
-      const collection = db.collection(this.collectionName);
-
-      // Insert the result into the collection
-      await collection.insertOne({ result });
-
-      // Close the database connection
-      client.close();
-      console.log('API result stored in database successfully.');
-    } catch (error) {
-      console.error('Error storing API result in database:', error);
-      throw error;
-    }
-  },
 
   // processResult: async function(result) {
  
