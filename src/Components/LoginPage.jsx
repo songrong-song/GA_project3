@@ -21,7 +21,11 @@ export default function Login() {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/api/users/login', formData);
+      const response = await axios.post('http://localhost:3000/api/users/login', formData, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      });
       loginSuccess(response.data.token);
       Cookies.set('token', response.data.token);
       navigate('/home');
@@ -33,7 +37,7 @@ export default function Login() {
   };
 
   return (
-  <div>
+    <div>
       <Row justify="center">
         <Col xs={24} sm={20} md={16} lg={12} xl={8}>
           <div className="form-container">
