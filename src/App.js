@@ -10,7 +10,8 @@ import ProfilePage from './Components/ProfilePage';
 import jwt from 'jsonwebtoken';
 import MySavedTrip from './Components/MySavedTrip';
 import Cookies from 'js-cookie';
-
+import dotenv from 'dotenv';
+dotenv.config();
 // PrivateRoute component
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 // Helper function to validate token expiration
 const isValidToken = (token) => {
   try {
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const decodedToken = jwt.verify(token, process.env.REACT_APP_JWT_SECRET);
     // return decodedToken.exp > Date.now() / 1000; // Check if the token expiration is greater than the current time
   } catch (error) {
     return false; // Token verification failed
