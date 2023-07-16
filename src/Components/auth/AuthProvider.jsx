@@ -1,47 +1,49 @@
-import { createContext } from "react";
-import { useCookies } from "react-cookie";
+import { createContext } from "react"
+import { useCookies } from "react-cookie"
 import jwt_decode from "jwt-decode";
 import React from "react";
 
-const AUTH_TOKEN_NAME = 'userAuthToken';
+const AUTH_TOKEN_NAME = 'userAuthToken'
 
 export const AuthContext = createContext({
-  token: null,
-  loginSuccess: (userToken) => {},
-  logoutSuccess: () => {},
-  getUserFromToken: () => {},
-});
+    token: null,
+    loginSuccess: (userToken) => {},
+    logoutSuccess: () => {},
+    getUserFromToken: () => {},
+  }
+);
 
 export default function AuthProvider(props) {
-  const [cookies, setCookie, removeCookie] = useCookies([AUTH_TOKEN_NAME]);
+    const [cookies, setCookie, removeCookie] = useCookies([AUTH_TOKEN_NAME])
 
-  const loginSuccess = (userToken) => {
-    setCookie(AUTH_TOKEN_NAME, userToken);
-  };
+    const loginSuccess = (userToken) => {
+        setCookie(AUTH_TOKEN_NAME, userToken)
+    }
 
-  const logoutSuccess = () => {
-    removeCookie(AUTH_TOKEN_NAME);
-  };
+    const logoutSuccess = () => {
+        removeCookie(AUTH_TOKEN_NAME)
+    }
 
-  const getUserFromToken = () => {
-    const { userAuthToken } = cookies;
+    const getUserFromToken = () => {
+        const {userAuthToken} = cookies
 
-    if (userAuthToken) {
-      const decodedToken = jwt_decode(userAuthToken);
-      return {
-        token: userAuthToken,
-        name: decodedToken.name,
-      };
+        if (userAuthToken) {
+          const decodedToken = jwt_decode(userAuthToken)
+          return jwt_decode(userAuthToken);
+        return {
+          token: userAuthToken,
+          name: decodedToken.name,
+        };
+        }
+        return null
     }
     
-    return null;
-  };
+    const token = cookies.userAuthToken || null;
 
-  const token = cookies[AUTH_TOKEN_NAME] || null;
+    return (
+        <AuthContext.Provider value={{token, loginSuccess, logoutSuccess, getUserFromToken}}>
+          {props.children}
+        </AuthContext.Provider>
+      )
 
-  return (
-    <AuthContext.Provider value={{ token, loginSuccess, logoutSuccess, getUserFromToken }}>
-      {props.children}
-    </AuthContext.Provider>
-  );
 }

@@ -10,9 +10,11 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const token = cookies.token;
-    if (!token || !isValidToken(token)) {
+    if (!token) {
       // Redirect to the login page if the token is not valid or not present
       // You can replace '/login' with the correct login page URL
+      console.log(token)
+      console.log(isValidToken(token))
       navigate('/login');
     }
   }, [cookies.token, navigate]);
