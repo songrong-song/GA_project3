@@ -2,13 +2,10 @@ const mongoose = require('mongoose')
 
 const itinerarySchema = new mongoose.Schema(
     {   username: { type: String },
-        day: {type: String},
-        destination1:  { type: Object },
-	    attraction1:  { type: Object },
-        attraction2: { type: Object},
-        restination1: { type: Object},
-        restination2: { type: Object},
-    },
+        destination:  { type: Object },
+        days: { type: String },
+        itineraries: {type: Array},},
+
     {
         timestamps: true
     }

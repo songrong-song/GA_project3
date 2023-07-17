@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const userModel = require("../models/UserModel")
 const userValidators = require("./validators/userValidator")
+require('dotenv').config()
 
 const userControllers = {
 
