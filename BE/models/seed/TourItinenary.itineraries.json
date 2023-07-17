@@ -1,0 +1,309 @@
+[{
+  "_id": {
+    "$oid": "64b4fa344e54adad31221842"
+  },
+  "destination": "Paris",
+  "itineraries": [],
+  "__v": 0,
+  "createdAt": {
+    "$date": "2023-07-17T08:22:12.753Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-17T08:22:12.753Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64b4ff33ef31bd5a1e9828b6"
+  },
+  "destination": "Paris",
+  "itineraries": [],
+  "__v": 0,
+  "createdAt": {
+    "$date": "2023-07-17T08:43:31.191Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-17T08:43:31.191Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64b502552252f22da6af5a9a"
+  },
+  "destination": "Tokyo",
+  "itineraries": [],
+  "__v": 0,
+  "createdAt": {
+    "$date": "2023-07-17T08:56:53.573Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-17T08:56:53.573Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64b503e26881191cb4a0e6ba"
+  },
+  "destination": "Tokyo",
+  "itineraries": [],
+  "__v": 0,
+  "createdAt": {
+    "$date": "2023-07-17T09:03:30.516Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-17T09:03:30.516Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64b504af66830e0f364dbfda"
+  },
+  "destination": "New York",
+  "itineraries": [
+    {
+      "attraction1": {
+        "Attraction Name": "The Statue of Liberty",
+        "Summary": "The Statue of Liberty is a colossal neoclassical sculpture on Liberty Island in New York Harbor in New York City, in the United States.",
+        "Location": {
+          "Latitude": 40.6892,
+          "Longitude": -74.0444
+        },
+        "Recommended Sojourn Time": 4
+      }
+    }
+  ],
+  "__v": 0,
+  "createdAt": {
+    "$date": "2023-07-17T09:06:55.901Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-17T09:06:55.901Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64b5056c656df58fda985681"
+  },
+  "destination": "New York",
+  "itineraries": [
+    {
+      "attraction1": {
+        "Attraction Name": "The Statue of Liberty",
+        "Summary": "The Statue of Liberty is a symbol of freedom and democracy for the United States of America. It stands tall in New York Harbor and is a popular tourist destination.",
+        "Location": {
+          "Latitude": 40.689247,
+          "Longitude": -74.044502
+        },
+        "Recommended Sojourn Time": 2
+      }
+    }
+  ],
+  "__v": 0,
+  "createdAt": {
+    "$date": "2023-07-17T09:10:04.924Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-17T09:10:04.924Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64b5057f16cce1844045e385"
+  },
+  "destination": "London",
+  "itineraries": [
+    {
+      "attraction1": {
+        "Attraction Name": "The British Museum",
+        "Summary": "The British Museum is a museum dedicated to human history, art and culture. It is located in the Bloomsbury area of London.",
+        "Location": {
+          "Latitude": 51.51952,
+          "Longitude": -0.12695
+        },
+        "Recommended Sojourn Time": 4
+      }
+    }
+  ],
+  "__v": 0,
+  "createdAt": {
+    "$date": "2023-07-17T09:10:23.497Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-17T09:10:23.497Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64b5076ae210a27aeb794ff5"
+  },
+  "destination": "London",
+  "itineraries": [
+    {
+      "attraction1": {
+        "Attraction Name": "The Shard",
+        "Summary": "The Shard is a 95-storey skyscraper located in London, UK. It is the tallest building in the United Kingdom, standing at 309.6 metres (1,016 ft). The Shard provides an incredible view of the city and is a must-visit attraction for visitors to London.",
+        "Location": {
+          "Latitude": null,
+          "Longitude": null
+        },
+        "Recommended Sojourn Time": null
+      },
+      "restaurant1": {
+        "Restaurant Name": "The OXO Tower Restaurant, Bar and Brasserie",
+        "Summary": "Modern British restaurant with stunning views of the River Thames and the London skyline",
+        "Location": {
+          "Latitude": 51.5071586,
+          "Longitude": -0.1183644
+        },
+        "Recommended Sojourn Time": 2
+      }
+    }
+  ],
+  "__v": 0,
+  "createdAt": {
+    "$date": "2023-07-17T09:18:34.255Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-17T09:18:34.255Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64b50811cc693a8e00895693"
+  },
+  "destination": "Paris",
+  "itineraries": [
+    {
+      "attraction1": {
+        "Attraction Name": "The Louvre",
+        "Summary": "The Louvre is the world’s largest art museum and a historic monument in Paris, France.",
+        "Location": {
+          "Latitude": "48.8606111",
+          "Longitude": "2.337644"
+        },
+        "Recommended Sojourn Time": "2 hours"
+      },
+      "restaurant1": {
+        "Restaurant Name": "Au Pied de Cochon",
+        "Summary": "Traditional French bistro located a stone throw away from the Louvre",
+        "Location": {
+          "Latitude": 48.8635,
+          "Longitude": 2.3375
+        },
+        "Recommended Sojourn Time": 2
+      }
+    }
+  ],
+  "__v": 0,
+  "createdAt": {
+    "$date": "2023-07-17T09:21:21.481Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-17T09:21:21.481Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64b50b37e4dae2d1faef1cdc"
+  },
+  "destination": "London",
+  "itineraries": [
+    {
+      "attraction1": {
+        "Attraction Name": "Big Ben",
+        "Summary": "Big Ben is a tower clock located at the north end of the Palace of Westminster in London, United Kingdom.",
+        "Location": {
+          "Latitude": 51.5007292,
+          "Longitude": -0.1268141
+        },
+        "Recommended Sojourn Time": 1
+      },
+      "restaurant1": {
+        "Restaurant Name": "The Golden Hind",
+        "Summary": "Authentic British pub and restaurant serving traditional English fare and a variety of beers and ales.",
+        "Location": {
+          "Latitude": 51.510156,
+          "Longitude": -0.125705
+        },
+        "Recommended Sojourn Time": 1
+      }
+    }
+  ],
+  "__v": 0,
+  "createdAt": {
+    "$date": "2023-07-17T09:34:47.959Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-17T09:34:47.959Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64b50b5267172aa9bedb04bd"
+  },
+  "destination": "London",
+  "itineraries": [
+    {
+      "attraction1": {
+        "Attraction Name": "Tower of London",
+        "Summary": "The Tower of London is a historic castle on the north bank of the River Thames in central London. It is one of the city's most iconic landmarks and has served as a royal palace, prison, armory, and zoo.",
+        "Location": {
+          "Latitude": null,
+          "Longitude": null
+        },
+        "Recommended Sojourn Time": null
+      },
+      "restaurant1": {
+        "Restaurant Name": "Poppies Fish and Chips",
+        "Summary": "Traditional British Fish and Chips restaurant located near Tower of London",
+        "Location": {
+          "Latitude": 51.508827,
+          "Longitude": -0.076372
+        },
+        "Recommended Sojourn Time": 1.5
+      }
+    }
+  ],
+  "__v": 0,
+  "createdAt": {
+    "$date": "2023-07-17T09:35:14.819Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-17T09:35:14.819Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64b50b9fab294a568bb14786"
+  },
+  "destination": "London",
+  "itineraries": [
+    {
+      "attraction1": {
+        "Attraction Name": "Tower of London",
+        "Summary": "The Tower of London is an iconic castle located in Central London. It has a long and varied history as a royal palace, prison, and place of execution, and was once the home of the Crown Jewels of England.",
+        "Location": {
+          "Latitude": null,
+          "Longitude": null
+        },
+        "Recommended Sojourn Time": null
+      },
+      "restaurant1": {
+        "Restaurant Name": "The Narrow",
+        "Summary": "The Narrow is a modern British restaurant near Tower of London, offering seasonal dishes with a unique twist.",
+        "Location": {
+          "Latitude": 51.5069,
+          "Longitude": -0.046805
+        },
+        "Recommended Sojourn Time": 1
+      }
+    }
+  ],
+  "__v": 0,
+  "createdAt": {
+    "$date": "2023-07-17T09:36:31.011Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-17T09:36:31.011Z"
+  }
+}]

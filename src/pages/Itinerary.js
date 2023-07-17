@@ -65,125 +65,23 @@ const Itinerary = () => {
 
     try {
 
-
       console.log("check backend GPT result here")
-      console.log("because of invalid API key at this moment, only empty json is returned now!")
 
       const response = await axios.post('http://localhost:3000/api/itinerary', {
-        destinationValue: destinationValue,
-        duration: durationValue,
+        destinationValue: "Paris",
+        dayValue: "3",
       });
-      console.log("Result from chatGPT")
-      console.log(response.data.storeData)
-     
+      console.log("Result")
+      console.log(response)
+  
 
-      console.log("Here I assign a hard coded value for the result! Would change after the setting of database")
-      console.log("Result from hardcoded")
-      const hardCode = {
-        "storeData": {
-            "UserId": "ABC",
-            "Desination": "Singapore",
-            "Itinerary": [
-                {
-                    "attraction1": 
-                      {
-                        "Attraction Name": "Gardens by the Bay",
-                        "Summary": "Gardens by the Bay is a nature park spanning 101 hectares of reclaimed land. It features iconic Supertrees, conservatories, and beautiful waterfront gardens.",
-                        "Location": {
-                          "Latitude": 1.2816,
-                          "Longitude": 103.8636
-                        },
-                        "Recommended Sojourn Time (number of hours only)": 3
-                      },
-
-
-                    "restaurant1": 
-                    {
-                      "Restaurant Name": "Garden Bistro",
-                      "Summary": "A charming bistro located near Gardens by the Bay, offering a delightful menu of international and local cuisines. Enjoy your meal in a cozy garden setting surrounded by lush greenery.",
-                      "Location": {
-                        "Latitude": 1.2816,
-                        "Longitude": 103.8636
-                      },
-                      "Recommended Sojourn Time": 2
-                    },
-                    
-
-                    "attraction2":
-                      {
-                        "Attraction Name": "Marina Bay Sands SkyPark",
-                        "Summary": "Marina Bay Sands SkyPark is an iconic rooftop observation deck located on top of the Marina Bay Sands hotel. It offers stunning panoramic views of Singapore's skyline, including the Gardens by the Bay and the Singapore Strait.",
-                        "Location": {
-                          "Latitude": 1.2836,
-                          "Longitude": 103.8586
-                        },
-                        "Recommended Sojourn Time (number of hours only)": 2
-                      },
-
-                    "restaurant2": 
-                    {
-                      "Restaurant Name": "Skyview Terrace",
-                      "Summary": "A stunning rooftop restaurant located near Marina Bay Sands SkyPark, offering a blend of international flavors and exquisite dining experience. Enjoy breathtaking views of the city skyline while savoring delectable cuisine.",
-                      "Location": {
-                        "Latitude": 1.2836,
-                        "Longitude": 103.8596
-                      },
-                      "Recommended Sojourn Time": 2
-                    }
-                },
-
-                {
-                  "attraction1": 
-                  {
-                    "Attraction Name": "Singapore Botanic Gardens",
-                    "Summary": "The Singapore Botanic Gardens is a lush green oasis in the heart of the city. It is a UNESCO World Heritage Site and features beautiful gardens, a tropical rainforest, and a variety of plant species.",
-                    "Location": {
-                      "Latitude": 1.3138,
-                      "Longitude": 103.8153
-                    },
-                    "Recommended Sojourn Time (number of hours only)": 3
-                  },
-
-                                    
-                  "restaurant1": {
-                    "Restaurant Name": "Garden Terrace Cafe",
-                    "Summary": "A charming cafe located near the Singapore Botanic Gardens, offering a variety of delicious dishes and beverages. Relax and enjoy your meal in a serene garden setting.",
-                    "Location": {
-                      "Latitude": 1.3138,
-                      "Longitude": 103.8154
-                    },
-                    "Recommended Sojourn Time": 1
-                  },
-                  
-                  "attraction2": 
-                  {
-                    "Attraction Name": "Singapore Zoo",
-                    "Summary": "The Singapore Zoo is a world-class zoological garden known for its innovative and immersive animal exhibits. It showcases a diverse range of wildlife and offers unique experiences for visitors.",
-                    "Location": {
-                      "Latitude": 1.4043,
-                      "Longitude": 103.7930
-                    },
-                    "Recommended Sojourn Time (number of hours only)": 4
-                  },
-
-                  "restaurant2": 
-                    {
-                      "Restaurant Name": "Zoo Bistro",
-                      "Summary": "A family-friendly bistro located near the Singapore Zoo, offering a variety of delicious dishes and a lively atmosphere. Enjoy a meal surrounded by nature after your zoo visit.",
-                      "Location": {
-                        "Latitude": 1.4043,
-                        "Longitude": 103.7930
-                      },
-                      "Recommended Sojourn Time": 1
-                    }
-              }
-            ]
-        }
-    };
-      console.log(hardCode);
-      setResult(hardCode);
-      console.log("current result:");
-      console.log(hardCode);
+      // console.log("Here I assign a hard coded value for the result! Would change after the setting of database")
+      // console.log("Result from hardcoded")
+    
+      // console.log(hardCode);
+      // setResult(hardCode);
+      // console.log("current result:");
+      // console.log(hardCode);
 
       setIsLoading(false);
     } catch (error) {
