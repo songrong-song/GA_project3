@@ -162,8 +162,6 @@ const itineraryControllers = {
               
             }
 
-
-
             // const restaurant1 = restaurant1_?JSON.parse(restaurant1_):null;
 
             // attraction2 = attraction2_?JSON.parse(attraction2_):null
