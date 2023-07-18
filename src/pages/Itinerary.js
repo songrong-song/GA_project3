@@ -53,21 +53,39 @@ const [droppableCards, setDroppableCards] = useState([]);
     });
 
     const resultData = response.data;
+    console.log(resultData);
     setResult(resultData);
 
     setIsLoading(false);
 
-    const newDroppableCards = resultData.map((itinerary, index) => ({
-    id: `result-cards-${index}`,
+const newDroppableCards = resultData.map((itinerary, index) => ({
+  id: `result-cards-${index}`,
   title: `Day ${index + 1}`,
-  cards: itinerary.itineraries.map((item, itemIndex) => ({
-    id: `result-card-${index}-${itemIndex}`,
-    title: item.attraction1?.["Attraction Name"] || item.restaurant1?.["Restaurant Name"] || "Unknown",
-    description: item.attraction1?.Summary || item.restaurant1?.Summary || "No description available",
-    location: item.attraction1?.Location || item.restaurant1?.Location || "Unknown",
-    sojournTime: item.attraction1?.["Recommended Sojourn Time"] || item.restaurant1?.["Recommended Sojourn Time"] || "Unknown",
-        })),
-      }))
+  cards: itinerary.itineraries.flatMap((item, itemIndex) => [
+    {
+      id: `result-card-${index}-${itemIndex}-attraction`,
+      type: "Attraction",
+      title: item.attraction1?.["Attraction Name"] || "Unknown",
+      description: {
+        description: item.attraction1?.Summary || "No description available",
+        location: item.attraction1?.Location.latitude && item.attraction1?.Location.longitude || "Unknown",
+        sojournTime: item.attraction1?.["Recommended Sojourn Time"] || "Unknown",
+      },
+    },
+    {
+      id: `result-card-${index}-${itemIndex}-restaurant`,
+      type: "Restaurant",
+      title: item.restaurant1?.["Restaurant Name"] || "Unknown",
+      description: {
+        description: item.restaurant1?.Summary || "No description available",
+        location: item.restaurant1?.Location || "Unknown",
+        sojournTime: item.restaurant1?.["Recommended Sojourn Time"] || "Unknown",
+      },
+    },
+  ]),
+}));
+
+
 
 
     setDroppableCards(newDroppableCards);
@@ -137,7 +155,14 @@ const renderResultCards = () => {
                             <SyncOutlined key="" />
                           ]}
                         >
-                          <Meta title={card.title} description={card.description} />
+                          <Meta title={card.title} description = {
+<div>
+  <p>Description: {card.description.description}</p>
+  <p>Location: {card.description.location}</p>
+  <p>Sojourn Time: {card.description.sojournTime}</p>
+</div>
+                          }
+/>
                         </Card>
                       </div>
                     )}
@@ -258,7 +283,13 @@ const renderResultCards = () => {
                                       <SyncOutlined key ="" />
                                     ]}
                                   >
-                                    <Meta title={card.title} description={card.description} />
+                                    <Meta title={card.title} description={
+                                    <div> 
+                                      <p>Description: {card.description.description}</p>
+                                <p>Location: {`${card.description.location.Latitude}, ${card.description.location.Longitude}`}</p>
+                                      <p>Sojourn Time: {card.description.sojournTime}</p>
+                                    </div>
+                                    } />
                                   </Card>
                                 </div>
                               )}
