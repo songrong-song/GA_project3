@@ -7,18 +7,19 @@ import ActivityInput from './ActivityInput';
 import FoodInput from './FoodInput';
 import { ItineraryContext } from './ItineraryContext';
 
+const {Step} = Steps; 
+
 const StepComponent = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
 
   //Accessing the context values using the use context hook 
-  const {
-  destinationValue,
-  durationValue,
-  selectedActivities,
-  selectedFood,
-} = useContext(ItineraryContext);
-
+//   const {
+//   destinationValue,
+//   durationValue,
+//   selectedActivities,
+//   selectedFood,
+// } = useContext(ItineraryContext);
 
 
   const handleNextStep = (event) => {

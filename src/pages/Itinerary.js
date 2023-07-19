@@ -10,7 +10,7 @@ import Header from '../Components/Header';
 const { Meta } = Card;
 
 const Itinerary = () => {
-  const { destinationValue } = useContext(ItineraryContext);
+  const { destinationValue, durationValue, selectedFood, selectedActivities  } = useContext(ItineraryContext);
 
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +49,9 @@ const [droppableCards, setDroppableCards] = useState([]);
   try {
     const response = await axios.post('http://localhost:3000/api/itinerary', {
       destinationValue: "Paris",
-      dayValue: "3",
+      dayValue: durationValue,
+      selectedActivities: selectedActivities,
+      selectedFood: selectedFood,
     });
 
     const resultData = response.data;

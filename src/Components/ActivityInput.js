@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Select, Form } from 'antd';
 import "./ActivityInput.css";
 import { ItineraryContext } from './ItineraryContext';
@@ -6,10 +6,19 @@ import { ItineraryContext } from './ItineraryContext';
 const { Option } = Select;
 
 const ActivityInput = () => {
-  const { selectedActivities, updateSelectedActivities } = useContext(ItineraryContext);
+  const { selectedActivities: contextSelectedActivities, updateSelectedActivities } = useContext(ItineraryContext);
+  const [selectedActivities, setSelectedActivities] = useState(contextSelectedActivities || []);
+
+  useEffect(() => {
+    setSelectedActivities(contextSelectedActivities || []);
+  }, [contextSelectedActivities]);
 
   const handleActivitiesChange = (values) => {
-    updateSelectedActivities(values);
+    setSelectedActivities(values);
+  };
+
+  const handleBlur = () => {
+    updateSelectedActivities(selectedActivities);
   };
 
   const activityOptions = [
@@ -32,6 +41,7 @@ const ActivityInput = () => {
             mode="multiple"
             value={selectedActivities}
             onChange={handleActivitiesChange}
+            onBlur={handleBlur}
             placeholder="Select activities"
           >
             {activityOptions.map((activity) => (
