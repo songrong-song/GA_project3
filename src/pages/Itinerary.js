@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Button, Card, Col, Empty, Input, Row, Timeline, config } from 'antd';
-import { DragOutlined, DeleteOutlined, EditOutlined, SyncOutlined } from '@ant-design/icons';
+import { Button, Card, Col, Empty, Input, Row, Timeline } from 'antd';
+import { DragOutlined, EditOutlined, SyncOutlined } from '@ant-design/icons';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import axios from 'axios';
@@ -10,31 +10,14 @@ import Header from '../Components/Header';
 const { Meta } = Card;
 
 const Itinerary = () => {
-  const { destinationValue, durationValue } = useContext(ItineraryContext);
+  const { destinationValue } = useContext(ItineraryContext);
 
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
-  const [droppableCards, setDroppableCards] = useState([
-    {
-      id: 'droppable1',
-      title: 'Droppable 1',
-      cards: [
-        { id: 'card1', title: 'Card 1', description: 'This is Card 1', day: 1 },
-        { id: 'card2', title: 'Card 2', description: 'This is Card 2', day: 1 },
-      ],
-    },
-    {
-      id: 'droppable2',
-      title: 'Droppable 2',
-      cards: [
-        { id: 'card3', title: 'Card 3', description: 'This is Card 3', day: 2 },
-        { id: 'card4', title: 'Card 4', description: 'This is Card 4', day: 2 },
-      ],
-    },
-  ]);
+const [droppableCards, setDroppableCards] = useState([]);
 
   useEffect(() => {
     if (destinationValue) {
@@ -60,36 +43,57 @@ const Itinerary = () => {
     }
   }
 
-  const handleSubmit = async () => {
-    setIsLoading(true);
+ const handleSubmit = async () => {
+  setIsLoading(true);
 
-    try {
+  try {
+    const response = await axios.post('http://localhost:3000/api/itinerary', {
+      destinationValue: "Paris",
+      dayValue: "3",
+    });
 
-      console.log("check backend GPT result here")
+    const resultData = response.data;
+    console.log(resultData);
+    setResult(resultData);
 
-      const response = await axios.post('http://localhost:3000/api/itinerary', {
-        destinationValue: "Paris",
-        dayValue: "3",
-      });
-      console.log("Result")
-      console.log(response)
-  
+    const newDroppableCards = resultData.map((itinerary, index) => ({
+      id: `result-cards-${index}`,
+      title: `Day ${index + 1}`,
+      cards: itinerary.itineraries.flatMap((item, itemIndex) => [
+        {
+          id: `result-card-${index}-${itemIndex}-attraction`,
+          type: "Attraction",
+          title: item.attraction1?.["Attraction Name"] || "Unknown",
+          description: {
+            description: item.attraction1?.Summary || "No description available",
+            location: item.attraction1?.Location.latitude && item.attraction1?.Location.longitude || "Unknown",
+            sojournTime: item.attraction1?.["Recommended Sojourn Time"] || "Unknown",
+          },
+        },
+        {
+          id: `result-card-${index}-${itemIndex}-restaurant`,
+          type: "Restaurant",
+          title: item.restaurant1?.["Restaurant Name"] || "Unknown",
+          description: {
+            description: item.restaurant1?.Summary || "No description available",
+            location: item.restaurant1?.Location || "Unknown",
+            sojournTime: item.restaurant1?.["Recommended Sojourn Time"] || "Unknown",
+          },
+        },
+      ]),
+    }));
 
-      // console.log("Here I assign a hard coded value for the result! Would change after the setting of database")
-      // console.log("Result from hardcoded")
-    
-      // console.log(hardCode);
-      // setResult(hardCode);
-      // console.log("current result:");
-      // console.log(hardCode);
+    setDroppableCards(newDroppableCards);
 
-      setIsLoading(false);
-    } catch (error) {
-      console.log('Error generating itinerary:', error);
-      setResult('Something went wrong. Please try again.');
-      setIsLoading(false);
-    }
-  };
+  } catch (error) {
+    console.log('Error generating itinerary:', error);
+    setResult('Something went wrong. Please try again.');
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
 
   const handleReset = () => {
     setResult(null);
@@ -97,8 +101,8 @@ const Itinerary = () => {
 
   const formatResult = (result) => {
     // Format the result as needed
-    return result;
-  };
+     return JSON.stringify(result, null, 2); // Convert object to a pretty-printed JSON string
+};
 
   const handleEdit = (cardIndex, field, value) => {
     const updatedDroppableCards = droppableCards.map((droppable) => {
@@ -121,57 +125,59 @@ const Itinerary = () => {
     setDroppableCards(updatedDroppableCards);
   };
 
-  const handleRefresh = async () => {
-    setIsLoading(true);
+const renderResultCards = () => {
+  if (result && result.length > 0) {
+    const cards = droppableCards[0].cards; // Use the cards array from droppableCards
 
-    try {
-      const response = await axios.post('/api/generate_prompt', {
-        // Pass any required data to the backend
-      });
-
-      // Handle the response from the backend
-
-      setIsLoading(false);
-    } catch (error) {
-      console.log('Error generating prompt:', error);
-      setIsLoading(false);
+    if (cards.length === 0) {
+      return <Empty description="No result available" />;
     }
-  };
 
-   const renderResultCards = () => {
-  if (result) {
-    // Parse the result and extract relevant information for each card
-    // Example: Assuming result is an array of objects containing attraction information
-    const attractions = JSON.parse(result);
-    return attractions.map((attraction, index) => (
-      <Card
-        key={index}
-        title={
-          <Input
-            value={attraction.title}
-            onChange={(e) => handleEdit(index, 'title', e.target.value)}
-          />
-        }
-          actions={[
-          // <SettingOutlined key="setting" />,
-          // <EditOutlined key="edit" />,
-          // <EllipsisOutlined key="ellipsis" />,
-        ]}
-         bordered={false}
-      >
-        <Meta
-          description={
-            <Input.TextArea
-              value={attraction.description}
-              onChange={(e) => handleEdit(index, 'description', e.target.value)}
-            />
-          }
-        />
-      </Card>
-    ));
+    return (
+      <Timeline mode="left">
+        <Timeline.Item>
+          <h3>Result Cards</h3>
+          <Droppable droppableId="result-cards">
+            {(provided) => (
+              <div ref={provided.innerRef} {...provided.droppableProps} className="card-container">
+                {cards.map((card, index) => (
+                  <Draggable key={card.id} draggableId={card.id} index={index}>
+                    {(provided) => (
+                      <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                        <Card
+                          style={{ width: '100%' }}
+                          actions={[
+                            <DragOutlined key="drag" />,
+                            // <DeleteOutlined key="delete" />,
+                            <EditOutlined key="edit" />,
+                            <SyncOutlined key="" />
+                          ]}
+                        >
+                          <Meta title={card.title} description = {
+<div>
+  <p>Description: {card.description.description}</p>
+  <p>Location: {card.description.location}</p>
+  <p>Sojourn Time: {card.description.sojournTime}</p>
+</div>
+                          }
+/>
+                        </Card>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </Timeline.Item>
+      </Timeline>
+    );
   }
+
   return <Empty description="No result available" />;
-  };
+};
+
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -227,7 +233,14 @@ const Itinerary = () => {
     }
   };
 
+  const defaultActions = [
+    <DragOutlined key="drag" />,
+    <EditOutlined key="edit" />,
+    <SyncOutlined key="sync" />,
+  ];
+
   return (
+
     <div>
       <Header />
       <Row justify="center">
@@ -268,7 +281,13 @@ const Itinerary = () => {
                                       <SyncOutlined key ="" />
                                     ]}
                                   >
-                                    <Meta title={card.title} description={card.description} />
+                                    <Meta title={card.title} description={
+                                    <div> 
+                                      <p>Description: {card.description.description}</p>
+                                <p>Location: {`${card.description.location.Latitude}, ${card.description.location.Longitude}`}</p>
+                                      <p>Sojourn Time: {card.description.sojournTime}</p>
+                                    </div>
+                                    } />
                                   </Card>
                                 </div>
                               )}
@@ -287,14 +306,13 @@ const Itinerary = () => {
         <Col xs={24} sm={12} md={12} lg={12} xl={8}>
           <div className="container-right">
             <div className="loader" style={{ display: isLoading ? 'block' : 'none' }}></div>
-            {result ? (
+            {/* {result ? (
               <div>
                 <h2>Result as Text:</h2>
                 <pre>{formatResult(result)}</pre>
               </div>
             ) : null}
-          </div>
-          <div className="container-left">
+          </div> */}
             {isLoaded && latitude && longitude ? (
               <GoogleMap
                 mapContainerStyle={{
@@ -308,14 +326,7 @@ const Itinerary = () => {
                   console.log('longitude = ', ev.latLng.lng());
                 }}
               />
-            ) : null}
-            {result ? (
-              <div>
-                <h2>Result as Cards:</h2>
-                <div className="card-container">{renderResultCards()}</div>
-              </div>
-            ) : null}
-          </div>
+            ) : null} </div>
         </Col>
       </Row>
     </div>
