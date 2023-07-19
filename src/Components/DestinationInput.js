@@ -34,6 +34,8 @@ const DestinationInput = () => {
   useEffect(() => {
     form.setFieldsValue({ destination: destinationValue }); // Set the value for the destination input
     form.setFieldsValue({ numDays: durationValue }); // Set the value for the numDays select
+    console.log("destinationValue:", destinationValue); // Add this line to log destinationValue
+    console.log("durationValue:", durationValue); // Add this line to log durationValue
   }, [destinationValue, durationValue, form]);
 
   const handlePlaceSelect = () => {
