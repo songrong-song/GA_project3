@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useEffect } from 'react';
 import { Autocomplete } from '@react-google-maps/api';
 import { Select, Col, Row, Input, Form, message } from 'antd';
 import './DestinationInput.css';
@@ -10,6 +10,7 @@ const DestinationInput = () => {
   const { destinationValue, updateDestinationValue, durationValue, updateDurationValue } = useContext(ItineraryContext);
   const autocomplete = useRef(null);
   const [form] = Form.useForm();
+
 
   const handleNumDaysChange = (value) => {
     updateDurationValue(value);
@@ -30,6 +31,12 @@ const DestinationInput = () => {
       autocomplete.current = autocompleteInstance;
     }
   };
+  useEffect(() => {
+    form.setFieldsValue({ destination: destinationValue }); // Set the value for the destination input
+    form.setFieldsValue({ numDays: durationValue }); // Set the value for the numDays select
+    console.log("destinationValue:", destinationValue); // Add this line to log destinationValue
+    console.log("durationValue:", durationValue); // Add this line to log durationValue
+  }, [destinationValue, durationValue, form]);
 
   const handlePlaceSelect = () => {
     const place = autocomplete.current.getPlace();
@@ -75,7 +82,7 @@ const DestinationInput = () => {
                 { required: true, message: 'Please select the number of days' }
               ]}
             >
-              <Select id="numDays" value={durationValue} onChange={handleNumDaysChange} placeholder="Select">
+              <Select id="numDays" value={durationValue} onChange={handleNumDaysChange} onBlur={handleNumDaysChange} placeholder="Select">
                 {dayOptions}
               </Select>
             </Form.Item>

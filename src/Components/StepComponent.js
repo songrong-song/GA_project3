@@ -7,19 +7,23 @@ import ActivityInput from './ActivityInput';
 import FoodInput from './FoodInput';
 import { ItineraryContext } from './ItineraryContext';
 
+const { Step } = Steps;
+
 const StepComponent = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
 
-  //Accessing the context values using the use context hook 
+  // Accessing the context values and update functions using the useContext hook
   const {
-  destinationValue,
-  durationValue,
-  selectedActivities,
-  selectedFood,
-} = useContext(ItineraryContext);
-
-
+    destinationValue,
+    updateDestinationValue,
+    durationValue,
+    updateDurationValue,
+    selectedActivities,
+    updateSelectedActivities,
+    selectedFood,
+    updateSelectedFood,
+  } = useContext(ItineraryContext);
 
   const handleNextStep = (event) => {
     setCurrentStep(currentStep + 1);
@@ -36,7 +40,6 @@ const StepComponent = () => {
     navigate('/generator');
     event.preventDefault();
   };
-
 
   return (
     <div className="step-component">
@@ -61,16 +64,13 @@ const StepComponent = () => {
       />
       <div className="step-content">
         {currentStep === 0 && (
-          <DestinationInput
-          />
+          <DestinationInput />
         )}
         {currentStep === 1 && (
-          <ActivityInput
-          />
+          <ActivityInput />
         )}
         {currentStep === 2 && (
-          <FoodInput
-          />
+          <FoodInput />
         )}
       </div>
       <div className="step-navigation">
@@ -86,7 +86,7 @@ const StepComponent = () => {
         )}
         {currentStep === 2 && (
           <Button className="submit" type="primary" onClick={handleSubmission}>
-            Submit
+          next
           </Button>
         )}
       </div>

@@ -1,21 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Row, Col } from 'antd';
 import { useCookies } from 'react-cookie';
 import { isValidToken } from "./tokenUtils";
 import { useNavigate } from 'react-router-dom';
+import jwt from 'jsonwebtoken'; // Import jwt library
+
 
 export default function ProfilePage() {
   const [cookies] = useCookies(['token']);
   const navigate = useNavigate();
+  const [userName, setUserName] = useState(""); 
+
 
   useEffect(() => {
     const token = cookies.token;
     if (!token) {
-      // Redirect to the login page if the token is not valid or not present
-      // You can replace '/login' with the correct login page URL
       console.log(token)
       console.log(isValidToken(token))
       navigate('/login');
+    }
+    else {
+      const decodedToken = jwt.decode(token);
+      setUserName(decodedToken.name);
     }
   }, [cookies.token, navigate]);
 
@@ -26,7 +32,7 @@ export default function ProfilePage() {
         <Col xs={24} sm={20} md={16} lg={12} xl={8}>
           <div className="container">
             <h2>Profile Page</h2>
-            <p>Welcome, User!</p>
+            <p>Welcome, {userName}!</p>
             <Button type="primary">Logout</Button>
           </div>
         </Col>

@@ -3,7 +3,7 @@ import React, { createContext, useState } from 'react';
 export const ItineraryContext = createContext();
 
 export const ItineraryProvider = ({ children }) => {
-  console.log("hey")
+  console.log("ItineraryProvider")
   console.log(children)
   
   const [selectedActivities, setSelectedActivities] = useState([]);

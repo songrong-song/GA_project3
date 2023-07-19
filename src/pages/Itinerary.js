@@ -6,18 +6,24 @@ import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import axios from 'axios';
 import { ItineraryContext } from '../Components/ItineraryContext';
 import Header from '../Components/Header';
+import Map from '../Components/map';
 
 const { Meta } = Card;
-
+let resultData = []
 const Itinerary = () => {
-  const { destinationValue } = useContext(ItineraryContext);
+const { destinationValue, durationValue, selectedFood, selectedActivities  } = useContext(ItineraryContext);
 
-  const [result, setResult] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
+const [result, setResult] = useState(null);
+const [isLoading, setIsLoading] = useState(false);
+const [isMapLoading,setIsMapLoading] = useState(false);
+  //const [latitude, setLatitude] = useState(null);
+  //const [longitude, setLongitude] = useState(null);
+  //hardcoded values to test
+   const [latitude, setLatitude] = useState(48.8566); // Default latitude for Paris
+   const [longitude, setLongitude] = useState(2.3522); // Default longitude for Paris
+
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
-const [droppableCards, setDroppableCards] = useState([]);
+  const [droppableCards, setDroppableCards] = useState([]);
 
   useEffect(() => {
     if (destinationValue) {
@@ -49,10 +55,11 @@ const [droppableCards, setDroppableCards] = useState([]);
   try {
     const response = await axios.post('http://localhost:3000/api/itinerary', {
       destinationValue: "Paris",
-      dayValue: "2",
-    });
+      dayValue: "3", //durationValue,
+      selectedActivities: selectedActivities,
+      selectedFood: selectedFood,
 
-    const resultData = response.data;
+    resultData = response.data;
     console.log(resultData);
     setResult(resultData);
 
@@ -66,7 +73,7 @@ const [droppableCards, setDroppableCards] = useState([]);
           title: item.attraction1?.["Attraction Name"] || "Unknown",
           description: {
             description: item.attraction1?.Summary || "No description available",
-            location: item.attraction1?.Location.latitude && item.attraction1?.Location.longitude || "Unknown",
+            location: item.attraction1?.Location || "Unknown",
             sojournTime: item.attraction1?.["Recommended Sojourn Time"] || "Unknown",
           },
         },
@@ -84,7 +91,7 @@ const [droppableCards, setDroppableCards] = useState([]);
     }));
 
     setDroppableCards(newDroppableCards);
-
+    setIsMapLoading(true);
   } catch (error) {
     console.log('Error generating itinerary:', error);
     setResult('Something went wrong. Please try again.');
@@ -92,8 +99,6 @@ const [droppableCards, setDroppableCards] = useState([]);
     setIsLoading(false);
   }
 };
-
-
 
   const handleReset = () => {
     setResult(null);
@@ -307,26 +312,18 @@ const renderResultCards = () => {
           <div className="container-right">
             <div className="loader" style={{ display: isLoading ? 'block' : 'none' }}></div>
             {/* {result ? (
-              <div>
-                <h2>Result as Text:</h2>
-                <pre>{formatResult(result)}</pre>
-              </div>
-            ) : null}
-          </div> */}
-            {isLoaded && latitude && longitude ? (
-              <GoogleMap
-                mapContainerStyle={{
-                  width: '100%',
-                  height: '50vh',
-                }}
-                center={center}
-                zoom={19}
-                onClick={(ev) => {
-                  console.log('latitude = ', ev.latLng.lat());
-                  console.log('longitude = ', ev.latLng.lng());
-                }}
-              />
-            ) : null} </div>
+                  <div>
+                            <h2>Result as Text:</h2>
+                            <pre>{formatResult(result)}</pre>
+                          </div>
+                        ) : null}
+                  </div> 
+              */}
+              {isMapLoading && isLoaded && latitude && longitude ? (
+                    <Map isLoaded={true} latitude={latitude} longitude={longitude} center={{ lat: latitude, lng: longitude }} resultData={resultData} />
+              ) : null}
+            </div>
+          
         </Col>
       </Row>
     </div>
