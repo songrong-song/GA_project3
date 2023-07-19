@@ -69,17 +69,17 @@ const gptControllers = {
     return prompt;
   },
 
-  generateDestinationPrompt2: async function(destinationValue, excludeValue) {
-    let prompt = `Generate recommended attraction on below information for ${destinationValue} thats is not ${excludeValue}, strictly following the JSON format:
-    - Attraction Name: 
-    - Summary: 
-    - Location:
-      - Latitude: 
-      - Longitude: 
-    - Recommended Sojourn Time (number of hour only):
-     `
-    return prompt;
-  },
+  // generateDestinationPrompt2: async function(destinationValue, excludeValue) {
+  //   let prompt = `Generate recommended attraction on below information for ${destinationValue} thats is not ${excludeValue}, strictly following the JSON format:
+  //   - Attraction Name: 
+  //   - Summary: 
+  //   - Location:
+  //     - Latitude: 
+  //     - Longitude: 
+  //   - Recommended Sojourn Time (number of hour only):
+  //    `
+  //   return prompt;
+  // },
 
   generateRestaurantPrompt: async function(attractionValue) {
     let prompt = `Generate recommended restaurant on below information that near ${attractionValue}, strictly following the JSON format:
