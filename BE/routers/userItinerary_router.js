@@ -4,5 +4,4 @@ const userItineraryController = require('../controllers/userItinerary_controller
 
 router.post('/', userItineraryController.fetchHistoricalResult)
 
-
 module.exports = router

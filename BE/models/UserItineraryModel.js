@@ -1,17 +1,17 @@
 const { date } = require('joi')
 const mongoose = require('mongoose')
 
-const itinerarySchema = new mongoose.Schema(
+const userItinerarySchema = new mongoose.Schema(
     {   userEmail: { type: String },
-        destination:  { type: Object },
+        destination:  { type: String },
         itineraries: {type: Array},
-        timeStampWhenSave: {type: date} },
+        timeStampWhenSave: {type: Date} },
 
     {
         timestamps: true
     }
 )
 
-const Itenary = mongoose.model('UserItinerary', itinerarySchema)
+const userItinerary = mongoose.model('UserItinerary', userItinerarySchema)
 
-module.exports = Itenary
+module.exports = userItinerary

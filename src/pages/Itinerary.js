@@ -49,7 +49,7 @@ const [droppableCards, setDroppableCards] = useState([]);
   try {
     const response = await axios.post('http://localhost:3000/api/itinerary', {
       destinationValue: "Paris",
-      dayValue: "3",
+      dayValue: "2",
     });
 
     const resultData = response.data;

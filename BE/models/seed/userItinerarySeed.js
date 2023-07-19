@@ -8,17 +8,14 @@ mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PA
 
     // Sample seed data
     userItinerarySeedData = {
-      useremail: "example@example.com",
-      destination: {
-        destinationName: "London",
-        country: "United Kingdom"
-      },
+      userEmail: "example@example.com",
+      destination: "London",
       itineraries: [
         {
-          activities: ["Visit Big Ben", "Explore Westminster Abbey", "Take a Thames River Cruise"]
+          activity: ["Visit Big Ben", "Explore Westminster Abbey", "Take a Thames River Cruise"]
         },
         {
-          activities: ["Visit the British Museum", "Stroll through Hyde Park", "Enjoy afternoon tea"]
+          restaurant: ["Visit the British Museum", "Stroll through Hyde Park", "Enjoy afternoon tea"]
         }
       ],
       timeStampOfSave: new Date()
