@@ -8,12 +8,21 @@ import { Button, Form, Checkbox, Input, Col, Row, message } from 'antd';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import './LoginPage.css';
 import Cookies from 'js-cookie';
+import { useEffect } from "react";
 
 export default function Login() {
   const navigate = useNavigate();
   const { loginSuccess } = useContext(AuthContext);
-
   const [formData, setFormData] = useState({});
+
+  // add in the navigation with token
+  useEffect(() => {
+    const token = Cookies.get('token');
+    if(token) {
+      navigate('/home');
+    }
+  }, []);
+
 
   const handleFormChange = (fieldName, value) => {
     setFormData({ ...formData, [fieldName]: value });

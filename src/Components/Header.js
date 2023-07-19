@@ -5,11 +5,13 @@ import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from './auth/AuthProvider'; // Import AuthContext from the AuthProvider file
 import './Header.css';
 import Cookies from 'js-cookie';
+import { useCookies } from 'react-cookie';
 
 const Header = () => {
   const location = useLocation();
   const [selectedKeys, setSelectedKeys] = useState([]);
   const { logoutSuccess } = useContext(AuthContext); // Use AuthContext from the AuthProvider
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
   useEffect(() => {
     setSelectedKeys([location.pathname]);
@@ -24,6 +26,7 @@ const Header = () => {
   };
 
   const handleLogout = () => {
+    removeCookie('token', { path: '/' })
     logoutSuccess();
     message.success('Logout successful');
   };

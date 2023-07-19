@@ -3,29 +3,30 @@ import { Button, Row, Col } from 'antd';
 import { useCookies } from 'react-cookie';
 import { isValidToken } from "./tokenUtils";
 import { useNavigate } from 'react-router-dom';
-import jwt from 'jsonwebtoken'; // Import jwt library
-
+import jwt from 'jsonwebtoken';
 
 export default function ProfilePage() {
-  const [cookies] = useCookies(['token']);
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
   const navigate = useNavigate();
   const [userName, setUserName] = useState(""); 
 
-
   useEffect(() => {
     const token = cookies.token;
-    if (!token) {
-      console.log(token)
-      console.log(isValidToken(token))
-      navigate('/login');
-    }
-    else {
+    if (token && isValidToken(token)) {
       const decodedToken = jwt.decode(token);
       setUserName(decodedToken.name);
     }
+    else {
+      console.log('Invalid or no token found', token);
+      navigate('/loginPrompt');
+    }
   }, [cookies.token, navigate]);
 
-  if (isValidToken(cookies.token)) {
+  const handleLogout = () => {
+    removeCookie('token');
+  };
+
+  if (cookies.token && isValidToken(cookies.token)) {
     // Content for logged-in user
     return (
       <Row justify="center">
@@ -33,24 +34,14 @@ export default function ProfilePage() {
           <div className="container">
             <h2>Profile Page</h2>
             <p>Welcome, {userName}!</p>
-            <Button type="primary">Logout</Button>
+            <Button type="primary" onClick={handleLogout}>Logout</Button>
           </div>
         </Col>
       </Row>
     );
   } else {
     // Content for logged-out user
-    return (
-      <Row justify="center">
-        <Col xs={24} sm={20} md={16} lg={12} xl={8}>
-          <div className="container">
-            <h2>Profile Page</h2>
-            <p>You need to be logged in to view this page.</p>
-            <Button type="primary" href="/login">Login</Button>
-            <Button type="default" href="/">Back to Home</Button>
-          </div>
-        </Col>
-      </Row>
-    );
+    navigate('/loginPrompt');
+    return null; // or you can return some placeholder content here
   }
 }

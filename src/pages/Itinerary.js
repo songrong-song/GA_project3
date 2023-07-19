@@ -57,11 +57,11 @@ const [isMapLoading,setIsMapLoading] = useState(false);
       destinationValue: "Paris",
       dayValue: "3", //durationValue,
       selectedActivities: selectedActivities,
-      selectedFood: selectedFood,
+      selectedFood: selectedFood })
 
-    resultData = response.data;
-    console.log(resultData);
-    setResult(resultData);
+      resultData = response.data;
+      console.log(resultData);
+      setResult(resultData);
 
     const newDroppableCards = resultData.map((itinerary, index) => ({
       id: `result-cards-${index}`,
