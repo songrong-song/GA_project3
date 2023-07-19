@@ -58,7 +58,6 @@ const [isMapLoading,setIsMapLoading] = useState(false);
       dayValue: "3", //durationValue,
       selectedActivities: selectedActivities,
       selectedFood: selectedFood,
-    });
 
     resultData = response.data;
     console.log(resultData);

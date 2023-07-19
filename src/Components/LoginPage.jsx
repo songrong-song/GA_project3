@@ -41,7 +41,7 @@ export default function Login() {
       <Row justify="center">
         <Col xs={24} sm={20} md={16} lg={12} xl={8}>
           <div className="form-container">
-            <h2>Login</h2>
+            <h2>Login to Itinerary Generator</h2>
 
             <Form onFinish={handleSubmit} className="login-form">
               <Form.Item
