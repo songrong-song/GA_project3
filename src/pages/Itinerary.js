@@ -16,11 +16,11 @@ const { destinationValue, durationValue, selectedFood, selectedActivities  } = u
 const [result, setResult] = useState(null);
 const [isLoading, setIsLoading] = useState(false);
 const [isMapLoading,setIsMapLoading] = useState(false);
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
+  //const [latitude, setLatitude] = useState(null);
+  //const [longitude, setLongitude] = useState(null);
   //hardcoded values to test
-  // const [latitude, setLatitude] = useState(48.8566); // Default latitude for Paris
-  // const [longitude, setLongitude] = useState(2.3522); // Default longitude for Paris
+   const [latitude, setLatitude] = useState(48.8566); // Default latitude for Paris
+   const [longitude, setLongitude] = useState(2.3522); // Default longitude for Paris
 
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [droppableCards, setDroppableCards] = useState([]);
