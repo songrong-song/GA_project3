@@ -43,7 +43,7 @@ const [droppableCards, setDroppableCards] = useState([]);
     }
   }
 
-  const handleSubmit = async () => {
+ const handleSubmit = async () => {
   setIsLoading(true);
 
   try {
@@ -56,45 +56,43 @@ const [droppableCards, setDroppableCards] = useState([]);
     console.log(resultData);
     setResult(resultData);
 
-    setIsLoading(false);
-
-const newDroppableCards = resultData.map((itinerary, index) => ({
-  id: `result-cards-${index}`,
-  title: `Day ${index + 1}`,
-  cards: itinerary.itineraries.flatMap((item, itemIndex) => [
-    {
-      id: `result-card-${index}-${itemIndex}-attraction`,
-      type: "Attraction",
-      title: item.attraction1?.["Attraction Name"] || "Unknown",
-      description: {
-        description: item.attraction1?.Summary || "No description available",
-        location: item.attraction1?.Location.latitude && item.attraction1?.Location.longitude || "Unknown",
-        sojournTime: item.attraction1?.["Recommended Sojourn Time"] || "Unknown",
-      },
-    },
-    {
-      id: `result-card-${index}-${itemIndex}-restaurant`,
-      type: "Restaurant",
-      title: item.restaurant1?.["Restaurant Name"] || "Unknown",
-      description: {
-        description: item.restaurant1?.Summary || "No description available",
-        location: item.restaurant1?.Location || "Unknown",
-        sojournTime: item.restaurant1?.["Recommended Sojourn Time"] || "Unknown",
-      },
-    },
-  ]),
-}));
-
-
-
+    const newDroppableCards = resultData.map((itinerary, index) => ({
+      id: `result-cards-${index}`,
+      title: `Day ${index + 1}`,
+      cards: itinerary.itineraries.flatMap((item, itemIndex) => [
+        {
+          id: `result-card-${index}-${itemIndex}-attraction`,
+          type: "Attraction",
+          title: item.attraction1?.["Attraction Name"] || "Unknown",
+          description: {
+            description: item.attraction1?.Summary || "No description available",
+            location: item.attraction1?.Location.latitude && item.attraction1?.Location.longitude || "Unknown",
+            sojournTime: item.attraction1?.["Recommended Sojourn Time"] || "Unknown",
+          },
+        },
+        {
+          id: `result-card-${index}-${itemIndex}-restaurant`,
+          type: "Restaurant",
+          title: item.restaurant1?.["Restaurant Name"] || "Unknown",
+          description: {
+            description: item.restaurant1?.Summary || "No description available",
+            location: item.restaurant1?.Location || "Unknown",
+            sojournTime: item.restaurant1?.["Recommended Sojourn Time"] || "Unknown",
+          },
+        },
+      ]),
+    }));
 
     setDroppableCards(newDroppableCards);
+
   } catch (error) {
     console.log('Error generating itinerary:', error);
     setResult('Something went wrong. Please try again.');
+  } finally {
     setIsLoading(false);
   }
 };
+
 
 
   const handleReset = () => {
@@ -308,14 +306,13 @@ const renderResultCards = () => {
         <Col xs={24} sm={12} md={12} lg={12} xl={8}>
           <div className="container-right">
             <div className="loader" style={{ display: isLoading ? 'block' : 'none' }}></div>
-            {result ? (
+            {/* {result ? (
               <div>
                 <h2>Result as Text:</h2>
                 <pre>{formatResult(result)}</pre>
               </div>
             ) : null}
-          </div>
-          <div className="container-left">
+          </div> */}
             {isLoaded && latitude && longitude ? (
               <GoogleMap
                 mapContainerStyle={{
@@ -329,8 +326,7 @@ const renderResultCards = () => {
                   console.log('longitude = ', ev.latLng.lng());
                 }}
               />
-            ) : null}
-          </div>
+            ) : null} </div>
         </Col>
       </Row>
     </div>
