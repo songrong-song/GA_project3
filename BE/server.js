@@ -5,12 +5,12 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const app = express();
 const port = 3000;
-// const drinksController = require('./controllers/drinks_controller')
-// const menuItemController = require('./controllers/menu_item_controller')
-// const menuItemRouter = require('./routers/menu_item_router')
+
+// router 
 const userRouter = require('./routers/user_router')
 const GPTRouter = require('./routers/chatGPT_router')
 const itineraryRouter = require('./routers/itinerary_router')
+const userItineraryRouter = require('./routers/userItinerary_router')
 
 app.set('view engine', 'ejs') // FE + BE -> in a single app
 app.use(express.static('public'))
