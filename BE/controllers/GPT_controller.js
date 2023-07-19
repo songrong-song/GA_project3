@@ -3,12 +3,11 @@ const { MongoClient } = require('mongodb');
 const CircularJSON = require('circular-json');
 // const GPTValidators = require("./validators/GPTValidator")
 require('dotenv').config()
-
 const gptControllers = {
 
 
-  apiKey: process.env.API_KEY, // Replace 'YOUR_API_KEY' with your actual OpenAI API key
-  apiUrl: process.env.API_URL,
+  apiKey: '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', // Replace 'YOUR_API_KEY' with your actual OpenAI API key
+  apiUrl: 'https://api.openai.com/v1/completions',
 
 
   generateDetinationPrompt_Final: async function(destinationValue) {
@@ -57,11 +56,9 @@ const gptControllers = {
   },
 
 
+  generateDestinationPrompt1: async function(destinationValue, excludeValue = []) {
 
-
-  generateDestinationPrompt1: async function(destinationValue) {
-
-    let prompt = `Generate recommended attraction on below information for ${destinationValue} following the JSON format:
+    let prompt = `Generate recommended attraction on below information for ${destinationValue} that is not ${excludeValue.join(' and not ')}, strictly following the JSON format:
     - Attraction Name: 
     - Summary: 
     - Location:
@@ -73,7 +70,7 @@ const gptControllers = {
   },
 
   generateDestinationPrompt2: async function(destinationValue, excludeValue) {
-    let prompt = `Generate recommended attraction on below information for ${destinationValue} thats is not ${excludeValue} following the JSON format:
+    let prompt = `Generate recommended attraction on below information for ${destinationValue} thats is not ${excludeValue}, strictly following the JSON format:
     - Attraction Name: 
     - Summary: 
     - Location:
@@ -85,7 +82,7 @@ const gptControllers = {
   },
 
   generateRestaurantPrompt: async function(attractionValue) {
-    let prompt = `Generate recommended restaurant on below information that near ${attractionValue} following the JSON format:
+    let prompt = `Generate recommended restaurant on below information that near ${attractionValue}, strictly following the JSON format:
     - Restaurant Name: 
     - Summary: 
     - Location:
@@ -96,9 +93,10 @@ const gptControllers = {
     return prompt;
   },
 
-  generateDestinationResult1: async function(destinationValue) {
+  generateDestinationResult1: async function(destinationValue, excludeValue) {
     try {
-      const prompt = await this.generateDestinationPrompt1(destinationValue);
+      const prompt = await this.generateDestinationPrompt1(destinationValue = destinationValue, excludeValue = excludeValue);
+      console.log(prompt)
       const result = await axios.post(
         this.apiUrl,
         {
@@ -120,8 +118,10 @@ const gptControllers = {
       const completion_ = await result.data.choices[0].text.trim();
       // completion  = CircularJSON.stringify(completion_)
       // completion = JSON.parse(completion_)
-      const attractionName = completion_.match(/"Attraction Name":\s*"([^"]*)"/)[1];
-      
+      console.log(completion_)
+      const attractionNameRegex = /Attraction Name:\s*([^]*)/;
+      const match = completion_.match(attractionNameRegex);
+      const attractionName = match ? match[1].trim() : "not available";
       return [completion_, attractionName];
 
     } catch (error) {

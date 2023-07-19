@@ -31,8 +31,7 @@ const itineraryControllers = {
   },
 
 
-    createItinerary: async (data = {}) => {
-
+    createItinerary: async (data = {"exclude": ["Tower of London"], "destinationValue": "London"}) => {
 
         const storeItinerary = async (input) => {
           console.log("passed item")
@@ -62,7 +61,7 @@ const itineraryControllers = {
             let attraction1_, attractionName1_, attraction2_, attractionName2_, restaurant1_, restaurant2_;
 
             try {
-              [attraction1_, attractionName1_] = await gptControllers.generateDestinationResult1(data.destinationValue);
+              [attraction1_, attractionName1_] = await gptControllers.generateDestinationResult1(data.destinationValue,data.exclude);
               console.log(attraction1_)
             } catch (error) {
               attraction1_ = null;
@@ -131,7 +130,7 @@ const itineraryControllers = {
             try {var attraction1 = JSON.parse(attraction1_);
               
             } catch (error) {
-
+                console.log(error)
                 var attraction1 = attraction1_!== null ? {
                 "Attraction Name": attraction1_.match(/"Attraction Name":\s*"([^"]*)"/)? attraction1_.match(/"Attraction Name":\s*"([^"]*)"/)[1]: null,
                 "Summary": attraction1_.match(/"Summary":\s*"([^"]*)"/)?attraction1_.match(/"Summary":\s*"([^"]*)"/)[1]:null,
@@ -145,13 +144,16 @@ const itineraryControllers = {
               
             }
 
+            console.log("Attraction1:")
+            console.log(attraction1)
+
             try {var restaurant1 = JSON.parse(restaurant1_);
               
             } catch (error) {
-
+                console.log(error)
                 var restaurant1 = restaurant1_!== null ? {
-                "Restaurant Name": estaurant1_.match(/"Restaurant Name":\s*"([^"]*)"/)?  restaurant1_.match(/"Restaurant Name":\s*"([^"]*)"/)[1]: null,
-                "Summary": estaurant1_.match(/"Summary":\s*"([^"]*)"/)? restaurant1_.match(/"Summary":\s*"([^"]*)"/)[1]:null,
+                "Restaurant Name": restaurant1_.match(/"Restaurant Name":\s*"([^"]*)"/)? restaurant1_.match(/"Restaurant Name":\s*"([^"]*)"/)[1]: null,
+                "Summary": restaurant1_.match(/"Summary":\s*"([^"]*)"/)? restaurant1_.match(/"Summary":\s*"([^"]*)"/)[1]:null,
                 "Location": {"Latitude": restaurant1_.match(/"[Ll]atitude":\s*"([^"]*)"/)? restaurant1_.match(/"Latitude":\s*"([^"]*)"/)[1]:null,
                              "Longitude": restaurant1_.match(/"[Ll]ongitude":\s*"([^"]*)"/)? restaurant1_.match(/"Longitude":\s*"([^"]*)"/)[1]:null,},
 
@@ -162,13 +164,15 @@ const itineraryControllers = {
               
             }
 
+
             // const restaurant1 = restaurant1_?JSON.parse(restaurant1_):null;
 
             // attraction2 = attraction2_?JSON.parse(attraction2_):null
             // restaurant2 = restaurant2_?JSON.parse(restaurant2_):null
-
+            console.log(attraction1)
+            console.log(restaurant1)
             const Itinerary = {
-            'attraction1':  attraction1,
+            'attraction1': attraction1,
             'restaurant1': restaurant1,
             // 'attraction2': attraction1,
             // 'restaurant2': restaurant1

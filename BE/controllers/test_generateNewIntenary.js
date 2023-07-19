@@ -6,8 +6,9 @@ const iti_Controllers = require("./itinerary_controller.js");
 
 async function a() {
   try {
-    const result = await iti_Controllers.createItinerary();
-    console.log("hey")
+    // const result = await GPT_controllers.generateDestinationResult1("London", ["Tower of London"]);
+    const result = await iti_Controllers.createItinerary()
+    console.log("exam the result")
     console.log(result)
   } catch (error) {
     console.error(error);
