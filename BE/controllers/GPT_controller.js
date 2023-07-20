@@ -66,6 +66,8 @@ const gptControllers = {
     return prompt;
   },
 
+  
+
   // generateDestinationPrompt2: async function(destinationValue, excludeValue) {
   //   let prompt = `Generate recommended attraction on below information for ${destinationValue} thats is not ${excludeValue}, strictly following the JSON format:
   //   - Attraction Name: 
