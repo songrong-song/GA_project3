@@ -72,10 +72,11 @@ const [isDataLoaded, setIsDataLoaded] = useState(false); // A state that tracks 
   setIsLoading(true);
 
     const response = await axios.post('http://localhost:3000/api/itinerary', {
-      destinationValue: "London, UK",
-      dayValue: "4", //durationValue,
-      selectedActivities: selectedActivities,
-      selectedFood: selectedFood })
+      "destinationValue": String(destinationValue),
+      // "dayValue": String(durationValue), //durationValue,
+      "dayValue": 6, //d
+      "selectedActivities": String(selectedActivities),
+      "selectedFood": String(selectedFood) })
 
       if (response.status === 200) {
       resultData = response.data;
