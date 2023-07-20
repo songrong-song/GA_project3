@@ -1,8 +1,16 @@
 .destination-input {
+<<<<<<< HEAD
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   padding: 40px 40px 40px 0; 
+=======
+  background-image: url('https://ibb.co/NNBJCnV');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 40px; 
+>>>>>>> 095ca69 (fixed duration passing of value)
 }
 
 .heading {
@@ -24,7 +32,11 @@
   width: 100%;
   height: 40px;
   padding: 8px;
+<<<<<<< HEAD
   line-height: 40px; 
+=======
+  font-size: 16px;
+>>>>>>> 095ca69 (fixed duration passing of value)
   border: 1px solid #d9d9d9;
   border-radius: 4px;
   outline: none;
@@ -36,6 +48,7 @@
 #numDays:hover,
 #numDays:focus {
   border-color: #40a9ff;
+<<<<<<< HEAD
 }
 
 /* Style for the 'Number of Days' label */
@@ -52,4 +65,22 @@
 .destination-input .ant-col .ant-select-selector {
   height: 40px; /* Set the desired height */
   align-items: center; /* Vertically center the items */
+=======
+}
+
+/* Style for the 'Number of Days' label */
+.input-group label {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Styles for the container of 'Number of Days' select */
+.num-days-container {
+  margin-top: 16px;
+}
+
+/* Style for the select dropdown arrow */
+.ant-select-arrow {
+  color: #1890ff;
+>>>>>>> 095ca69 (fixed duration passing of value)
 }
