@@ -154,7 +154,6 @@ const itineraryControllers = {
             // 'attraction2': attraction1,
             // 'restaurant2': restaurant1
           }
-            console.log("check1")
             console.log(Itinerary)
 
             dataStore = {
@@ -174,13 +173,15 @@ const itineraryControllers = {
     },
 
     findItinerary: async (req, res) => {
-      console.log(req.body)
       const {destinationValue, dayValue} = req.body;
       const durationValue = dayValue;
+      console.log("A")
   
       try {
         const result = await ItineraryModel.find({ destination: destinationValue }).limit(durationValue);
         const array_length = result.length;
+        console.log(array_length)
+        console.log(dayValue)
     
         // if arrayLength < dayValue
         if (array_length  < dayValue) {
@@ -190,7 +191,7 @@ const itineraryControllers = {
             try {
               const attractionName = item.itineraries[0].attraction1['Attraction Name'];
               excludeDestinations.push(attractionName);
-      
+              
               
             } catch (error) {
               console.error('Error reading attraction name:', error);
@@ -199,11 +200,13 @@ const itineraryControllers = {
           }
           console.log(excludeDestinations)
           for (let i = 0; i < difference; i++) {
+            console.log("C")
+            
   
             // Call your function here
             // Replace the console.log statement with your function call
             console.log(result)
-            newAttraction = this.createItinerary(data = {"exclude": excludeDestinations, "destinationValue":destinationValue })
+            newAttraction = itineraryControllers.createItinerary(data = {"exclude": excludeDestinations, "destinationValue":destinationValue })
             excludeDestinations.push(newAttraction)
             console.log(newAttraction)
           }
