@@ -8,7 +8,13 @@ const ItineraryModel = require("../models/ItineraryModel")
 const mongoose = require('mongoose');
 
 
-const createItinerary = async (data) => {
+const itineraryControllers = {
+
+  
+
+  findItinerary: async (req, res) => {
+
+  const createItinerary = async (data) => {
 
   const storeItinerary = async (input) => {
     console.log("passed item")
@@ -44,16 +50,6 @@ const createItinerary = async (data) => {
         attractionName1_ = null;
       }
 
-      
-      // try {
-      //   [attraction2_, attractionName2_] = await gptControllers.generateDestinationResult2(data.destinationValue, attractionName1_);
-
-      //   console.log(attraction2_)
-      // } catch (error) {
-      //   attraction2_ = null;
-      //   attractionName2_ = null;
-      // }
-      
       try {
         restaurant1_ = await gptControllers.generateRestaurantResult(attractionName1_);
       } catch (error) {
@@ -62,7 +58,6 @@ const createItinerary = async (data) => {
       
       console.log("attraction1_:")
       console.log(attraction1_)
-      // console.log(restaurant1_)
 
 
       try {var attraction1 = JSON.parse(attraction1_);
@@ -130,9 +125,6 @@ const createItinerary = async (data) => {
   }
 }
 
-const itineraryControllers = {
-
-  findItinerary: async (req, res) => {
     const {destinationValue, dayValue} = req.body;
     console.log(destinationValue);
     console.log(dayValue)
@@ -165,7 +157,6 @@ const itineraryControllers = {
           // Replace the console.log statement with your function call
           console.log(result)
           newAttraction = createItinerary(data = {"exclude": excludeDestinations, "destinationValue":destinationValue })
-          
           excludeDestinations.push(newAttraction)
           console.log(newAttraction)
         }
