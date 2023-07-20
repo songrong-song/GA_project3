@@ -6,7 +6,7 @@ require('dotenv').config()
 const gptControllers = {
 
 
-  apiKey: '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', // Replace 'YOUR_API_KEY' with your actual OpenAI API key
+  apiKey: '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', // Replace 'YOUR_API_KEY' with your actual OpenAI API key
   apiUrl: 'https://api.openai.com/v1/completions',
 
 
