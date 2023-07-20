@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Button, Card, Col, Empty, Input, Row, Timeline } from 'antd';
+import { Button, Card, Col, Empty, Input, Row, Timeline, Modal, message } from 'antd';
 import { DragOutlined, EditOutlined, SyncOutlined } from '@ant-design/icons';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { useJsApiLoader } from '@react-google-maps/api';
 import axios from 'axios';
 import { ItineraryContext } from '../Components/ItineraryContext';
 import Header from '../Components/Header';
@@ -14,22 +14,31 @@ import { useNavigate } from 'react-router-dom';
 const { Meta } = Card;
 let resultData = []
 const Itinerary = () => {
-const navigate = useNavigate();
-const [cookies, setCookie, removeCookie] = useCookies(['token']); // Access cookies using the useCookies hook
-const token = cookies.token; // Access the token from the cookies
-const { destinationValue, durationValue, selectedFood, selectedActivities  } = useContext(ItineraryContext);
+  const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(['token']); // Access cookies using the useCookies hook
+  const token = cookies.token; // Access the token from the cookies
+  const { destinationValue, durationValue, selectedFood, selectedActivities  } = useContext(ItineraryContext);
 
-const [result, setResult] = useState(null);
-const [isLoading, setIsLoading] = useState(false);
-const [isMapLoading,setIsMapLoading] = useState(false);
-  //const [latitude, setLatitude] = useState(null);
-  //const [longitude, setLongitude] = useState(null);
-  //hardcoded values to test
-   const [latitude, setLatitude] = useState(48.8566); // Default latitude for Paris
-   const [longitude, setLongitude] = useState(2.3522); // Default longitude for Paris
-
+  const [result, setResult] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isMapLoading,setIsMapLoading] = useState(false);
+    //const [latitude, setLatitude] = useState(null);
+    //const [longitude, setLongitude] = useState(null);
+    //hardcoded values to test
+  const [latitude, setLatitude] = useState(48.8566); // Default latitude for Paris
+  const [longitude, setLongitude] = useState(2.3522); // Default longitude for Paris
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
+
+
+  //Cards
   const [droppableCards, setDroppableCards] = useState([]);
+  const [editingCard, setEditingCard] = useState(null);
+  const [editedContent, setEditedContent] = useState({
+    title: "",
+    description: "",
+  });
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+
 
   useEffect(() => {
     if (destinationValue) {
@@ -104,38 +113,73 @@ const [isMapLoading,setIsMapLoading] = useState(false);
   } finally {
     setIsLoading(false);
   }
-};
-
-  const handleReset = () => {
-    setResult(null);
-  };
+}
 
   const formatResult = (result) => {
     // Format the result as needed
      return JSON.stringify(result, null, 2); // Convert object to a pretty-printed JSON string
 };
 
-  const handleEdit = (cardIndex, field, value) => {
-    const updatedDroppableCards = droppableCards.map((droppable) => {
-      const updatedCards = droppable.cards.map((card, index) => {
-        if (index === cardIndex) {
-          return {
-            ...card,
-            [field]: value,
-          };
-        }
-        return card;
-      });
+ const handleEdit = (cardIndex, field, value) => {
 
-      return {
-        ...droppable,
-        cards: updatedCards,
-      };
-    });
+ //update the editingCard and editedContent state
+ const cardToEdit = droppableCards[0].cards[cardIndex];
+  setEditingCard(cardToEdit);
+  setEditedContent({
+    title: cardToEdit.title,
+    description: cardToEdit.description.description,
+  });
+
+    setIsEditModalVisible(true);
+ };
+
+const handleSaveEditedContent = async () => {
+  try {
+    if (!editingCard) {
+      return; // no edits made
+    }
+
+    const cardIndex = droppableCards[0].cards.findIndex((card) => card === editingCard);
+
+    const updatedCard = {
+      ...editingCard,
+      title: editedContent.title,
+      description: {
+        ...editingCard.description,
+        description: editedContent.description,
+      },
+    };
+
+    const updatedDroppableCards = droppableCards.map((droppable) => ({
+      ...droppable,
+      cards: droppable.cards.map((card, index) => (index === cardIndex ? updatedCard : card)),
+    }));
 
     setDroppableCards(updatedDroppableCards);
-  };
 
+    setIsEditModalVisible(false);
+    setEditingCard(null);
+    setEditedContent({
+      title: "",
+      description: "",
+    });
+  message.success('Card data updated successfully!');
+  } catch (error) {
+    console.log('Error saving edited content:', error);
+    message.error('An error occurred while saving the card data. Please try again.');
+
+  }
+};
+
+const handleCancelEdit = () => {
+  // Close the modal and reset the states
+  setIsEditModalVisible(false);
+  setEditingCard(null);
+  setEditedContent({
+    title: "",
+    description: "",
+  });
+};
 const renderResultCards = () => {
   if (result && result.length > 0) {
     const cards = droppableCards[0].cards; // Use the cards array from droppableCards
@@ -160,18 +204,18 @@ const renderResultCards = () => {
                           actions={[
                             <DragOutlined key="drag" />,
                             // <DeleteOutlined key="delete" />,
-                            <EditOutlined key="edit" />,
+                            <EditOutlined key="edit" onClick={() => handleEdit(index, 'title', 'New Title')} />,
                             <SyncOutlined key="" />
                           ]}
                         >
-                          <Meta title={card.title} description = {
-<div>
-  <p>Description: {card.description.description}</p>
-  <p>Location: {card.description.location}</p>
-  <p>Sojourn Time: {card.description.sojournTime}</p>
-</div>
-                          }
-/>
+                          <Meta title={card.title} description = { 
+                            <div>
+                                <p>Description: {card.description.description}</p>
+                                <p>Location: {card.description.location}</p>
+                                <p>Sojourn Time: {card.description.sojournTime}</p>
+                              </div>
+                             
+                          } />
                         </Card>
                       </div>
                     )}
@@ -187,10 +231,9 @@ const renderResultCards = () => {
   }
 
   return <Empty description="No result available" />;
-};
+}; 
 
-
-  const { isLoaded } = useJsApiLoader({
+ const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
 
@@ -250,6 +293,7 @@ const renderResultCards = () => {
     return true; // Replace with your actual token validation logic
   };
 
+//saving itinerary
   const handleSave = () => {
 
     if (token && isValidToken(token)) {
@@ -262,18 +306,13 @@ const renderResultCards = () => {
     }
   };
 
-
-
   const defaultActions = [
     <DragOutlined key="drag" />,
     <EditOutlined key="edit" />,
     <SyncOutlined key="sync" />,
   ];
 
-
-
   return (
-
     <div>
       <Header />
       <Row justify="center">
@@ -281,8 +320,11 @@ const renderResultCards = () => {
           <div className="my-trip-container">
             <h1>Generated Itinerary</h1>
             <p>Reorder the items or press the edit icon to generate another activity!</p>
-            <Button onClick={handleSubmit}>Generate Itinerary</Button>
-            <Button onClick={handleReset}>Reset</Button>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Button type="primary" onClick={handleSubmit}>Generate Itinerary</Button>
+        <div style={{ marginLeft: '10px' }} />
+            <Button onClick={handleSave}>Save</Button>
+            </div>
           </div>
           <div className="timeline">
             <DragDropContext onDragEnd={handleDragEnd}>
@@ -309,8 +351,7 @@ const renderResultCards = () => {
                                     style={{ width: '100%' }}
                                     actions={[
                                       <DragOutlined key="drag" />,
-                                      // <DeleteOutlined key="delete" />,
-                                      <EditOutlined key ="edit" />,
+                                      <EditOutlined key ="edit" onClick={() => handleEdit(index, 'title', 'new value')} />,
                                       <SyncOutlined key ="" />
                                     ]}
                                   >
@@ -352,13 +393,29 @@ const renderResultCards = () => {
               ) : null}
             </div>
 
-            <Button onClick={handleSave} type="primary">Save</Button>
-
-          
         </Col>
       </Row>
-    </div>
+{isEditModalVisible && (
+        <Modal
+          title="Edit Card Content"
+          visible={isEditModalVisible}
+          onOk={handleSaveEditedContent}
+          onCancel={handleCancelEdit}
+        >
+          <Input
+            type="text"
+            value={editedContent.title}
+            onChange={(e) => setEditedContent((prev) => ({ ...prev, title: e.target.value }))}
+          />
+          <Input.TextArea
+            rows={4}
+            value={editedContent.description}
+            onChange={(e) => setEditedContent((prev) => ({ ...prev, description: e.target.value }))}
+          />
+        </Modal>
+      )}
+  </div>
   );
-};
+}
 
 export default Itinerary;
