@@ -18,6 +18,7 @@ const Itinerary = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['token']); // Access cookies using the useCookies hook
   const token = cookies.token; // Access the token from the cookies
   const { destinationValue, durationValue, selectedFood, selectedActivities  } = useContext(ItineraryContext);
+  const [dayValue, setDayValue] = useState(0); 
 
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +38,8 @@ const Itinerary = () => {
     title: "",
     description: "",
   });
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+const [isDataLoaded, setIsDataLoaded] = useState(false); // A state that tracks data loading for entire page
 
 
   useEffect(() => {
@@ -64,63 +66,126 @@ const Itinerary = () => {
     }
   }
 
+
+
  const handleSubmit = async () => {
   setIsLoading(true);
 
-  try {
     const response = await axios.post('http://localhost:3000/api/itinerary', {
-      destinationValue: "Paris",
-      dayValue: "3", //durationValue,
+      destinationValue: "London, UK",
+      dayValue: "4", //durationValue,
       selectedActivities: selectedActivities,
       selectedFood: selectedFood })
 
+      if (response.status === 200) {
       resultData = response.data;
       console.log(resultData);
       setResult(resultData);
 
-    const newDroppableCards = resultData.map((itinerary, index) => ({
-      id: `result-cards-${index}`,
-      title: `Day ${index + 1}`,
-      cards: itinerary.itineraries.flatMap((item, itemIndex) => [
-        {
-          id: `result-card-${index}-${itemIndex}-attraction`,
-          type: "Attraction",
-          title: item.attraction1?.["Attraction Name"] || "Unknown",
-          description: {
-            description: item.attraction1?.Summary || "No description available",
-            location: item.attraction1?.Location || "Unknown",
-            sojournTime: item.attraction1?.["Recommended Sojourn Time"] || "Unknown",
-          },
-        },
-        {
-          id: `result-card-${index}-${itemIndex}-restaurant`,
-          type: "Restaurant",
-          title: item.restaurant1?.["Restaurant Name"] || "Unknown",
-          description: {
-            description: item.restaurant1?.Summary || "No description available",
-            location: item.restaurant1?.Location || "Unknown",
-            sojournTime: item.restaurant1?.["Recommended Sojourn Time"] || "Unknown",
-          },
-        },
-      ]),
-    }));
-
-    setDroppableCards(newDroppableCards);
-    setIsMapLoading(true);
-  } catch (error) {
-    console.log('Error generating itinerary:', error);
-    setResult('Something went wrong. Please try again.');
-  } finally {
-    setIsLoading(false);
-  }
-}
-
-  const formatResult = (result) => {
+       const formatResult = (result) => {
     // Format the result as needed
-     return JSON.stringify(result, null, 2); // Convert object to a pretty-printed JSON string
-};
+     return JSON.stringify(result, null, 4); // Convert object to a pretty-printed JSON string
+    };
+
+    const generateDroppableAreas = (dayValue) => {
+      const newDroppableCards = resultData.map((itinerary, index) => ({
+        id: `result-cards-${index}`,
+        title: `Day ${index + 1}`,
+        cards: itinerary.itineraries.flatMap((item, itemIndex) => [
+          {
+            id: `result-card-${index}-${itemIndex}-attraction`,
+            type: "Attraction",
+            title: item.attraction1?.["Attraction Name"] || "Unknown",
+            description: {
+              description: item.attraction1?.Summary || "No description available",
+              location: item.attraction1?.Location || "Unknown",
+              sojournTime: item.attraction1?.["Recommended Sojourn Time"] || "Unknown",
+            },
+          },
+          {
+            id: `result-card-${index}-${itemIndex}-restaurant`,
+            type: "Restaurant",
+            title: item.restaurant1?.["Restaurant Name"] || "Unknown",
+            description: {
+              description: item.restaurant1?.Summary || "No description available",
+              location: item.restaurant1?.Location || "Unknown",
+              sojournTime: item.restaurant1?.["Recommended Sojourn Time"] || "Unknown",
+            },
+          },
+        ]),
+      }));
+      console.log(newDroppableCards);
+      setIsMapLoading(true);
+      setLatitude(parseFloat(resultData[0].itineraries[0].attraction1["Location"]["Latitude"]));
+      setLongitude(parseFloat(resultData[0].itineraries[0].attraction1["Location"]["Longitude"]));
+      setDroppableCards(newDroppableCards);
+    };
+
+    generateDroppableAreas(dayValue);
+  } else {
+    console.log('Error generating itinerary:');
+    setResult('Something went wrong. Please try again.');
+  } 
+    setIsLoading(false);
+
+
+ }
+
+
+  // New function to fetch updated data from the server
+  const fetchUpdatedData = async () => {
+    try {
+      const response = await axios.post('http://localhost:3000/api/itinerary', {
+        destinationValue: "London, UK",
+        dayValue: "4", //durationValue,
+        selectedActivities: selectedActivities,
+        selectedFood: selectedFood,
+      });
+      return response.data;
+    } catch (error) {
+      console.log('Error fetching updated data:', error);
+      throw error;
+    }
+  };
+
+  // Function to handle sync icon click
+ const handleSyncIconClick = async (cardIndex, itemIndex) => {
+    setIsLoading(true);
+
+      const updatedData = await fetchUpdatedData();
+
+      // Update the specific card's information with the new data
+      const updatedCard = {
+        ...droppableCards[cardIndex].cards[itemIndex],
+        title: updatedData[itemIndex].attraction1?.["Attraction Name"] || "Unknown",
+        description: {
+          description: updatedData[itemIndex].attraction1?.Summary || "No description available",
+          location: updatedData[itemIndex].attraction1?.Location || "Unknown",
+          sojournTime: updatedData[itemIndex].attraction1?.["Recommended Sojourn Time"] || "Unknown",
+        },
+      };
+
+      // Update the droppableCards state with the updated card
+      const updatedDroppableCards = droppableCards.map((droppable, index) => ({
+        ...droppable,
+        cards: index === cardIndex ? droppable.cards.map((card, itemIdx) => itemIdx === itemIndex ? updatedCard : card) : droppable.cards,
+      }));
+      setDroppableCards(updatedDroppableCards);
+      setIsLoading(false);
+      };
+
+
 
  const handleEdit = (cardIndex, field, value) => {
+    const cards = droppableCards[0]?.cards;
+
+if (cards && Array.isArray(cards) && cards.length > 0) {
+
+ console.log(cards);
+} else {
+  // The array is either empty or does not contain any object elements
+  console.log("No cards found.");
+}
 
  //update the editingCard and editedContent state
  const cardToEdit = droppableCards[0].cards[cardIndex];
@@ -180,6 +245,8 @@ const handleCancelEdit = () => {
     description: "",
   });
 };
+
+
 const renderResultCards = () => {
   if (result && result.length > 0) {
     const cards = droppableCards[0].cards; // Use the cards array from droppableCards
@@ -205,7 +272,7 @@ const renderResultCards = () => {
                             <DragOutlined key="drag" />,
                             // <DeleteOutlined key="delete" />,
                             <EditOutlined key="edit" onClick={() => handleEdit(index, 'title', 'New Title')} />,
-                            <SyncOutlined key="" />
+                            <SyncOutlined key="regenerate" onClick={() => handleSyncIconClick(index)} />
                           ]}
                         >
                           <Meta title={card.title} description = { 
@@ -323,7 +390,7 @@ const renderResultCards = () => {
       <div style={{ display: 'flex', alignItems: 'center' }}>
             <Button type="primary" onClick={handleSubmit}>Generate Itinerary</Button>
         <div style={{ marginLeft: '10px' }} />
-            <Button onClick={handleSave}>Save</Button>
+            <Button onClick={handleSave}>Save Itinerary</Button>
             </div>
           </div>
           <div className="timeline">
@@ -351,8 +418,8 @@ const renderResultCards = () => {
                                     style={{ width: '100%' }}
                                     actions={[
                                       <DragOutlined key="drag" />,
-                                      <EditOutlined key ="edit" onClick={() => handleEdit(index, 'title', 'new value')} />,
-                                      <SyncOutlined key ="" />
+                                      <EditOutlined key={`edit-${index}`} onClick={() => handleEdit(index, 'title', 'new value')} />,
+                                      <SyncOutlined key={`sync-${index}`} onClick={() => handleSyncIconClick(index)} />
                                     ]}
                                   >
                                     <Meta title={card.title} description={
