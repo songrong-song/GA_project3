@@ -7,10 +7,16 @@ import axios from 'axios';
 import { ItineraryContext } from '../Components/ItineraryContext';
 import Header from '../Components/Header';
 import Map from '../Components/map';
+import { useCookies } from 'react-cookie'
+import { useNavigate } from 'react-router-dom';
+
 
 const { Meta } = Card;
 let resultData = []
 const Itinerary = () => {
+const navigate = useNavigate();
+const [cookies, setCookie, removeCookie] = useCookies(['token']); // Access cookies using the useCookies hook
+const token = cookies.token; // Access the token from the cookies
 const { destinationValue, durationValue, selectedFood, selectedActivities  } = useContext(ItineraryContext);
 
 const [result, setResult] = useState(null);
@@ -212,6 +218,7 @@ const renderResultCards = () => {
         }
       });
 
+
       setDroppableCards(updatedDroppableCards);
     } else {
       // Move card between droppable containers
@@ -238,11 +245,32 @@ const renderResultCards = () => {
     }
   };
 
+  const isValidToken = (token) => {
+    // Implement the logic to validate the token
+    return true; // Replace with your actual token validation logic
+  };
+
+  const handleSave = () => {
+
+    if (token && isValidToken(token)) {
+      // Perform the save functionality here
+      console.log('Saving...');
+    } else {
+
+      navigate('/loginPrompt')
+      
+    }
+  };
+
+
+
   const defaultActions = [
     <DragOutlined key="drag" />,
     <EditOutlined key="edit" />,
     <SyncOutlined key="sync" />,
   ];
+
+
 
   return (
 
@@ -323,6 +351,9 @@ const renderResultCards = () => {
                     <Map isLoaded={true} latitude={latitude} longitude={longitude} center={{ lat: latitude, lng: longitude }} resultData={resultData} />
               ) : null}
             </div>
+
+            <Button onClick={handleSave} type="primary">Save</Button>
+
           
         </Col>
       </Row>

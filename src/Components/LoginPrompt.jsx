@@ -7,7 +7,7 @@ const LoginPrompt = () => (
     <Col xs={24} sm={20} md={16} lg={12} xl={8}>
       <div className="container">
         <h2>Profile Page</h2>
-        <p>You need to be logged in to view this page.</p>
+        <p>You need to be logged in to use this function.</p>
         <Button type="primary" href="/login">Login</Button>
         <Button type="default" href="/">Back to Home</Button>
       </div>
