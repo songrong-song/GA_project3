@@ -13,12 +13,29 @@ const itineraryControllers = {
 
   findItinerary: async (req, res) => {
     const {destinationValue, dayValue} = req.body;
-    console.log(req.body)
-    console.log("check is here")
-    console.log(destinationValue, dayValue)
+
     try {
       const result = await ItineraryModel.find({ destination: destinationValue }).limit(dayValue);
-      console.log(result)
+      const array_length = result.length;
+      console.log(array_length);
+      console.log(dayValue);
+    
+      // if arrayLength < dayValue
+      if (array_length  < dayValue) {
+        const difference = dayValue - array_length;
+        const excludeDestinations = result.map((item) => item.itineraries[0].attraction1['Attraction Name']);
+     
+        for (let i = 0; i < difference; i++) {
+
+          // Call your function here
+          // Replace the console.log statement with your function call
+          console.log(result)
+          newAttraction = this.createItinerary(data = {"exclude": excludeDestinations, "destinationValue": "London"})
+          excludeDestinations.append.push(newAttraction)
+          console.log(newAttraction)
+        }
+      }
+
       if (result) {
         // User found
         res.json(result);
@@ -189,6 +206,7 @@ const itineraryControllers = {
             console.log(dataStore)
 
             storeItinerary(dataStore)
+            return attractionName1_
 
         } catch(err) {
           console.log(err)
