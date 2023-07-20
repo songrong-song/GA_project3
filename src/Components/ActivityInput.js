@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Select, Form } from 'antd';
+import { Select, Form, Tag } from 'antd';
 import "./ActivityInput.css";
 import { ItineraryContext } from './ItineraryContext';
 
@@ -30,6 +30,7 @@ const ActivityInput = () => {
     <div className="activity-input">
       <div>
         <h1>Select activities that interest you.</h1>
+        <Tag color="orange">Coming Soon</Tag>
         <Form.Item
           name="activities"
           rules={[
