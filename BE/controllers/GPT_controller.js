@@ -5,59 +5,56 @@ const CircularJSON = require('circular-json');
 require('dotenv').config()
 const gptControllers = {
 
+  apiKey: process.env.API_KEY,
+  apiUrl: process.env.API_URL,
 
-  apiKey: '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', // Replace 'YOUR_API_KEY' with your actual OpenAI API key
-  apiUrl: 'https://api.openai.com/v1/completions',
+  // generateDetinationPrompt_Final: async function(destinationValue) {
 
+  //   let prompt = `Generate recommended attraction on below information for ${destinationValue} following the JSON format:
+  //   - Summary: 
+  //   - Location:
+  //     - Latitude: 
+  //     - Longitude: 
+  //   - Recommended Sojourn Time (number of hour only):
+  //   - Nearby Restaurant
+  //   - Nearby Restaurant Location: 
+  //     - Latitude: 
+  //     - Longitude: `
 
-  generateDetinationPrompt_Final: async function(destinationValue) {
+  //   return prompt;
+  // },
 
-    let prompt = `Generate recommended attraction on below information for ${destinationValue} following the JSON format:
-    - Summary: 
-    - Location:
-      - Latitude: 
-      - Longitude: 
-    - Recommended Sojourn Time (number of hour only):
-    - Nearby Restaurant
-    - Nearby Restaurant Location: 
-      - Latitude: 
-      - Longitude: `
+  // generateResult_Final: async function(destinationValue) {
+  //   try {
+  //     const prompt = await this.generateDetinationPrompt_Final(destinationValue);
+  //     const response = await axios.post(
+  //       this.apiUrl,
+  //       {
+  //         model: 'text-davinci-003',
+  //         prompt: prompt,
+  //         max_tokens: 100,
+  //         temperature: 0.7,
+  //         n: 1,
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${this.apiKey}`,
+  //         },
+  //       }
 
-    return prompt;
-  },
+  //     );
 
-  generateResult_Final: async function(destinationValue) {
-    try {
-      const prompt = await this.generateDetinationPrompt_Final(destinationValue);
-      const response = await axios.post(
-        this.apiUrl,
-        {
-          model: 'text-davinci-003',
-          prompt: prompt,
-          max_tokens: 100,
-          temperature: 0.7,
-          n: 1,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${this.apiKey}`,
-          },
-        }
-
-      );
-
-      const completion = response.data.choices[0].text.trim();
-      return completion;
-    } catch (error) {
-      console.error('Error generating API result:', error);
-      throw error;
-    }
-  },
+  //     const completion = response.data.choices[0].text.trim();
+  //     return completion;
+  //   } catch (error) {
+  //     console.error('Error generating API result:', error);
+  //     throw error;
+  //   }
+  // },
 
 
   generateDestinationPrompt1: async function(destinationValue, excludeValue = []) {
-
     let prompt = `Generate recommended attraction on below information for ${destinationValue} that is not ${excludeValue.join(' and not ')}, strictly following the JSON format:
     - Attraction Name: 
     - Summary: 
@@ -82,6 +79,7 @@ const gptControllers = {
   // },
 
   generateRestaurantPrompt: async function(attractionValue) {
+    console.log(this.apiKey)
     let prompt = `Generate recommended restaurant on below information that near ${attractionValue}, strictly following the JSON format:
     - Restaurant Name: 
     - Summary: 
