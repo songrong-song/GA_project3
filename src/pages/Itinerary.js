@@ -19,13 +19,10 @@ const Itinerary = () => {
   const token = cookies.token; // Access the token from the cookies
   const { destinationValue, durationValue, selectedFood, selectedActivities  } = useContext(ItineraryContext);
   const [dayValue, setDayValue] = useState(0); 
-
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isMapLoading,setIsMapLoading] = useState(false);
-    //const [latitude, setLatitude] = useState(null);
-    //const [longitude, setLongitude] = useState(null);
-    //hardcoded values to test
+  
   const [latitude, setLatitude] = useState(48.8566); // Default latitude for Paris
   const [longitude, setLongitude] = useState(2.3522); // Default longitude for Paris
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
@@ -38,8 +35,8 @@ const Itinerary = () => {
     title: "",
     description: "",
   });
-const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-const [isDataLoaded, setIsDataLoaded] = useState(false); // A state that tracks data loading for entire page
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [isDataLoaded, setIsDataLoaded] = useState(false); // A state that tracks data loading for entire page
 
 
   useEffect(() => {
@@ -73,8 +70,8 @@ const [isDataLoaded, setIsDataLoaded] = useState(false); // A state that tracks 
 
     const response = await axios.post('http://localhost:3000/api/itinerary', {
       "destinationValue": String(destinationValue),
-      // "dayValue": String(durationValue), //durationValue,
-      "dayValue": 6, //d
+      "dayValue": String(durationValue), //durationValue,
+      //"dayValue": 6, //d
       "selectedActivities": String(selectedActivities),
       "selectedFood": String(selectedFood) })
 

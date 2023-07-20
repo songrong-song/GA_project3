@@ -14,6 +14,7 @@ const DestinationInput = () => {
 
   const handleNumDaysChange = (value) => {
     updateDurationValue(value);
+    
   };
 
   const dayOptions = [1, 2, 3, 4, 5, 6, 7].map((day) => (
@@ -82,7 +83,8 @@ const DestinationInput = () => {
                 { required: true, message: 'Please select the number of days' }
               ]}
             >
-              <Select id="numDays" value={durationValue} onChange={handleNumDaysChange} onBlur={handleNumDaysChange} placeholder="Select">
+            
+              <Select id="numDays" value={durationValue} onChange={handleNumDaysChange}  placeholder="Select">
                 {dayOptions}
               </Select>
             </Form.Item>

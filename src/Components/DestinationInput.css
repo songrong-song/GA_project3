@@ -1,26 +1,56 @@
-/* .destination-input {
-  width: auto;
-  font-size: 16px;
+.destination-input {
+  background-image: url('https://ibb.co/NNBJCnV');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 40px; 
 }
-
-.destination-input-field {
-    width: 400px;
-} */
 
 .heading {
   font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
 }
 
+/* Responsive styles for heading on smaller screens */
 @media (max-width: 768px) {
   .heading {
-    font-size: 18px;
+    font-size: 20px;
   }
 }
 
-#destination {
+/* Styles for input fields */
+#destination,
+#numDays {
   width: 100%;
+  height: 40px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s;
 }
 
+#destination:hover,
+#destination:focus,
+#numDays:hover,
+#numDays:focus {
+  border-color: #40a9ff;
+}
+
+/* Style for the 'Number of Days' label */
+.input-group label {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Styles for the container of 'Number of Days' select */
 .num-days-container {
   margin-top: 16px;
+}
+
+/* Style for the select dropdown arrow */
+.ant-select-arrow {
+  color: #1890ff;
 }
