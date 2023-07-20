@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Button, Card, Col, Empty, Input, Row, Timeline, Modal } from 'antd';
+import { Button, Card, Col, Empty, Input, Row, Timeline, Modal, message } from 'antd';
 import { DragOutlined, EditOutlined, SyncOutlined } from '@ant-design/icons';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useJsApiLoader } from '@react-google-maps/api';
@@ -28,6 +28,7 @@ const Itinerary = () => {
   const [latitude, setLatitude] = useState(48.8566); // Default latitude for Paris
   const [longitude, setLongitude] = useState(2.3522); // Default longitude for Paris
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
+
 
   //Cards
   const [droppableCards, setDroppableCards] = useState([]);
@@ -130,44 +131,44 @@ const Itinerary = () => {
   });
 
     setIsEditModalVisible(true);
-  const updatedDroppableCards = droppableCards.map((droppable) => {
-    const updatedCards = droppable.cards.map((card, index) => {
-      if (index === cardIndex) {
-        return {
-          ...card,
-          [field]: value,
-        };
-      }
-      return card;
-    });
+ };
 
-    return {
-      ...droppable,
-      cards: updatedCards,
+const handleSaveEditedContent = async () => {
+  try {
+    if (!editingCard) {
+      return; // no edits made
+    }
+
+    const cardIndex = droppableCards[0].cards.findIndex((card) => card === editingCard);
+
+    const updatedCard = {
+      ...editingCard,
+      title: editedContent.title,
+      description: {
+        ...editingCard.description,
+        description: editedContent.description,
+      },
     };
-  });
 
-
-
-
+    const updatedDroppableCards = droppableCards.map((droppable) => ({
+      ...droppable,
+      cards: droppable.cards.map((card, index) => (index === cardIndex ? updatedCard : card)),
+    }));
 
     setDroppableCards(updatedDroppableCards);
 
+    setIsEditModalVisible(false);
+    setEditingCard(null);
+    setEditedContent({
+      title: "",
+      description: "",
+    });
+  message.success('Card data updated successfully!');
+  } catch (error) {
+    console.log('Error saving edited content:', error);
+    message.error('An error occurred while saving the card data. Please try again.');
 
- };
- 
-const handleSaveEditedContent = () => {
-  // Perform the save functionality here, e.g., send an axios request to update the content on the backend
-  console.log('Saving edited content...');
-  console.log(editedContent);
-
-  // Close the modal and reset the states
-  setIsEditModalVisible(false);
-  setEditingCard(null);
-  setEditedContent({
-    title: "",
-    description: "",
-  });
+  }
 };
 
 const handleCancelEdit = () => {
@@ -230,9 +231,9 @@ const renderResultCards = () => {
   }
 
   return <Empty description="No result available" />;
-};
+}; 
 
-  const { isLoaded } = useJsApiLoader({
+ const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
 
@@ -292,6 +293,7 @@ const renderResultCards = () => {
     return true; // Replace with your actual token validation logic
   };
 
+//saving itinerary
   const handleSave = () => {
 
     if (token && isValidToken(token)) {
@@ -303,8 +305,6 @@ const renderResultCards = () => {
       
     }
   };
-
-
 
   const defaultActions = [
     <DragOutlined key="drag" />,
