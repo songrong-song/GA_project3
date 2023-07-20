@@ -13,10 +13,12 @@ const itineraryControllers = {
 
   findItinerary: async (req, res) => {
     const {destinationValue, dayValue} = req.body;
+    console.log(req.body)
     console.log("check is here")
     console.log(destinationValue, dayValue)
     try {
       const result = await ItineraryModel.find({ destination: destinationValue }).limit(dayValue);
+      console.log(result)
       if (result) {
         // User found
         res.json(result);
@@ -163,7 +165,6 @@ const itineraryControllers = {
                } : null;
               
             }
-
 
             // const restaurant1 = restaurant1_?JSON.parse(restaurant1_):null;
 
