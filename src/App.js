@@ -57,7 +57,7 @@ function App() {
       selectedFood={selectedFood}
     >
       <Routes>
-        {!isLoggedIn && <Route path="/" element={<Login />} />}
+        {!isLoggedIn && <Route path="/" element={<PathOne />} />}
         <Route path="/generator" element={<ItineraryGenerator />} />
         <Route path="/home" element={<PathOne />} />
         <Route path="/register" element={<Register />} />
