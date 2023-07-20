@@ -159,10 +159,18 @@ import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import axios from 'axios';
 import { ItineraryContext } from '../Components/ItineraryContext';
 import Header from '../Components/Header';
+import { useCookies } from 'react-cookie';
+
 
 const { Meta } = Card;
 
 const Itinerary = () => {
+
+  const jwt = require('jsonwebtoken');
+  const { parse } = require('cookie')
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const token = cookies.token;
+
   const { destinationValue } = useContext(ItineraryContext);
 
   const [result, setResult] = useState(null);
@@ -205,6 +213,15 @@ const Itinerary = () => {
  const onLoad = async () => {
 
   try {
+
+    try {
+      console.log(cookies.token)
+      const decodedToken = jwt.decode(cookies.token);
+      console.log(decodedToken)
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      // Handle the error
+}
     const response = await axios.post('http://localhost:3000/api/useritinerary', {
         userEmail: "example@example.com",
     });
