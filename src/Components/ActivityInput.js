@@ -7,7 +7,14 @@ const { Option } = Select;
 
 const ActivityInput = () => {
   const { selectedActivities: contextSelectedActivities, updateSelectedActivities } = useContext(ItineraryContext);
+  const { destinationValue, updateDestinationValue, durationValue, updateDurationValue } = useContext(ItineraryContext);
   const [selectedActivities, setSelectedActivities] = useState(contextSelectedActivities || []);
+
+  console.log("secondpage")
+
+  console.log("D", destinationValue)
+
+  console.log("DU", durationValue)
 
   useEffect(() => {
     setSelectedActivities(contextSelectedActivities || []);
