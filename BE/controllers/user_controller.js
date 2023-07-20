@@ -118,6 +118,7 @@ const userControllers = {
             })
         }
 
+        console.log(process.env.APP_KEY)
         // generate JWT using an external lib
         const token = jwt.sign(
             {
