@@ -76,7 +76,7 @@ const [result, setResult] = useState(null);
                      <React.Fragment key={`${i}-${j}`}>
                    {  rand = (Math.random() + 1).toString(36).substring(7) }
                     <Marker
-                        key="jiujii"
+                        key={`attraction-${i}-${j}`}
                         position={{ 
                             lat: parseFloat(item.attraction1["Location"]["Latitude"]), 
                             lng: parseFloat(item.attraction1["Location"]["Longitude"]) 
@@ -91,7 +91,7 @@ const [result, setResult] = useState(null);
                     {console.log(item.restaurant1["Location"]["Longitude"])}
 
                     <Marker
-                        key="78798797979"
+                        key={`restaurant-${i}-${j}`}
                         position={{ lat: parseFloat(item.restaurant1["Location"]["Latitude"]), lng: parseFloat(item.restaurant1["Location"]["Longitude"]) }}
                         
                     />  
