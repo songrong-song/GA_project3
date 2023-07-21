@@ -1,26 +1,55 @@
-/* .destination-input {
-  width: auto;
-  font-size: 16px;
+.destination-input {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 40px 40px 40px 0; 
 }
-
-.destination-input-field {
-    width: 400px;
-} */
 
 .heading {
   font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
 }
 
+/* Responsive styles for heading on smaller screens */
 @media (max-width: 768px) {
   .heading {
-    font-size: 18px;
+    font-size: 20px;
   }
 }
 
-#destination {
+/* Styles for input fields */
+#destination,
+#numDays {
   width: 100%;
+  height: 40px;
+  padding: 8px;
+  line-height: 40px; 
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s;
 }
 
-.num-days-container {
-  margin-top: 16px;
+#destination:hover,
+#destination:focus,
+#numDays:hover,
+#numDays:focus {
+  border-color: #40a9ff;
+}
+
+/* Style for the 'Number of Days' label */
+.input-group label {
+  font-size: 16px;
+  font-weight: semi-bold;
+}
+
+/* Style for the select dropdown arrow */
+.ant-select-arrow {
+  color: #1890ff;
+}
+
+.destination-input .ant-col .ant-select-selector {
+  height: 40px; /* Set the desired height */
+  align-items: center; /* Vertically center the items */
 }

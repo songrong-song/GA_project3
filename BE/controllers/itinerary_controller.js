@@ -9,9 +9,8 @@ const mongoose = require('mongoose');
 
 
 
-
 const itineraryControllers = {
- 
+
     createItinerary: async (data) => {
 
         const storeItinerary = async (input) => {

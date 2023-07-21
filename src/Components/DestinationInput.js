@@ -12,6 +12,11 @@ const DestinationInput = () => {
   const autocomplete = useRef(null);
   const [form] = Form.useForm();
 
+
+  const handleNumDaysChange = (value) => {
+    updateDurationValue(value);
+   };
+
   const dayOptions = [1, 2, 3, 4, 5, 6, 7].map((day) => (
     <Option key={day} value={day}>
       {day} day{day > 1 && 's'}
@@ -59,7 +64,7 @@ const DestinationInput = () => {
         <Col xs={24} sm={12}>
 
           <div className="input-group">
-            <label htmlFor="destination">Destination:</label>
+            <label htmlFor="destination">Destination (required):</label>
             <Form.Item
               name="destination"
               rules={[
@@ -82,15 +87,17 @@ const DestinationInput = () => {
         </Col>
         <Col xs={24} sm={12}>
 
-          {/* <div className="input-group">
-            <label htmlFor="numDays">Number of Days:</label>
+          <div className="input-group">
+            <label htmlFor="numDays">Number of Days (required):</label>
+
             <Form.Item
               name="numDays"
               rules={[
                 { required: true, message: 'Please select the number of days' }
               ]}
             >
-              <Select id="numDays" value={durationValue} onChange={handleNumDaysChange} onBlur={handleNumDaysChange} placeholder="Select">
+            
+              <Select id="numDays" value={durationValue} onChange={handleNumDaysChange}  placeholder="Select">
                 {dayOptions}
               </Select>
             </Form.Item>

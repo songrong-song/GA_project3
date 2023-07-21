@@ -6,13 +6,22 @@
   }
 
   .next {
-  top: 400px;
+  top: 40px;
   }
 
   .back {
-  top: 400px;
+  top: 40px;
   }
 
   .submit {
-  top: 400px;
+  top: 40px;
   }
+
+.step-navigation {
+  display: flex;
+  justify-content: space-between;
+}
+
+.step-navigation .back {
+  margin-right: 10px;
+}

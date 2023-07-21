@@ -213,9 +213,15 @@ const Itinerary = () => {
  const onLoad = async () => {
 
   try {
-
+      console.log(cookies.token)
+      const decodedToken = jwt.decode(cookies.token);
+      console.log(decodedToken)
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      // Handle the error
+}
  
-    const decodedToken = jwt.decode(cookies.token);
+//     const decodedToken = jwt.decode(cookies.token);
 
     const response = await axios.post('http://localhost:3000/api/useritinerary', {
         useID: decodedToken.userID,

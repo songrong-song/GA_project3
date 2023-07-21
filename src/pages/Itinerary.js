@@ -20,13 +20,10 @@ const Itinerary = () => {
   const token = cookies.token; // Access the token from the cookies
   const { destinationValue, durationValue, selectedFood, selectedActivities  } = useContext(ItineraryContext);
   const [dayValue, setDayValue] = useState(0); 
-
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isMapLoading,setIsMapLoading] = useState(false);
-    //const [latitude, setLatitude] = useState(null);
-    //const [longitude, setLongitude] = useState(null);
-    //hardcoded values to test
+  
   const [latitude, setLatitude] = useState(48.8566); // Default latitude for Paris
   const [longitude, setLongitude] = useState(2.3522); // Default longitude for Paris
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
@@ -39,8 +36,8 @@ const Itinerary = () => {
     title: "",
     description: "",
   });
-const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-const [isDataLoaded, setIsDataLoaded] = useState(false); // A state that tracks data loading for entire page
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [isDataLoaded, setIsDataLoaded] = useState(false); // A state that tracks data loading for entire page
 
 
   useEffect(() => {
@@ -73,8 +70,9 @@ const [isDataLoaded, setIsDataLoaded] = useState(false); // A state that tracks 
 
 
     const response = await axios.post('http://localhost:3000/api/itinerary', {
+
       "destinationValue": destinationValue,
-      "dayValue": durationValue, }) //d
+      "dayValue": durationValue, }) 
       // "selectedActivities": selectedActivities,
       // "selectedFood": selectedFood) })
 
@@ -113,12 +111,16 @@ const [isDataLoaded, setIsDataLoaded] = useState(false); // A state that tracks 
               sojournTime: item.restaurant1?.["Recommended Sojourn Time"] || "Unknown",
             },
           },
-        ]),
+        ]
+        ),
       }));
       console.log(newDroppableCards);
       setIsMapLoading(true);
-      setLatitude(parseFloat(resultData[0].itineraries[0].attraction1["Location"]["Latitude"]));
-      setLongitude(parseFloat(resultData[0].itineraries[0].attraction1["Location"]["Longitude"]));
+      try{
+        setLatitude(parseFloat(resultData[0].itineraries[0].attraction1["Location"]["Latitude"]));
+        setLongitude(parseFloat(resultData[0].itineraries[0].attraction1["Location"]["Longitude"]));
+      }catch(e){
+      }
       setDroppableCards(newDroppableCards);
     };
 
@@ -178,22 +180,17 @@ const [isDataLoaded, setIsDataLoaded] = useState(false); // A state that tracks 
 
 
 
- const handleEdit = (cardIndex, field, value) => {
-    const cards = droppableCards[0]?.cards;
-
-if (cards && Array.isArray(cards) && cards.length > 0) {
-
- console.log(cards);
-} else {
-  // The array is either empty or does not contain any object elements
-  console.log("No cards found.");
-}
+ const handleEdit = (droppableIndex, cardIndex, field, value) => {
+   
 
  //update the editingCard and editedContent state
- const cardToEdit = droppableCards[0].cards[cardIndex];
+  const cardToEdit = droppableCards[droppableIndex].cards[cardIndex];
+
   setEditingCard(cardToEdit);
   setEditedContent({
     title: cardToEdit.title,
+    draggableIndex: droppableIndex, 
+    cardIndex: cardIndex,
     description: cardToEdit.description.description,
   });
 
@@ -201,34 +198,39 @@ if (cards && Array.isArray(cards) && cards.length > 0) {
  };
 
 const handleSaveEditedContent = async () => {
+
   try {
     if (!editingCard) {
       return; // no edits made
     }
 
-    const cardIndex = droppableCards[0].cards.findIndex((card) => card === editingCard);
+    alert(JSON.stringify(editingCard));
+    const draggableIndex = document.getElementById("edit-card-draggableIndex").value
+    const cardIndex = document.getElementById("edit-card-cardIndex").value
+
+    
+    droppableCards[draggableIndex].cards[cardIndex].title = document.getElementById("edit-card-title").value;
+    droppableCards[draggableIndex].cards[cardIndex].description.description = document.getElementById("edit-card-description").value;
 
     const updatedCard = {
       ...editingCard,
-      title: editedContent.title,
       description: {
         ...editingCard.description,
         description: editedContent.description,
       },
     };
 
-    const updatedDroppableCards = droppableCards.map((droppable) => ({
-      ...droppable,
-      cards: droppable.cards.map((card, index) => (index === cardIndex ? updatedCard : card)),
-    }));
+    
 
-    setDroppableCards(updatedDroppableCards);
-
+    setDroppableCards(droppableCards);
+    console.log(droppableCards);
     setIsEditModalVisible(false);
     setEditingCard(null);
     setEditedContent({
       title: "",
       description: "",
+      draggableIndex: "", 
+      cardIndex: ""
     });
   message.success('Card data updated successfully!');
   } catch (error) {
@@ -245,10 +247,12 @@ const handleCancelEdit = () => {
   setEditedContent({
     title: "",
     description: "",
+    draggableIndex: "", 
+    cardIndex: ""
   });
 };
 
-
+/*
 const renderResultCards = () => {
   if (result && result.length > 0) {
     const cards = droppableCards[0].cards; // Use the cards array from droppableCards
@@ -301,7 +305,7 @@ const renderResultCards = () => {
 
   return <Empty description="No result available" />;
 }; 
-
+*/
  const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
@@ -398,7 +402,7 @@ const renderResultCards = () => {
           <div className="timeline">
             <DragDropContext onDragEnd={handleDragEnd}>
               <Timeline>
-                {droppableCards.map((droppable) => (
+                {droppableCards.map((droppable, i) => (
                   <Timeline.Item key={droppable.id}>
                     <h3>{droppable.title}</h3>
                     <Droppable droppableId={droppable.id}>
@@ -408,7 +412,7 @@ const renderResultCards = () => {
                           {...provided.droppableProps}
                           className="card-container" // Add className for styling
                         >
-                          {droppable.cards.map((card, index) => (
+                          {droppable.cards.map((card, index) => ( 
                             <Draggable key={card.id} draggableId={card.id} index={index}>
                               {(provided) => (
                                 <div
@@ -420,14 +424,14 @@ const renderResultCards = () => {
                                     style={{ width: '100%' }}
                                     actions={[
                                       <DragOutlined key="drag" />,
-                                      <EditOutlined key={`edit-${index}`} onClick={() => handleEdit(index, 'title', 'new value')} />,
+                                      <EditOutlined key={`edit-${index}`} onClick={() => handleEdit(i,index, 'title', 'new value')} />,
                                       <SyncOutlined key={`sync-${index}`} onClick={() => handleSyncIconClick(index)} />
                                     ]}
                                   >
                                     <Meta title={card.title} description={
                                     <div> 
                                       <p>Description: {card.description.description}</p>
-                                <p>Location: {`${card.description.location.Latitude}, ${card.description.location.Longitude}`}</p>
+                                       <p>Location: {`${card.description.location.Latitude}, ${card.description.location.Longitude}`}</p>
                                       <p>Sojourn Time: {card.description.sojournTime}</p>
                                     </div>
                                     } />
@@ -471,13 +475,25 @@ const renderResultCards = () => {
           onOk={handleSaveEditedContent}
           onCancel={handleCancelEdit}
         >
+        <Input
+            type="hidden"
+            id="edit-card-draggableIndex"
+            value={editedContent.draggableIndex}
+          />
+          <Input
+            type="hidden"
+            id="edit-card-cardIndex"
+            value={editedContent.cardIndex}
+          />
           <Input
             type="text"
+            id="edit-card-title"
             value={editedContent.title}
             onChange={(e) => setEditedContent((prev) => ({ ...prev, title: e.target.value }))}
           />
           <Input.TextArea
             rows={4}
+            id="edit-card-description"
             value={editedContent.description}
             onChange={(e) => setEditedContent((prev) => ({ ...prev, description: e.target.value }))}
           />

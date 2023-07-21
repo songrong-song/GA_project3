@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { Select, Form } from 'antd';
-import "./ActivityInput";
+import { Select, Form, Tag} from 'antd';
+import "./FoodInput.css";
 import { ItineraryContext } from './ItineraryContext';
 
 const { Option } = Select;
@@ -17,14 +17,17 @@ const FoodInput = () => {
   return (
     <div className="food-input">
       <div>
-        <h1>Select cuisine preferences.</h1>
+        <div className='titleTag'>
+        <h1 className="heading">Select cuisine preferences.</h1>
+        <Tag color="orange" style={{ height: '24px', lineHeight: '24px' }}>Coming Soon</Tag>
+        </div>
+        <label htmlFor="food">Cruisine:</label>
         <Form.Item
           name="food"
           rules={[
             { required: false, message: 'Please select at least one cuisine' }
           ]}
         >
-          <label htmlFor="food">Food:</label>
           <Select
             className="food-input-selector"
             id="foods"

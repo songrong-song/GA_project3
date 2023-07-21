@@ -13,7 +13,6 @@ export default function ProfilePage() {
   useEffect(() => {
     const token = cookies.token;
     console.log("checkpoint2")
-    console.log(jwt.decode(token))
     console.log(isValidToken(token))
     if (token && isValidToken(token)) {
       const decodedToken = jwt.decode(token);

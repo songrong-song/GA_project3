@@ -55,8 +55,7 @@ const gptControllers = {
 
 
   generateDestinationPrompt1: async function(destinationValue, excludeValue = []) {
-    console.log('test')
-    console.log(this.apiKey)
+
     let prompt = `Generate recommended attraction on below information for ${destinationValue} that is not ${excludeValue.join(' and not ')}, strictly following the JSON format:
     - Attraction Name: 
     - Summary: 
