@@ -45,7 +45,14 @@ const Header = () => {
   const token = Cookies.get('token');
 
   return (
+
+    <header className="header">
+    <div className="header-text">
+      <div className="bold-text">Itinerary Generator</div>
+      <div className="small-text"> powered by OpenAI</div>
+    </div>
     <Menu mode="horizontal" selectedKeys={selectedKeys} style={{ justifyContent: 'flex-end' }}>
+
       <Menu.Item key="/home" icon={<HomeOutlined />} className={location.pathname === '/home' ? 'selected' : ''} onClick={() => handleClick('/home')}>
         <Link to="/home">Home</Link>
       </Menu.Item>
@@ -66,6 +73,7 @@ const Header = () => {
         </Menu.Item>
       )}
     </Menu>
+    </header>
   );
 };
 

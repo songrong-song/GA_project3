@@ -12,3 +12,37 @@
 .ant-menu-horizontal .ant-menu-item:last-child {
   margin-right: 0;
 }
+/* Your global or App-level CSS file */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px; /* Add padding as needed */
+  background-color:#EBEAE6;; /* Example background color for the header */
+}
+
+/* Your global or App-level CSS file */
+.header-text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.bold-text {
+  font-weight: bold;
+  font-size: large;
+  margin-right: 5px; /* Adjust the margin as needed */
+}
+
+.small-text {
+  font-size: 14px; /* Adjust the font size as needed */
+}
+
+
+/* Additional styles for the menu */
+/* You can add more styling for the menu items if needed */
+.ant-menu {
+  margin: 0; /* Remove default margin */
+}
