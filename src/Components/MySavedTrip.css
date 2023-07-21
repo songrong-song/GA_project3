@@ -11,9 +11,6 @@
 }
 
 body {
-  background-color: #2a385c;
-  background-image: linear-gradient(320deg, hsl(215, 10%, 12%) 0% /* down */, hsl(215, 19%, 24%) /* up */ 100%);
-  font-family: var(--fonts-primary);
   font-size: 14px;
   margin: 0;
   min-height: 100vh;
@@ -34,7 +31,6 @@ body {
 }
 
 .header {
-  border-bottom: 1px solid gray;
   padding-bottom: 10px;
   margin-bottom: 5px;
 }
