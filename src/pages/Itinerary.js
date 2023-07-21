@@ -8,6 +8,7 @@ import { ItineraryContext } from '../Components/ItineraryContext';
 import Header from '../Components/Header';
 import Map from '../Components/map';
 import { useCookies } from 'react-cookie'
+import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import './Itinerary.css'
 const jwt = require('jsonwebtoken');
@@ -18,8 +19,10 @@ const Itinerary = () => {
 
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(['token']); // Access cookies using the useCookies hook
-  const token = cookies.token; // Access the token from the cookies
-  const userID = jwt.decode(token).userID
+  const token = cookies.token
+  const decoded = jwt.decode(cookies.token)
+  const userId = decoded.userId
+  console.log(userId)
   const { destinationValue, durationValue, selectedFood, selectedActivities  } = useContext(ItineraryContext);
   const [dayValue, setDayValue] = useState(0); 
   const [result, setResult] = useState(null);
@@ -344,12 +347,12 @@ const handleSave = async () => {
         try {
          
           const response = await axios.post('http://localhost:3000/api/useritinerary/saveItinerary', {
-            "userID": userID,
+            "userID": userId,
             "destinationValue": destinationValue,
-            "dayValue": durationValue, //d
+            "dayValue": dayValue, //d
             "itinerary":jsonData,
-
           });
+          console.log('saved successfully')
           return response.data;
 
         } catch (error) {
