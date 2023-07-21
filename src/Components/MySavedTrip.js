@@ -6,17 +6,19 @@ import { useJsApiLoader } from '@react-google-maps/api';
 import axios from 'axios';
 import { ItineraryContext } from './ItineraryContext';
 import Header from './Header';
-import Map from './map';
 import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom';
 import { isValidToken } from "./tokenUtils";
+import "./MySavedTrip.css"
+
+
 const jwt = require('jsonwebtoken');
 
 
 
 const { Meta } = Card;
 
-const Itinerary = () => {
+const MySavedTrip = () => {
 
 
 
@@ -195,10 +197,12 @@ const Itinerary = () => {
 
       return (
         <div>
-          <Col className="gutter-row" span={12} xs={24} sm={12} md={12} lg={12} xl={12}>
+         <div className="header">
+          <h1>Saved Trips</h1>
+        </div>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
             <div className="timeline">
               <DragDropContext onDragEnd={handleDragEnd}>
-
                 <Timeline>
                   {droppableCards.map((droppable, i) => (
                     <Timeline.Item key={droppable.id}>
@@ -220,7 +224,7 @@ const Itinerary = () => {
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
                                     >
-                                      <Col span={24} xs={24} sm={12} md={12} lg={24} xl={24}>
+                                      <Col span={24} xs={24} sm={24} md={24} lg={24} xl={24}>
                                         <Card
 
                                           style={{ width: '100%' }}
@@ -259,23 +263,6 @@ const Itinerary = () => {
                 </Timeline>
 
               </DragDropContext>
-            </div>
-          </Col>
-
-          <Col className="gutter-row" span={12} xs={24} sm={12} md={12} lg={12} xl={12}>
-            <div className="container-right">
-              <div className="loader" style={{ display: isLoading ? 'block' : 'none' }}></div>
-              {/* {result ? (
-            <div>
-                      <h2>Result as Text:</h2>
-                      <pre>{formatResult(result)}</pre>
-                    </div>
-                  ) : null}
-            </div> 
-        */}
-              {isMapLoading && isLoaded && latitude && longitude ? (
-                <Map isLoaded={true} latitude={latitude} longitude={longitude} center={{ lat: latitude, lng: longitude }} resultData={resultData} />
-              ) : null}
             </div>
           </Col>
         </div>
@@ -352,8 +339,8 @@ const Itinerary = () => {
 
     <div>
       <Header />
-      <Row justify="center">
-        <Col xs={24} sm={12} md={12} lg={12} xl={8}>
+      <Row justify="left">
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
 
           <div className="timeline">
             <DragDropContext onDragEnd={handleDragEnd}>
@@ -407,34 +394,9 @@ const Itinerary = () => {
             </DragDropContext>
           </div>
         </Col>
-        <Col xs={24} sm={12} md={12} lg={12} xl={8}>
-          <div className="container-right">
-            <div className="loader" style={{ display: isLoading ? 'block' : 'none' }}></div>
-            {/* {result ? (
-              <div>
-                <h2>Result as Text:</h2>
-                <pre>{formatResult(result)}</pre>
-              </div>
-            ) : null}
-          </div> */}
-            {isLoaded && latitude && longitude ? (
-              <Map
-                mapContainerStyle={{
-                  width: '100%',
-                  height: '50vh',
-                }}
-                center={center}
-                zoom={19}
-                onClick={(ev) => {
-                  console.log('latitude = ', ev.latLng.lat());
-                  console.log('longitude = ', ev.latLng.lng());
-                }}
-              />
-            ) : null} </div>
-        </Col>
       </Row>
     </div>
   );
 }
 
-export default Itinerary;
+export default MySavedTrip;

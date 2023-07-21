@@ -16,7 +16,15 @@ const userControllers = {
             const result = await userItineraryModel.find( {userId: userId} )
             if (result) {
               // User found
-              console.log(result)
+              console.log("*******************")
+              result.map((item, i) => {
+                console.log(item.itineraries);
+                result[i].itineraries = JSON.parse(item.itineraries);
+
+              });
+              
+              //console.log(result)
+              
               res.json(result);
             } else {
               // User not found
