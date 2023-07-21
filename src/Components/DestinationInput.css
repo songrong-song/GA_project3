@@ -2,8 +2,6 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding: 40px; 
->>>>>>> 095ca69 (fixed duration passing of value)
   padding: 40px 40px 40px 0; 
 }
 
@@ -38,7 +36,6 @@
 #numDays:hover,
 #numDays:focus {
   border-color: #40a9ff;
-<<<<<<< HEAD
 }
 
 /* Style for the 'Number of Days' label */
@@ -55,19 +52,6 @@
 .destination-input .ant-col .ant-select-selector {
   height: 40px; /* Set the desired height */
   align-items: center; /* Vertically center the items */
-=======
-}
-
-/* Style for the 'Number of Days' label */
-.input-group label {
-  font-size: 16px;
-  font-weight: semi-bold;
-}
-
-/* Style for the select dropdown arrow */
-.ant-select-arrow {
-  color: #1890ff;
->>>>>>> 095ca69 (fixed duration passing of value)
 }
 
 .destination-input .ant-col .ant-select-selector {

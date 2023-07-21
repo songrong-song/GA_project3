@@ -13,13 +13,6 @@ const DestinationInput = () => {
   const [form] = Form.useForm();
 
 
-<<<<<<< HEAD
-  const handleNumDaysChange = (value) => {
-    updateDurationValue(value);
-   };
-
-=======
->>>>>>> 095ca69 (fixed duration passing of value)
   const dayOptions = [1, 2, 3, 4, 5, 6, 7].map((day) => (
     <Option key={day} value={day}>
       {day} day{day > 1 && 's'}
@@ -67,7 +60,7 @@ const DestinationInput = () => {
         <Col xs={24} sm={12}>
 
           <div className="input-group">
-            <label htmlFor="destination">Destination:</label>
+            <label htmlFor="destination">Destination (required): </label>
             <Form.Item
               name="destination"
               rules={[

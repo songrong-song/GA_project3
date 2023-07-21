@@ -254,60 +254,6 @@ const handleCancelEdit = () => {
   });
 };
 
-/*
-const renderResultCards = () => {
-  if (result && result.length > 0) {
-    const cards = droppableCards[0].cards; // Use the cards array from droppableCards
-
-    if (cards.length === 0) {
-      return <Empty description="No result available" />;
-    }
-
-    return (
-      <Timeline mode="left">
-        <Timeline.Item>
-          <h3>Result Cards</h3>
-          <Droppable droppableId="result-cards">
-            {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps} className="card-container">
-                {cards.map((card, index) => (
-                  <Draggable key={card.id} draggableId={card.id} index={index}>
-                    {(provided) => (
-                      <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                        <Card
-                          style={{ width: '100%' }}
-                          actions={[
-                            <DragOutlined key="drag" />,
-                            // <DeleteOutlined key="delete" />,
-                            <EditOutlined key="edit" onClick={() => handleEdit(index, 'title', 'New Title')} />,
-                            <SyncOutlined key="regenerate" onClick={() => handleSyncIconClick(index)} />
-                          ]}
-                        >
-                          <Meta title={card.title} description = { 
-                            <div>
-                                <p>Description: {card.description.description}</p>
-                                <p>Location: {card.description.location}</p>
-                                <p>Sojourn Time: {card.description.sojournTime}</p>
-                              </div>
-                             
-                          } />
-                        </Card>
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </Timeline.Item>
-      </Timeline>
-    );
-  }
-
-  return <Empty description="No result available" />;
-}; 
-*/
  const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
@@ -428,8 +374,12 @@ const renderResultCards = () => {
                                       <SyncOutlined key={`sync-${index}`} onClick={() => handleSyncIconClick(index)} />
                                     ]}
                                   >
-                                    <Meta title={card.title} description={
-                                    <div> 
+                                  
+                                    <Meta 
+                                    title= {
+                                    <div className = "custom-card-title"> {card.title} </div>} 
+                                    description={
+                                    <div className = "custom-card-description"> 
                                       <p>Description: {card.description.description}</p>
                                        <p>Location: {`${card.description.location.Latitude}, ${card.description.location.Longitude}`}</p>
                                       <p>Sojourn Time: {card.description.sojournTime}</p>
