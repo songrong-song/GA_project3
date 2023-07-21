@@ -1,19 +1,19 @@
 const Joi = require("joi")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-const UserItinerary = require("../models/UserItineraryModel")
+const userItineraryModel = require("../models/UserItineraryModel")
 const userValidators = require("./validators/userValidator")
 
 
 const userControllers = {
     fetchHistoricalResult: async (req, res) => {
         // get the registration data in the req
-        const data = req.body;
-        console.log(data);
-        var userEmail = data.userEmail;
+
+        var userId = req.body.userId;
+        console.log(userId)
 
         try {
-            const result = await userItineraryModel.find({ userEmail: userEmail })
+            const result = await userItineraryModel.find( {userId: userId} )
             if (result) {
               // User found
               res.json(result);
@@ -33,15 +33,16 @@ const userControllers = {
         console.log("here")
         console.log(req.body)
         // Extract the necessary data from the request
-        const { userID, dayValue, destination, itineraries } = req.body;
-
+        const { userID, destinationValue, dayValue, itinerary } = req.body;
     
         // Create a new UserItinerary instance
-        const userItinerary = new UserItinerary({
-          userID,
-          dayValue,
-          destination,
-          itineraries,
+        const userItinerary = new userItineraryModel({
+
+          userId: userID,
+          dayValue: dayValue,
+          destination:  destinationValue,
+          itineraries:  itinerary,
+        
         });
     
         // Save the UserItinerary to the database
