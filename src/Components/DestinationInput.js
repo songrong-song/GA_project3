@@ -67,7 +67,7 @@ const DestinationInput = () => {
         <Col xs={24} sm={12}>
 
           <div className="input-group">
-            <label htmlFor="destination">Destination (required):</label>
+            <label htmlFor="destination">Destination:</label>
             <Form.Item
               name="destination"
               rules={[
@@ -89,10 +89,8 @@ const DestinationInput = () => {
 
         </Col>
         <Col xs={24} sm={12}>
-
           <div className="input-group">
             <label htmlFor="numDays">Number of Days (required):</label>
-
             <Form.Item
               name="numDays"
               rules={[
@@ -104,33 +102,7 @@ const DestinationInput = () => {
                 {dayOptions}
               </Select>
             </Form.Item>
-          </div> */}
-
-   
-          <div className="input-group">
-            <label htmlFor="numDays">NumberOfDays:</label>
-            <Form.Item
-              name="dayValue"
-              rules={[
-                { required: false, message: 'Please select the number of days' }
-              ]}
-            >
-              <Select
-                id="durationValue"
-                className="destination-input-field"
-                placeholder="Select number of days"
-                onChange={handleNumDaysChange}
-                value={durationValue}
-              >
-                {numberOptions.map(option => (
-                  <Option key={option} value={option}>{option}</Option>
-                ))}
-              </Select>
-            </Form.Item>
           </div>
-
-
-
         </Col>
       </Row>
     </div>
