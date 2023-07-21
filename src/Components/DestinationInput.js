@@ -13,22 +13,31 @@ const DestinationInput = () => {
   const [form] = Form.useForm();
 
 
-  const dayOptions = [1, 2, 3, 4, 5, 6, 7].map((day) => (
-    <Option key={day} value={day}>
-      {day} day{day > 1 && 's'}
-    </Option>
+const dayOptions = [1, 2, 3, 4, 5, 6, 7].map((day) => (
+  <Option key={day} value={day} selected={day === durationValue}>
+    {day} 
+  </Option>
+));
 
-  ));
+if (!durationValue){
+ updateDurationValue(localStorage.getItem( 'NumberOfDays'));
+}
+if (!destinationValue){
+ updateDestinationValue(localStorage.getItem( 'Destination'));
+}  
+
 
 
   const handleNumDaysChange = (value) => {
     console.log("check");
     console.log(value);
     updateDurationValue(value);
+    localStorage.setItem( 'NumberOfDays', value );
   };
 
   const handlePlaceChange = (event) => {
     updateDestinationValue(event.target.value);
+    localStorage.setItem( 'Destination', event.target.value);
   };
 
   const handleAutocompleteLoad = (autocompleteInstance) => {
@@ -74,7 +83,7 @@ const DestinationInput = () => {
                   placeholder="Enter a destination, country or city"
                   onChange={handlePlaceChange}
                   onBlur={handlePlaceChange}
-                  value={destinationValue}
+                  value={(destinationValue || localStorage.getItem( 'Destination')) }
                 />
               </Autocomplete>
             </Form.Item>
@@ -91,7 +100,7 @@ const DestinationInput = () => {
               ]}
             >
             
-              <Select id="numDays" value={durationValue} onChange={handleNumDaysChange}  placeholder="Select">
+              <Select id="numDays" defaultValue={(localStorage.getItem( 'NumberOfDays'))} onChange={handleNumDaysChange}   placeholder="Select">
                 {dayOptions}
               </Select>
             </Form.Item>

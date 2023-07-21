@@ -59,13 +59,11 @@ const [result, setResult] = useState(null);
           <div className="GoogleMap">
             <GoogleMap
               mapContainerStyle={{
-                width: 1000,
-                height: '50vh',
+                width: "100%",
+                height: "100vh",
                 }}
-
               center={{ lat: latitude, lng: longitude }}
               zoom={10}
-    
             >
            
             
