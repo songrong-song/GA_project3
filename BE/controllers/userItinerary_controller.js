@@ -30,12 +30,16 @@ const userControllers = {
     saveResult: async (req, res) => {
       
       try {
+        console.log("here")
+        console.log(req.body)
         // Extract the necessary data from the request
-        const { userId, destination, itineraries } = req.body;
+        const { userID, dayValue, destination, itineraries } = req.body;
+
     
         // Create a new UserItinerary instance
         const userItinerary = new UserItinerary({
-          userId,
+          userID,
+          dayValue,
           destination,
           itineraries,
         });

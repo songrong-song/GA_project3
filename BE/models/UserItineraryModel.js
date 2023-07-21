@@ -2,7 +2,8 @@ const { date } = require('joi')
 const mongoose = require('mongoose')
 
 const userItinerarySchema = new mongoose.Schema(
-    {   userId: { type: String },
+    {   userID: { type: String },
+        dayValue: { type: String },
         destination:  { type: String },
         itineraries: {type: Array}, },
 
@@ -14,3 +15,5 @@ const userItinerarySchema = new mongoose.Schema(
 const userItinerary = mongoose.model('UserItinerary', userItinerarySchema)
 
 module.exports = userItinerary
+
+
