@@ -110,12 +110,16 @@ const Itinerary = () => {
               sojournTime: item.restaurant1?.["Recommended Sojourn Time"] || "Unknown",
             },
           },
-        ]),
+        ]
+        ),
       }));
       console.log(newDroppableCards);
       setIsMapLoading(true);
-      setLatitude(parseFloat(resultData[0].itineraries[0].attraction1["Location"]["Latitude"]));
-      setLongitude(parseFloat(resultData[0].itineraries[0].attraction1["Location"]["Longitude"]));
+      try{
+        setLatitude(parseFloat(resultData[0].itineraries[0].attraction1["Location"]["Latitude"]));
+        setLongitude(parseFloat(resultData[0].itineraries[0].attraction1["Location"]["Longitude"]));
+      }catch(e){
+      }
       setDroppableCards(newDroppableCards);
     };
 
