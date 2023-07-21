@@ -4,18 +4,6 @@
   top: 100px;
   }
 
-  .next {
-  top: 20px;
-  }
-
-  .back {
-  top: 20px;
-  }
-
-  .submit {
-  top: 20px;
-  }
-
 .step-navigation {
   display: flex;
   justify-content: space-between;
