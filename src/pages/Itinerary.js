@@ -348,7 +348,7 @@ const handleSave = async () => {
         try {
          
           const response = await axios.post('http://localhost:3000/api/useritinerary/saveItinerary', {
-            "userID": userID,
+            // "userID": userId,
             "destinationValue": destinationValue,
             "dayValue": dayValue, //d
             "itinerary":jsonData,
