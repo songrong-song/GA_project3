@@ -16,6 +16,7 @@ const userControllers = {
             const result = await userItineraryModel.find( {userId: userId} )
             if (result) {
               // User found
+              console.log(result)
               res.json(result);
             } else {
               // User not found

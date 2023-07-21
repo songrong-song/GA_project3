@@ -96,7 +96,7 @@ const gptControllers = {
 
   generateDestinationResult1: async function(destinationValue, excludeValue) {
     console.log("test")
-    console.log(gptControllers.api_KEY)
+    console.log(process.env.API_KEY)
     try {
       const prompt = await this.generateDestinationPrompt1(destinationValue = destinationValue, excludeValue = excludeValue);
       console.log(prompt)
