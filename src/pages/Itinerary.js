@@ -182,7 +182,7 @@ const Itinerary = () => {
 
 
 
- const handleEdit = (cardIndex, field, value) => {
+ const handleEdit = (droppableIndex, cardIndex, field, value) => {
 
    
     const cards = droppableCards[0]?.cards;
