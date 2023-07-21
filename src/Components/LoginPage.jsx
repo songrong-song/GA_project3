@@ -79,7 +79,7 @@ export default function Login() {
                   onChange={(e) => handleFormChange('password', e.target.value)}
                 />
               </Form.Item>
-
+{/* 
               <Form.Item>
                 <Form.Item name="remember" valuePropName="checked" noStyle>
                   <Checkbox>Remember me</Checkbox>
@@ -88,7 +88,7 @@ export default function Login() {
                 <a className="login-form-forgot" href="">
                   Forgot password
                 </a>
-              </Form.Item>
+              </Form.Item> */}
 
               <Form.Item>
                 <Button type="primary" htmlType="submit" className="login-form-button">

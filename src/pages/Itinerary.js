@@ -364,10 +364,11 @@ const handleSave = async () => {
       }));
 
       // Convert the card content to JSON string
-      const jsonData = JSON.stringify(cardContent, null, 2);
 
+      const jsonData = JSON.stringify(cardContent, null, 2);
+      const saveData = JSON.parse(jsonData)
       // Perform the saving operation with the jsonData
-      console.log('Saving card content:', jsonData);
+      console.log('Saving card content:', Array(saveData));
 
     //     try {
          
@@ -376,7 +377,7 @@ const handleSave = async () => {
             // "userID": userId,
             "destinationValue": destinationValue,
             "dayValue": dayValue, //d
-            "itinerary":jsonData,
+            "itinerary": Array(saveData),
           });
           console.log('saved successfully')
           return response.data;

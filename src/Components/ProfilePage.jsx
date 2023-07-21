@@ -4,6 +4,7 @@ import { useCookies } from 'react-cookie';
 import { isValidToken } from "./tokenUtils";
 import { useNavigate } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
+import "./ProfilePage.css";
 
 export default function ProfilePage() {
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
@@ -26,6 +27,12 @@ export default function ProfilePage() {
 
   const handleLogout = () => {
     removeCookie('token');
+    navigate('/home')
+  };
+
+  const handleNavigateToHistoricalPage = () => {
+    // Redirect the user to the historical page when the button is clicked
+    navigate('/my-saved-trip');
   };
 
   if (cookies.token && isValidToken(cookies.token)) {
@@ -38,7 +45,20 @@ export default function ProfilePage() {
           <div className="container">
             <h2>Profile Page</h2>
             <p>Welcome, {decodedToken.userName}!</p>
-            <Button type="primary" onClick={handleLogout}>Logout</Button>
+            <div className="prompt">
+              <p>What do you want to do?</p>
+              <br/>
+            <div className = "options">
+              <div className="optionItems">
+              <p> &#x1F6A2; Check your past itinerary:</p>
+              <Button className="ProfileButton" type="primary" onClick={handleNavigateToHistoricalPage}>View Itinerary</Button>
+              </div>
+            </div >
+            <div className="optionItems"> 
+            <p> &#x1F6A2; Log out:</p>
+            <Button className="ProfileButton" type="primary" onClick={handleLogout}>Logout</Button>
+            </div>
+            </div>
           </div>
         </Col>
       </Row>

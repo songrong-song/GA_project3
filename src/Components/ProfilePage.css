@@ -1,0 +1,59 @@
+/* Add this CSS to your ProfilePage.css and place it at the end */
+
+.container {
+    text-align: center;
+    padding: 40px;
+    background-color: #f9f3e6; /* Vintage cream background color */
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    font-family: 'Times New Roman', serif; /* Vintage serif font */
+    font-size: 36px;
+    color: #844c00; /* Vintage brown text color */
+    margin-bottom: 20px;
+  }
+  
+  p {
+    font-family: 'Georgia', serif; /* Vintage serif font */
+    font-size: 18px;
+    color: #6b4226; /* Vintage dark brown text color */
+    margin-right: 10px; /* Add some spacing between paragraphs and buttons */
+  }
+  
+  .row {
+    display: flex; /* Use Flexbox */
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+    margin-bottom: 20px; /* Add some spacing between rows */
+  }
+  
+
+  .options {
+    
+    display: flex; /* Use Flexbox */
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+    margin-bottom: 20px; /* Add some spacing between rows */
+  }
+
+
+
+  .ProfileButton {
+    font-family: 'Courier New', monospace; /* Vintage monospaced font */
+    font-size: 15px;
+    color: #fff; /* White text color */
+    background-color: #ab967c; /* Vintage brown button background color */
+    border: 2px solid #7a6958; /* Vintage dark brown border */
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .ProfileButton:hover {
+    background-color: #c2a06a; /* Lighter brown on hover */
+    transform: translateY(-2px);
+  }
+  
