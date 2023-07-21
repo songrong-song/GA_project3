@@ -4,12 +4,12 @@ import { DragOutlined, EditOutlined, SyncOutlined } from '@ant-design/icons';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useJsApiLoader } from '@react-google-maps/api';
 import axios from 'axios';
-import { ItineraryContext } from '../Components/ItineraryContext';
-import Header from '../Components/Header';
-import Map from '../Components/map';
+import { ItineraryContext } from './ItineraryContext';
+import Header from './Header';
+import Map from './map';
 import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom';
-import { isValidToken } from "../Components/tokenUtils";
+import { isValidToken } from "./tokenUtils";
 const jwt = require('jsonwebtoken');
 
 
@@ -35,18 +35,14 @@ const Itinerary = () => {
   const [droppableCards, setDroppableCards] = useState([]);
   const [isMapLoading, setIsMapLoading] = useState(false);
   let resultData = []
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (destinationValue) {
       getCoordinatesForDestination(destinationValue);
     }
   }, [destinationValue]);
-
-  useEffect(() => {
-    if (destinationValue) {
-      getCoordinatesForDestination(destinationValue);
-    }
-  }, [destinationValue]);
+      
 
   async function getCoordinatesForDestination(destination) {
     try {
@@ -66,22 +62,44 @@ const Itinerary = () => {
     }
   }
 
+  function formatTimestamp(timestamp) {
+    const date = new Date(timestamp);
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      timeZoneName: "short",
+    };
+    return date.toLocaleString("en-US", options);
+  }
 
   const onLoad = async () => {
+    const token = cookies.token;
 
-    try {
-      console.log(cookies.token)
-      const decodedToken = jwt.decode(cookies.token);
-      console.log(decodedToken)
-    } catch (error) {
-      console.error('Error decoding token:', error);
-      // Handle the error
+    async function checkTokenAndNavigate() {
+      try {
+        if (token && isValidToken(token)) {
+          const decodedToken = jwt.decode(token);
+          // You can use the decodedToken here if needed
+          return decodedToken;
+        } else {
+          console.log('Invalid or no token found', token);
+          navigate('/loginPrompt');
+          return;
+        }
+      } catch (error) {
+        // Handle any errors that occur during token validation or decoding
+        console.error('Error occurred during token validation:', error);
+        // Handle the error accordingly (e.g., show an error message to the user)
+        // Example: setErrorState(true);
+      }
     }
 
-    const decodedToken = jwt.decode(cookies.token);
-
-    alert(decodedToken.userId)
-
+    const decodedToken = await checkTokenAndNavigate()
+  
     const response = await axios.post('http://localhost:3000/api/useritinerary', {
       userId: decodedToken.userId,
     });
@@ -92,32 +110,38 @@ const Itinerary = () => {
 
     const newDroppableCards = resultData.flatMap((itinerary, index) => ({
       id: `result-cards-${index}`,
-      title: `Saved Time ${itinerary.createdAt}`,
-      cards: itinerary.itineraries.flatMap((items, itemIndex) =>
-        items.map((item, subItemIndex) => ({
-          id: `result-card-${index}-${itemIndex}-${subItemIndex}-attraction`,
-          type: "Attraction",
-          title: item.title || "Unknown",
-          subtitle: itinerary.destination, // Set the subtitle here (example: using destination from itinerary)
-          description: {
-            description: item.description?.description || "No description available",
-            location: {
-              Latitude: item.description?.location?.Latitude || "Unknown",
-              Longitude: item.description?.location?.Longitude || "Unknown",
+      title: `Saved On ${formatTimestamp(itinerary.createdAt)}`,
+      cards: Array.isArray(itinerary.itineraries[0]) // Check if itineraries is an array of arrays
+        ? itinerary.itineraries.flatMap((items, itemIndex) =>
+            items.map((item, subItemIndex) => ({
+              id: `result-card-${index}-${itemIndex}-${subItemIndex}-attraction`,
+              type: "Attraction",
+              title: item.title || "Unknown",
+              description: {
+                description: item.description?.description || "No description available",
+                location: {
+                  Latitude: item.description?.location?.Latitude || "Unknown",
+                  Longitude: item.description?.location?.Longitude || "Unknown",
+                },
+                sojournTime: item.description?.sojournTime || "Unknown",
+              },
+            }))
+          )
+        : itinerary.itineraries.map((item, itemIndex) => ({
+            id: `result-card-${index}-${itemIndex}-attraction`,
+            type: "Attraction",
+            title: item.title || "Unknown",
+            subtitle: item.subtitle || "Unknown", // Set the subtitle for each attraction
+            description: {
+              description: item.description?.description || "No description available",
+              location: {
+                Latitude: item.description?.location?.Latitude || "Unknown",
+                Longitude: item.description?.location?.Longitude || "Unknown",
+              },
+              sojournTime: item.description?.sojournTime || "Unknown",
             },
-            sojournTime: item.description?.sojournTime || "Unknown",
-          },
-        }))
-      ),
+          })),
     }));
-    
-    // Example Usage
-    console.log(newDroppableCards);
-    
-    
-    // Example Usage
-    console.log(newDroppableCards);
-    
     
 
     setDroppableCards(newDroppableCards);
@@ -353,7 +377,7 @@ const Itinerary = () => {
                                   {...provided.dragHandleProps}
                                 >
                                   <Card
-                                    style={{ width: '100%' }}
+                                    style={{ width: '100%'}}
                                     actions={[
                                       <DragOutlined key="drag" />,
                                       // <DeleteOutlined key="delete" />,

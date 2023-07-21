@@ -9,6 +9,7 @@ import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import './LoginPage.css';
 import Cookies from 'js-cookie';
 import { useEffect } from "react";
+const jwt = require('jsonwebtoken');
 
 export default function Login() {
   const navigate = useNavigate();
@@ -18,10 +19,11 @@ export default function Login() {
   // add in the navigation with token
   useEffect(() => {
     const token = Cookies.get('token');
-    if(token) {
+    const decodedToken = jwt.decode(token);
+    if(decodedToken) {
       navigate('/home');
     }
-  }, []);
+  }, [Cookies]);
 
 
   const handleFormChange = (fieldName, value) => {

@@ -6,6 +6,8 @@ import axios from 'axios';
 import React from "react";
 import Header from './Header';
 import Cookies from 'js-cookie';
+import "./RegisterPage.css";
+
 
 
 export default function Register() {
@@ -22,8 +24,7 @@ export default function Register() {
     axios.post('http://localhost:3000/api/users/register', formData)
       .then(response => {
         message.success('Registration successful!');
-        Cookies.set('token', response.data.token);
-        navigate('/');
+        navigate('/login');
       })
       .catch(err => {
         console.log(err);
@@ -86,11 +87,12 @@ export default function Register() {
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+    
+              <Button type="primary" htmlType="submit" onClick={handleSubmit}>
                 Submit
               </Button>
               <span className="login-link">
-                Already have an account? <Link to="/login">Login</Link>
+                Already have an account? <Link to="/login"> Login </Link>
               </span>
             </Form.Item>
           </Form>
