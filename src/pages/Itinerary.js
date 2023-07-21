@@ -13,11 +13,7 @@ import './Itinerary.css'
 import { isValidToken } from "../Components/tokenUtils";
 const jwt = require('jsonwebtoken');
 
-<<<<<<< HEAD
-=======
 let decoded = null;
-
->>>>>>> e38ad9e (Saving inputs before/after login)
 
 const { Meta } = Card;
 let resultData = []
@@ -95,13 +91,10 @@ const Itinerary = () => {
   
     const response = await axios.post('http://localhost:3000/api/itinerary', {
 
-<<<<<<< HEAD
-      "destinationValue": destinationValue,
-      "dayValue": durationValue, 
-=======
+
       "destinationValue": (destinationValue ||  localStorage.getItem( 'Destination')),
       "dayValue": (durationValue ||  localStorage.getItem( 'NumberOfDays')), 
->>>>>>> e38ad9e (Saving inputs before/after login)
+
       }) 
       // "selectedActivities": selectedActivities,
       // "selectedFood": selectedFood) })
@@ -364,33 +357,24 @@ const handleSave = async () => {
       }));
 
       // Convert the card content to JSON string
-
       const jsonData = JSON.stringify(cardContent, null, 2);
-      const saveData = JSON.parse(jsonData)
+
       // Perform the saving operation with the jsonData
-      console.log('Saving card content:', Array(saveData));
+      console.log('Saving card content:', jsonData);
 
     //     try {
          
-<<<<<<< HEAD
-          const response = await axios.post('http://localhost:3000/api/useritinerary/saveItinerary', {
-            // "userID": userId,
-            "destinationValue": destinationValue,
-            "dayValue": dayValue, //d
-            "itinerary": Array(saveData),
-          });
-          console.log('saved successfully')
-          return response.data;
-=======
+
+
            const response = await axios.post('http://localhost:3000/api/useritinerary/saveItinerary', {
              "userID": decoded.userId,
-             "destinationValue": destinationValue,
-             "dayValue": dayValue, //d
+             "destinationValue": (destinationValue || localStorage.getItem( 'Destination')) ,
+             "dayValue": (dayValue || localStorage.getItem( 'NumberOfDays')), //d
              "itinerary":jsonData,
            });
            console.log('saved successfully')
            return response.data;
->>>>>>> e38ad9e (Saving inputs before/after login)
+
 
     //     } catch (error) {
     //       console.log('Error fetching updated data:', error);
@@ -486,11 +470,9 @@ const handleSave = async () => {
             </DragDropContext>
           </div>
         </Col>
-<<<<<<< HEAD
-<Col className="gutter-row" span={12}  xs={24} sm={12} md={12} lg={12} xl={12}>
-=======
+
+
     <Col className="gutter-row" span={12}  xs={24} sm={12} md={12} lg={12} xl={12}>
->>>>>>> e38ad9e (Saving inputs before/after login)
           <div className="container-right">
             <div className="loader" style={{ display: isLoading ? 'block' : 'none' }}></div>
             {/* {result ? (
