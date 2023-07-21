@@ -29,13 +29,15 @@ export default function ProfilePage() {
   };
 
   if (cookies.token && isValidToken(cookies.token)) {
+    const decodedToken = jwt.decode(cookies.token);
+    console.log(decodedToken)
     // Content for logged-in user
     return (
       <Row justify="center">
         <Col xs={24} sm={20} md={16} lg={12} xl={8}>
           <div className="container">
             <h2>Profile Page</h2>
-            <p>Welcome, {userName}!</p>
+            <p>Welcome, {decodedToken.userName}!</p>
             <Button type="primary" onClick={handleLogout}>Logout</Button>
           </div>
         </Col>

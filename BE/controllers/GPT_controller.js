@@ -55,6 +55,7 @@ const gptControllers = {
 
 
   generateDestinationPrompt1: async function(destinationValue, excludeValue = []) {
+
     let prompt = `Generate recommended attraction on below information for ${destinationValue} that is not ${excludeValue.join(' and not ')}, strictly following the JSON format:
     - Attraction Name: 
     - Summary: 
@@ -94,6 +95,8 @@ const gptControllers = {
   },
 
   generateDestinationResult1: async function(destinationValue, excludeValue) {
+    console.log("test")
+    console.log(gptControllers.api_KEY)
     try {
       const prompt = await this.generateDestinationPrompt1(destinationValue = destinationValue, excludeValue = excludeValue);
       console.log(prompt)
@@ -125,8 +128,8 @@ const gptControllers = {
       return [completion_, attractionName];
 
     } catch (error) {
-      console.error('Error generating API result:', error);
-      throw error;
+      // console.error('Error generating API result:', error);
+      // throw error;
     }
   },
 

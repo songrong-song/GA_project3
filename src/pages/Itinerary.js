@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 const { Meta } = Card;
 let resultData = []
 const Itinerary = () => {
+
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(['token']); // Access cookies using the useCookies hook
   const token = cookies.token; // Access the token from the cookies
@@ -64,16 +65,16 @@ const Itinerary = () => {
   }
 
 
-
  const handleSubmit = async () => {
   setIsLoading(true);
 
+
     const response = await axios.post('http://localhost:3000/api/itinerary', {
-      "destinationValue": String(destinationValue),
-      "dayValue": String(durationValue), //durationValue,
-      //"dayValue": 6, //d
-      "selectedActivities": String(selectedActivities),
-      "selectedFood": String(selectedFood) })
+
+      "destinationValue": destinationValue,
+      "dayValue": durationValue, }) 
+      // "selectedActivities": selectedActivities,
+      // "selectedFood": selectedFood) })
 
       if (response.status === 200) {
       resultData = response.data;
@@ -136,12 +137,13 @@ const Itinerary = () => {
 
   // New function to fetch updated data from the server
   const fetchUpdatedData = async () => {
+
     try {
       const response = await axios.post('http://localhost:3000/api/itinerary', {
-        destinationValue: "London, UK",
-        dayValue: "4", //durationValue,
-        selectedActivities: selectedActivities,
-        selectedFood: selectedFood,
+        "destinationValue": String(destinationValue),
+        "dayValue": String(durationValue), //d
+        "selectedActivities": String(selectedActivities),
+        "selectedFood": String(selectedFood)
       });
       return response.data;
     } catch (error) {
