@@ -2,6 +2,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  padding: 40px; 
   padding: 40px 40px 40px 0; 
 }
 
@@ -47,11 +48,6 @@
 /* Style for the select dropdown arrow */
 .ant-select-arrow {
   color: #1890ff;
-}
-
-.destination-input .ant-col .ant-select-selector {
-  height: 40px; /* Set the desired height */
-  align-items: center; /* Vertically center the items */
 }
 
 .destination-input .ant-col .ant-select-selector {
