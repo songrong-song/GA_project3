@@ -8,22 +8,40 @@ import { ItineraryContext } from '../Components/ItineraryContext';
 import Header from '../Components/Header';
 import Map from '../Components/map';
 import { useCookies } from 'react-cookie'
-import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import './Itinerary.css'
+import { isValidToken } from "../Components/tokenUtils";
 const jwt = require('jsonwebtoken');
 
+<<<<<<< HEAD
+=======
+let decoded = null;
+
+>>>>>>> e38ad9e (Saving inputs before/after login)
 
 const { Meta } = Card;
 let resultData = []
 const Itinerary = () => {
 
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
   const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies(['token']); // Access cookies using the useCookies hook
-  const token = cookies.token
-  const decoded = jwt.decode(cookies.token)
-  const userId = decoded.userId
-  console.log(userId)
+  useEffect(() => {
+    const token = cookies.token;
+  
+    if (token && isValidToken(token)) {
+       decoded = jwt.decode(token);
+    }
+    else {
+      console.log('Invalid or no token found', token);
+      localStorage.setItem("StartedAlready", true);
+      navigate('/loginPrompt');
+    }
+  }, [cookies.token, navigate]);
+  // const navigate = useNavigate();
+  // const [cookies, setCookie, removeCookie] = useCookies(['token']); // Access cookies using the useCookies hook
+  // const token = cookies.token
+  
+  
   const { destinationValue, durationValue, selectedFood, selectedActivities  } = useContext(ItineraryContext);
   const [dayValue, setDayValue] = useState(0); 
   const [result, setResult] = useState(null);
@@ -74,11 +92,16 @@ const Itinerary = () => {
  const handleSubmit = async () => {
   setIsLoading(true);
 
-
+  
     const response = await axios.post('http://localhost:3000/api/itinerary', {
 
+<<<<<<< HEAD
       "destinationValue": destinationValue,
       "dayValue": durationValue, 
+=======
+      "destinationValue": (destinationValue ||  localStorage.getItem( 'Destination')),
+      "dayValue": (durationValue ||  localStorage.getItem( 'NumberOfDays')), 
+>>>>>>> e38ad9e (Saving inputs before/after login)
       }) 
       // "selectedActivities": selectedActivities,
       // "selectedFood": selectedFood) })
@@ -220,7 +243,7 @@ const handleSaveEditedContent = async () => {
       return; // no edits made
     }
 
-    alert(JSON.stringify(editingCard));
+    
     const draggableIndex = document.getElementById("edit-card-draggableIndex").value
     const cardIndex = document.getElementById("edit-card-cardIndex").value
 
@@ -330,7 +353,8 @@ const handleCancelEdit = () => {
 
 //saving itinerary
 const handleSave = async () => {
-  if (token && isValidToken(token)) {
+  // if (token && isValidToken(token))
+   {
     // Perform the save functionality here
     const cards = droppableCards[0]?.cards;
     if (cards && Array.isArray(cards) && cards.length > 0) {
@@ -345,8 +369,9 @@ const handleSave = async () => {
       // Perform the saving operation with the jsonData
       console.log('Saving card content:', jsonData);
 
-        try {
+    //     try {
          
+<<<<<<< HEAD
           const response = await axios.post('http://localhost:3000/api/useritinerary/saveItinerary', {
             // "userID": userId,
             "destinationValue": destinationValue,
@@ -355,17 +380,27 @@ const handleSave = async () => {
           });
           console.log('saved successfully')
           return response.data;
+=======
+           const response = await axios.post('http://localhost:3000/api/useritinerary/saveItinerary', {
+             "userID": decoded.userId,
+             "destinationValue": destinationValue,
+             "dayValue": dayValue, //d
+             "itinerary":jsonData,
+           });
+           console.log('saved successfully')
+           return response.data;
+>>>>>>> e38ad9e (Saving inputs before/after login)
 
-        } catch (error) {
-          console.log('Error fetching updated data:', error);
-          throw error;
-        }
+    //     } catch (error) {
+    //       console.log('Error fetching updated data:', error);
+    //       throw error;
+    //     }
     
-    } else {
-      console.log('No cards found.');
+    // } else {
+    //   console.log('No cards found.');
     }
-  } else {
-    navigate('/loginPrompt');
+  // } else {
+  //   navigate('/loginPrompt');
   }
 };
   const defaultActions = [
@@ -388,8 +423,9 @@ const handleSave = async () => {
             </div>
           <div className="timeline">
             <DragDropContext onDragEnd={handleDragEnd}>
-              <Timeline>
-                {droppableCards.map((droppable, i) => (
+           
+                <Timeline>
+              {droppableCards.map((droppable, i) => (
                   <Timeline.Item key={droppable.id}>
                     <h3>{droppable.title}</h3>
                     <Row type="flex" >
@@ -443,12 +479,17 @@ const handleSave = async () => {
                     </Droppable>
                     </Row>
                   </Timeline.Item>
-                ))}
+              ))}
               </Timeline>
+               
             </DragDropContext>
           </div>
         </Col>
+<<<<<<< HEAD
 <Col className="gutter-row" span={12}  xs={24} sm={12} md={12} lg={12} xl={12}>
+=======
+    <Col className="gutter-row" span={12}  xs={24} sm={12} md={12} lg={12} xl={12}>
+>>>>>>> e38ad9e (Saving inputs before/after login)
           <div className="container-right">
             <div className="loader" style={{ display: isLoading ? 'block' : 'none' }}></div>
             {/* {result ? (
@@ -463,7 +504,6 @@ const handleSave = async () => {
                     <Map isLoaded={true} latitude={latitude} longitude={longitude} center={{ lat: latitude, lng: longitude }} resultData={resultData} />
               ) : null}
             </div>
-
         </Col>
       </Row>
 {isEditModalVisible && (
