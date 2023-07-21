@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import './Itinerary.css'
 const jwt = require('jsonwebtoken');
 
+
 const { Meta } = Card;
 let resultData = []
 const Itinerary = () => {
@@ -77,7 +78,8 @@ const Itinerary = () => {
     const response = await axios.post('http://localhost:3000/api/itinerary', {
 
       "destinationValue": destinationValue,
-      "dayValue": durationValue, }) 
+      "dayValue": durationValue, 
+      }) 
       // "selectedActivities": selectedActivities,
       // "selectedFood": selectedFood) })
 
@@ -118,8 +120,7 @@ const Itinerary = () => {
           },
         ],
         ),
-      }));
-
+      }));   
       setIsMapLoading(true);
       try{
           setLatitude(parseFloat(resultData[0].itineraries[0].attraction1["Location"]["Latitude"]));
@@ -146,9 +147,9 @@ const Itinerary = () => {
     try {
       const response = await axios.post('http://localhost:3000/api/itinerary', {
         "destinationValue": String(destinationValue),
-        "dayValue": String(durationValue), //d
-        "selectedActivities": String(selectedActivities),
-        "selectedFood": String(selectedFood)
+        "dayValue": String(durationValue),
+        // "selectedActivities": String(selectedActivities),
+        // "selectedFood": String(selectedFood)
       });
       return response.data;
     } catch (error) {
@@ -347,7 +348,7 @@ const handleSave = async () => {
         try {
          
           const response = await axios.post('http://localhost:3000/api/useritinerary/saveItinerary', {
-            "userID": userId,
+            "userID": userID,
             "destinationValue": destinationValue,
             "dayValue": dayValue, //d
             "itinerary":jsonData,
@@ -376,8 +377,8 @@ const handleSave = async () => {
   return (
     <div>
       <Header />
-    <Row>
-      <Col xs={24} sm={12} md={12} lg={12} xl={8}>
+    <Row gutter={16} type="flex">
+      <Col className="gutter-row" span={12} xs={24} sm={12} md={12} lg={12} xl={12}>
       <div className="my-trip-container"/>
           <h1 className="trip-heading">Generated Itinerary</h1>
           <p className="trip-description">Reorder the items or press the edit icon to generate another activity!</p>
@@ -391,6 +392,7 @@ const handleSave = async () => {
                 {droppableCards.map((droppable, i) => (
                   <Timeline.Item key={droppable.id}>
                     <h3>{droppable.title}</h3>
+                    <Row type="flex" >
                     <Droppable droppableId={droppable.id}>
                       {(provided) => (
                         <div
@@ -398,15 +400,18 @@ const handleSave = async () => {
                           {...provided.droppableProps}
                           className="card-container" // Add className for styling
                         >
+
                           {droppable.cards.map((card, index) => ( 
-                            <Draggable key={card.id} draggableId={card.id} index={index}>
+                            <Draggable  key={card.id} draggableId={card.id} index={index}>
                               {(provided) => (
                                 <div
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
                                 >
+                                <Col span={24} xs={24} sm={12} md={12} lg={24} xl={24}>
                                   <Card
+                                   
                                     style={{ width: '100%' }}
                                     actions={[
                                       <DragOutlined key="drag" />,
@@ -414,8 +419,6 @@ const handleSave = async () => {
                                       <SyncOutlined key={`sync-${index}`} onClick={() => handleSyncIconClick(index)} />
                                     ]}
                                   >
-                                      {/* cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />} */}
-
                                     <Meta 
                                     title= {
                                     <div className = "custom-card-title"> {card.title} </div>} 
@@ -426,22 +429,26 @@ const handleSave = async () => {
                                       <p>Sojourn Time: {card.description.sojournTime}</p>
                                     </div>
                                     } />
+
                                   </Card>
+                                 </Col>
                                 </div>
                               )}
                             </Draggable>
                           ))}
+                     
                           {provided.placeholder}
                         </div>
                       )}
                     </Droppable>
+                    </Row>
                   </Timeline.Item>
                 ))}
               </Timeline>
             </DragDropContext>
           </div>
         </Col>
-        <Col xs={24} sm={12} md={12} lg={12} xl={8}>
+<Col className="gutter-row" span={12}  xs={24} sm={12} md={12} lg={12} xl={12}>
           <div className="container-right">
             <div className="loader" style={{ display: isLoading ? 'block' : 'none' }}></div>
             {/* {result ? (
