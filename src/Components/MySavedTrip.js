@@ -1,17 +1,24 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Button, Card, Col, Empty, Input, Row, Timeline } from 'antd';
+import { Button, Card, Col, Empty, Input, Row, Timeline, Modal, message } from 'antd';
 import { DragOutlined, EditOutlined, SyncOutlined } from '@ant-design/icons';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { useJsApiLoader } from '@react-google-maps/api';
 import axios from 'axios';
 import { ItineraryContext } from '../Components/ItineraryContext';
 import Header from '../Components/Header';
-import { useCookies } from 'react-cookie';
+import Map from '../Components/map';
+import { useCookies } from 'react-cookie'
+import { useNavigate } from 'react-router-dom';
+import { isValidToken } from "../Components/tokenUtils";
+const jwt = require('jsonwebtoken');
+
 
 
 const { Meta } = Card;
 
 const Itinerary = () => {
+
+
 
   const jwt = require('jsonwebtoken');
   const { parse } = require('cookie')
@@ -26,6 +33,8 @@ const Itinerary = () => {
   const [longitude, setLongitude] = useState(null);
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [droppableCards, setDroppableCards] = useState([]);
+  const [isMapLoading, setIsMapLoading] = useState(false);
+  let resultData = []
 
   useEffect(() => {
     if (destinationValue) {
@@ -33,7 +42,7 @@ const Itinerary = () => {
     }
   }, [destinationValue]);
 
-    useEffect(() => {
+  useEffect(() => {
     if (destinationValue) {
       getCoordinatesForDestination(destinationValue);
     }
@@ -57,9 +66,10 @@ const Itinerary = () => {
     }
   }
 
- const onLoad = async () => {
 
-  try {
+  const onLoad = async () => {
+
+    try {
       console.log(cookies.token)
       const decodedToken = jwt.decode(cookies.token);
       console.log(decodedToken)
@@ -67,49 +77,55 @@ const Itinerary = () => {
       console.error('Error decoding token:', error);
       // Handle the error
     }
- 
+
     const decodedToken = jwt.decode(cookies.token);
+
     alert(decodedToken.userId)
+
     const response = await axios.post('http://localhost:3000/api/useritinerary', {
-        userId: decodedToken.userId,
+      userId: decodedToken.userId,
     });
 
     const resultData = response.data;
     console.log(resultData);
     setResult(resultData);
 
-
-    const newDroppableCards = resultData.map((itinerary, index) => ({
+    const newDroppableCards = resultData.flatMap((itinerary, index) => ({
       id: `result-cards-${index}`,
       title: `Saved Time ${itinerary.createdAt}`,
-      cards: itinerary.itineraries.flatMap((item, itemIndex) => [
-        {
-          id: `result-card-${index}-${itemIndex}-attraction`,
+      cards: itinerary.itineraries.flatMap((items, itemIndex) =>
+        items.map((item, subItemIndex) => ({
+          id: `result-card-${index}-${itemIndex}-${subItemIndex}-attraction`,
           type: "Attraction",
-          title: item.attraction1?.["Attraction Name"] || "Unknown",
+          title: item.title || "Unknown",
+          subtitle: itinerary.destination, // Set the subtitle here (example: using destination from itinerary)
           description: {
-            description: item.attraction1?.Summary || "No description available",
-            location: item.attraction1?.Location.latitude && item.attraction1?.Location.longitude || "Unknown",
-            sojournTime: item.attraction1?.["Recommended Sojourn Time"] || "Unknown",
+            description: item.description?.description || "No description available",
+            location: {
+              Latitude: item.description?.location?.Latitude || "Unknown",
+              Longitude: item.description?.location?.Longitude || "Unknown",
+            },
+            sojournTime: item.description?.sojournTime || "Unknown",
           },
-        },
-        {
-          id: `result-card-${index}-${itemIndex}-restaurant`,
-          type: "Restaurant",
-          title: item.restaurant1?.["Restaurant Name"] || "Unknown",
-          description: {
-            description: item.restaurant1?.Summary || "No description available",
-            location: item.restaurant1?.Location || "Unknown",
-            sojournTime: item.restaurant1?.["Recommended Sojourn Time"] || "Unknown",
-          },
-        },
-      ]),
+        }))
+      ),
     }));
+    
+    // Example Usage
+    console.log(newDroppableCards);
+    
+    
+    // Example Usage
+    console.log(newDroppableCards);
+    
+    
 
     setDroppableCards(newDroppableCards);
-}
+    renderResultCards();
 
-useEffect(() => {
+  }
+
+  useEffect(() => {
     onLoad();
   }, []);
 
@@ -121,8 +137,8 @@ useEffect(() => {
 
   const formatResult = (result) => {
     // Format the result as needed
-     return JSON.stringify(result, null, 2); // Convert object to a pretty-printed JSON string
-};
+    return JSON.stringify(result, null, 2); // Convert object to a pretty-printed JSON string
+  };
 
   const handleEdit = (cardIndex, field, value) => {
     const updatedDroppableCards = droppableCards.map((droppable) => {
@@ -145,58 +161,107 @@ useEffect(() => {
     setDroppableCards(updatedDroppableCards);
   };
 
-const renderResultCards = () => {
-  if (result && result.length > 0) {
-    const cards = droppableCards[0].cards; // Use the cards array from droppableCards
+  const renderResultCards = () => {
+    if (result && result.length > 0) {
+      const cards = droppableCards[0].cards; // Use the cards array from droppableCards
 
-    if (cards.length === 0) {
-      return <Empty description="No result available" />;
+      if (cards.length === 0) {
+        return <Empty description="No result available" />;
+      }
+
+      return (
+        <div>
+          <Col className="gutter-row" span={12} xs={24} sm={12} md={12} lg={12} xl={12}>
+            <div className="timeline">
+              <DragDropContext onDragEnd={handleDragEnd}>
+
+                <Timeline>
+                  {droppableCards.map((droppable, i) => (
+                    <Timeline.Item key={droppable.id}>
+                      <h3>{droppable.title}</h3>
+                      <Row type="flex" >
+                        <Droppable droppableId={droppable.id}>
+                          {(provided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.droppableProps}
+                              className="card-container" // Add className for styling
+                            >
+
+                              {droppable.cards.map((card, index) => (
+                                <Draggable key={card.id} draggableId={card.id} index={index}>
+                                  {(provided) => (
+                                    <div
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                    >
+                                      <Col span={24} xs={24} sm={12} md={12} lg={24} xl={24}>
+                                        <Card
+
+                                          style={{ width: '100%' }}
+                                          actions={[
+                                            <DragOutlined key="drag" />,
+                                            <EditOutlined key={`edit-${index}`} onClick={() => handleEdit(i, index, 'title', 'new value')} />,
+
+                                          ]}
+                                        >
+                                          <Meta
+                                            title={
+                                              <div className="custom-card-title"> {card.title} </div>}
+                                            description={
+                                              <div className="custom-card-description">
+                                                <p>Description: {card.description.description}</p>
+                                                <p>Location: {`${card.description.location.Latitude}, ${card.description.location.Longitude}`}</p>
+                                                <p>Sojourn Time: {card.description.sojournTime}</p>
+                                              </div>
+                                            } />
+
+                                        </Card>
+                                      </Col>
+                                    </div>
+                                  )}
+                                </Draggable>
+                              ))}
+
+                              {provided.placeholder}
+                            </div>
+
+                          )}
+                        </Droppable>
+                      </Row>
+                    </Timeline.Item>
+                  ))}
+                </Timeline>
+
+              </DragDropContext>
+            </div>
+          </Col>
+
+          <Col className="gutter-row" span={12} xs={24} sm={12} md={12} lg={12} xl={12}>
+            <div className="container-right">
+              <div className="loader" style={{ display: isLoading ? 'block' : 'none' }}></div>
+              {/* {result ? (
+            <div>
+                      <h2>Result as Text:</h2>
+                      <pre>{formatResult(result)}</pre>
+                    </div>
+                  ) : null}
+            </div> 
+        */}
+              {isMapLoading && isLoaded && latitude && longitude ? (
+                <Map isLoaded={true} latitude={latitude} longitude={longitude} center={{ lat: latitude, lng: longitude }} resultData={resultData} />
+              ) : null}
+            </div>
+          </Col>
+        </div>
+
+
+      );
     }
 
-    return (
-      <Timeline mode="left">
-        <Timeline.Item>
-          <h3>Result Cards</h3>
-          <Droppable droppableId="result-cards">
-            {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps} className="card-container">
-                {cards.map((card, index) => (
-                  <Draggable key={card.id} draggableId={card.id} index={index}>
-                    {(provided) => (
-                      <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                        <Card
-                          style={{ width: '100%' }}
-                          actions={[
-                            <DragOutlined key="drag" />,
-                            // <DeleteOutlined key="delete" />,
-                            <EditOutlined key="edit" />,
-                            <SyncOutlined key="" />
-                          ]}
-                        >
-                          <Meta title={card.title} description = {
-                                <div>
-                                <p>Description: {card.description.description}</p>
-                                <p>Location: {card.description.location}</p>
-                                <p>Sojourn Time: {card.description.sojournTime}</p>
-                                </div>
-                                                        }
-/>
-                        </Card>
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </Timeline.Item>
-      </Timeline>
-    );
-  }
-
-  return <Empty description="No result available" />;
-};
+    return <Empty description="No result available" />;
+  };
 
 
   const { isLoaded } = useJsApiLoader({
@@ -265,7 +330,7 @@ const renderResultCards = () => {
       <Header />
       <Row justify="center">
         <Col xs={24} sm={12} md={12} lg={12} xl={8}>
-    
+
           <div className="timeline">
             <DragDropContext onDragEnd={handleDragEnd}>
               <Timeline>
@@ -292,16 +357,16 @@ const renderResultCards = () => {
                                     actions={[
                                       <DragOutlined key="drag" />,
                                       // <DeleteOutlined key="delete" />,
-                                      <EditOutlined key ="edit" />,
-                                      <SyncOutlined key ="" />
+                                      <EditOutlined key="edit" />,
+                                      <SyncOutlined key="" />
                                     ]}
                                   >
                                     <Meta title={card.title} description={
-                                    <div> 
-                                      <p>Description: {card.description.description}</p>
-                                <p>Location: {`${card.description.location.Latitude}, ${card.description.location.Longitude}`}</p>
-                                      <p>Sojourn Time: {card.description.sojournTime}</p>
-                                    </div>
+                                      <div>
+                                        <p>Description: {card.description.description}</p>
+                                        <p>Location: {`${card.description.location.Latitude}, ${card.description.location.Longitude}`}</p>
+                                        <p>Sojourn Time: {card.description.sojournTime}</p>
+                                      </div>
                                     } />
                                   </Card>
                                 </div>
@@ -329,7 +394,7 @@ const renderResultCards = () => {
             ) : null}
           </div> */}
             {isLoaded && latitude && longitude ? (
-              <GoogleMap
+              <Map
                 mapContainerStyle={{
                   width: '100%',
                   height: '50vh',
