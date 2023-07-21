@@ -9,6 +9,8 @@ import Header from '../Components/Header';
 import Map from '../Components/map';
 import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom';
+import './Itinerary.css'
+
 
 
 const { Meta } = Card;
@@ -388,17 +390,15 @@ const renderResultCards = () => {
   return (
     <div>
       <Header />
-      <Row justify="center">
-        <Col xs={24} sm={12} md={12} lg={12} xl={8}>
-          <div className="my-trip-container">
-            <h1>Generated Itinerary</h1>
-            <p>Reorder the items or press the edit icon to generate another activity!</p>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+    <Row>
+      <Col xs={24} sm={12} md={12} lg={12} xl={8}>
+      <div className="my-trip-container"/>
+          <h1 className="trip-heading">Generated Itinerary</h1>
+          <p className="trip-description">Reorder the items or press the edit icon to generate another activity!</p>
+          <div className="button-container">
             <Button type="primary" onClick={handleSubmit}>Generate Itinerary</Button>
-        <div style={{ marginLeft: '10px' }} />
             <Button onClick={handleSave}>Save Itinerary</Button>
             </div>
-          </div>
           <div className="timeline">
             <DragDropContext onDragEnd={handleDragEnd}>
               <Timeline>
