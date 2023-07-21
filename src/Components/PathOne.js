@@ -2,19 +2,32 @@ import React from 'react';
 import { Row, Col } from 'antd';
 import StepComponent from './StepComponent';
 import Header from './Header';
+import travel from './Images/travel.svg';
+import TravelBottom from './Images/TravelBottom.svg';
+import BigBenBottom from './Images/BigBenBottom.png'
 
 const PathOne = (props) => {
   return (
     <div>
       <Header />
-      <Row justify="left">
-        {/* <Col xs={24} sm={20} md={16} lg={12} xl={8}> */}
-          {/* <LeftSidebar /> */}
-        {/* </Col> */}
-        <Col xs={24} sm={20} md={16} lg={12} xl={8}>
+      <Row>
+        <Col xs={24} sm={16} md={16} lg={16} xl={16} style={{ paddingRight: '20px' }}>
           <StepComponent />
         </Col>
+        {/* <Col xs={0} sm={8} md={8} lg={8} xl={8} style={{ marginTop: '100px' }}>
+          <img
+            src={travel}
+            style={{ width: '100%', height: 'auto' }}
+          />
+        </Col> */}
       </Row>
+      {/* bottom image */}
+      <div style={{ position: 'fixed', bottom: 0, left: 0, width: '100%', marginLeft:0 }}>
+        <img
+          src= {BigBenBottom}
+          style={{ width: '100%', height: 'auto' }}
+        />
+      </div>
     </div>
   );
 }

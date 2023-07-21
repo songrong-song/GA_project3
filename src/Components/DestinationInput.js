@@ -54,7 +54,7 @@ const DestinationInput = () => {
       <Row gutter={16}>
         <Col xs={24} sm={12}>
           <div className="input-group">
-            <label htmlFor="destination">Destination:</label>
+            <label htmlFor="destination">Destination (required):</label>
             <Form.Item
               name="destination"
               rules={[
@@ -76,7 +76,7 @@ const DestinationInput = () => {
         </Col>
         <Col xs={24} sm={12}>
           <div className="input-group">
-            <label htmlFor="numDays">Number of Days:</label>
+            <label htmlFor="numDays">Number of Days (required):</label>
             <Form.Item
               name="numDays"
               rules={[

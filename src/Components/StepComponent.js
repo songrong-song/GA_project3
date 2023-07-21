@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Steps, Button } from 'antd';
+import { Steps, Button, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import "./StepComponent.css";
 import DestinationInput from "./DestinationInput";
@@ -26,6 +26,17 @@ const StepComponent = () => {
   } = useContext(ItineraryContext);
 
   const handleNextStep = (event) => {
+    if (currentStep === 0) {
+      // Validate DestinationInput
+      if (!destinationValue) {
+        message.error('Please enter a destination, country, or city');
+        return;
+      }
+      if (!durationValue) {
+        message.error('Please select the number of days');
+        return;
+      }
+    }
     setCurrentStep(currentStep + 1);
     event.preventDefault();
   };

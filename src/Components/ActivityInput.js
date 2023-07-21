@@ -29,8 +29,12 @@ const ActivityInput = () => {
   return (
     <div className="activity-input">
       <div>
-        <h1>Select activities that interest you.</h1>
-        <Tag color="orange">Coming Soon</Tag>
+      <div className='titleTag'>
+      <h1 className="heading">Select activities that interest you.</h1> 
+      <Tag color="orange" style={{ height: '24px', lineHeight: '24px' }}>Coming Soon</Tag>
+      </div>
+      <label htmlFor="activities">Activities:</label>
+
         <Form.Item
           name="activities"
           rules={[

@@ -1,5 +1,7 @@
-.activity-input {
-    width: 800px;
+/* FoodInput.css */
+
+.food-input {
+  width: 800px;
     padding: 40px 40px 40px 0; 
 }
 
@@ -9,14 +11,13 @@
   gap: 10px;
 }
 
-
 .heading {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 16px;
 }
 
-.activity-input-selector {
+.food-input-selector {
   /* Add styles for the Select component */
   width: 100%;
   height: 40px;
@@ -27,20 +28,20 @@
   transition: border-color 0.3s;
 }
 
-.activity-input-selector:hover,
-.activity-input-selector:focus {
+
+.food-input-selector:hover,
+.food-input-selector:focus {
   /* Add styles for the hover and focus states of the Select component */
   border-color: #40a9ff;
 }
 
-/* Style the label for the select dropdown */
-.activity-input label {
+.food-input label {
   font-size: 16px;
   font-weight: semi-bold;
 }
 
 
-.activity-input .ant-col .ant-select-selector {
+.food-input .ant-col .ant-select-selector {
   height: 40px; /* Set the desired height */
   align-items: center; /* Vertically center the items */
 }
