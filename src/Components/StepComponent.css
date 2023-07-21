@@ -1,20 +1,19 @@
 .step-component {
   position: absolute;
   width: 800px;
-  left: 80px;
   top: 100px;
   }
 
   .next {
-  top: 40px;
+  top: 20px;
   }
 
   .back {
-  top: 40px;
+  top: 20px;
   }
 
   .submit {
-  top: 40px;
+  top: 20px;
   }
 
 .step-navigation {

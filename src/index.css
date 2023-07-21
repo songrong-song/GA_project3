@@ -22,3 +22,7 @@ html, body {
   padding: 0;
   background-color: #EBEAE6; /* Change the background color here */
 }
+
+body {
+  margin: 0 40px /* 0 top/bottom margin, 40px left/right margin */
+}

@@ -9,8 +9,8 @@ import Header from '../Components/Header';
 import Map from '../Components/map';
 import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom';
+import './Itinerary.css'
 const jwt = require('jsonwebtoken');
-
 
 const { Meta } = Card;
 let resultData = []
@@ -264,60 +264,6 @@ const handleCancelEdit = () => {
   });
 };
 
-/*
-const renderResultCards = () => {
-  if (result && result.length > 0) {
-    const cards = droppableCards[0].cards; // Use the cards array from droppableCards
-
-    if (cards.length === 0) {
-      return <Empty description="No result available" />;
-    }
-
-    return (
-      <Timeline mode="left">
-        <Timeline.Item>
-          <h3>Result Cards</h3>
-          <Droppable droppableId="result-cards">
-            {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps} className="card-container">
-                {cards.map((card, index) => (
-                  <Draggable key={card.id} draggableId={card.id} index={index}>
-                    {(provided) => (
-                      <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                        <Card
-                          style={{ width: '100%' }}
-                          actions={[
-                            <DragOutlined key="drag" />,
-                            // <DeleteOutlined key="delete" />,
-                            <EditOutlined key="edit" onClick={() => handleEdit(index, 'title', 'New Title')} />,
-                            <SyncOutlined key="regenerate" onClick={() => handleSyncIconClick(index)} />
-                          ]}
-                        >
-                          <Meta title={card.title} description = { 
-                            <div>
-                                <p>Description: {card.description.description}</p>
-                                <p>Location: {card.description.location}</p>
-                                <p>Sojourn Time: {card.description.sojournTime}</p>
-                              </div>
-                             
-                          } />
-                        </Card>
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </Timeline.Item>
-      </Timeline>
-    );
-  }
-
-  return <Empty description="No result available" />;
-}; 
-*/
  const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
@@ -427,17 +373,15 @@ const handleSave = async () => {
   return (
     <div>
       <Header />
-      <Row justify="center">
-        <Col xs={24} sm={12} md={12} lg={12} xl={8}>
-          <div className="my-trip-container">
-            <h1>Generated Itinerary</h1>
-            <p>Reorder the items or press the edit icon to generate another activity!</p>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+    <Row>
+      <Col xs={24} sm={12} md={12} lg={12} xl={8}>
+      <div className="my-trip-container"/>
+          <h1 className="trip-heading">Generated Itinerary</h1>
+          <p className="trip-description">Reorder the items or press the edit icon to generate another activity!</p>
+          <div className="button-container">
             <Button type="primary" onClick={handleSubmit}>Generate Itinerary</Button>
-        <div style={{ marginLeft: '10px' }} />
             <Button onClick={handleSave}>Save Itinerary</Button>
             </div>
-          </div>
           <div className="timeline">
             <DragDropContext onDragEnd={handleDragEnd}>
               <Timeline>
@@ -467,8 +411,12 @@ const handleSave = async () => {
                                       <SyncOutlined key={`sync-${index}`} onClick={() => handleSyncIconClick(index)} />
                                     ]}
                                   >
-                                    <Meta title={card.title} description={
-                                    <div> 
+                                  
+                                    <Meta 
+                                    title= {
+                                    <div className = "custom-card-title"> {card.title} </div>} 
+                                    description={
+                                    <div className = "custom-card-description"> 
                                       <p>Description: {card.description.description}</p>
                                        <p>Location: {`${card.description.location.Latitude}, ${card.description.location.Longitude}`}</p>
                                       <p>Sojourn Time: {card.description.sojournTime}</p>

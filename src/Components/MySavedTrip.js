@@ -219,7 +219,7 @@ const Itinerary = () => {
     } catch (error) {
       console.error('Error decoding token:', error);
       // Handle the error
-}
+    }
  
 //     const decodedToken = jwt.decode(cookies.token);
 
@@ -267,7 +267,7 @@ const Itinerary = () => {
   } finally {
     setIsLoading(false);
   }
-};
+}
 
 useEffect(() => {
     onLoad();
@@ -506,6 +506,4 @@ const renderResultCards = () => {
       </Row>
     </div>
   );
-};
-
 export default Itinerary;
