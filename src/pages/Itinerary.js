@@ -10,8 +10,7 @@ import Map from '../Components/map';
 import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom';
 import './Itinerary.css'
-
-
+const jwt = require('jsonwebtoken');
 
 const { Meta } = Card;
 let resultData = []
@@ -20,6 +19,7 @@ const Itinerary = () => {
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(['token']); // Access cookies using the useCookies hook
   const token = cookies.token; // Access the token from the cookies
+  const userID = jwt.decode(token).userID
   const { destinationValue, durationValue, selectedFood, selectedActivities  } = useContext(ItineraryContext);
   const [dayValue, setDayValue] = useState(0); 
   const [result, setResult] = useState(null);
@@ -182,8 +182,18 @@ const Itinerary = () => {
 
 
 
- const handleEdit = (droppableIndex, cardIndex, field, value) => {
+ const handleEdit = (cardIndex, field, value) => {
+
    
+    const cards = droppableCards[0]?.cards;
+
+if (cards && Array.isArray(cards) && cards.length > 0) {
+
+ console.log(cards);
+} else {
+  // The array is either empty or does not contain any object elements
+  console.log("No cards found.");
+}
 
  //update the editingCard and editedContent state
   const cardToEdit = droppableCards[droppableIndex].cards[cardIndex];
@@ -315,18 +325,45 @@ const handleCancelEdit = () => {
   };
 
 //saving itinerary
-  const handleSave = () => {
+const handleSave = async () => {
+  if (token && isValidToken(token)) {
+    // Perform the save functionality here
+    const cards = droppableCards[0]?.cards;
+    if (cards && Array.isArray(cards) && cards.length > 0) {
+      const cardContent = cards.map((card) => ({
+        title: card.title,
+        description: card.description,
+      }));
 
-    if (token && isValidToken(token)) {
-      // Perform the save functionality here
-      console.log('Saving...');
+      // Convert the card content to JSON string
+      const jsonData = JSON.stringify(cardContent, null, 2);
+
+      // Perform the saving operation with the jsonData
+      console.log('Saving card content:', jsonData);
+
+        try {
+         
+          const response = await axios.post('http://localhost:3000/api/useritinerary/saveItinerary', {
+            "userID": userID,
+            "destinationValue": destinationValue,
+            "dayValue": durationValue, //d
+            "itinerary":jsonData,
+
+          });
+          return response.data;
+
+        } catch (error) {
+          console.log('Error fetching updated data:', error);
+          throw error;
+        }
+    
     } else {
-
-      navigate('/loginPrompt')
-      
+      console.log('No cards found.');
     }
-  };
-
+  } else {
+    navigate('/loginPrompt');
+  }
+};
   const defaultActions = [
     <DragOutlined key="drag" />,
     <EditOutlined key="edit" />,
