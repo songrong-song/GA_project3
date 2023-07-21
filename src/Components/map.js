@@ -70,7 +70,7 @@ const [result, setResult] = useState(null);
             {resultData.map((itinerary, i) => (
                 
               itinerary.itineraries.map((item, j) => (
-                 
+                
                      <React.Fragment key={`${i}-${j}`}>
                    {  rand = (Math.random() + 1).toString(36).substring(7) }
                     <Marker
