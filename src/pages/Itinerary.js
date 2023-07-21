@@ -116,14 +116,14 @@ const Itinerary = () => {
               sojournTime: item.restaurant1?.["Recommended Sojourn Time"] || "Unknown",
             },
           },
-        ]
+        ],
         ),
       }));
-      console.log(newDroppableCards);
+
       setIsMapLoading(true);
       try{
-        setLatitude(parseFloat(resultData[0].itineraries[0].attraction1["Location"]["Latitude"]));
-        setLongitude(parseFloat(resultData[0].itineraries[0].attraction1["Location"]["Longitude"]));
+          setLatitude(parseFloat(resultData[0].itineraries[0].attraction1["Location"]["Latitude"]));
+          setLongitude(parseFloat(resultData[0].itineraries[0].attraction1["Location"]["Longitude"]));
       }catch(e){
       }
       setDroppableCards(newDroppableCards);
@@ -414,7 +414,8 @@ const handleSave = async () => {
                                       <SyncOutlined key={`sync-${index}`} onClick={() => handleSyncIconClick(index)} />
                                     ]}
                                   >
-                                  
+                                      {/* cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />} */}
+
                                     <Meta 
                                     title= {
                                     <div className = "custom-card-title"> {card.title} </div>} 
