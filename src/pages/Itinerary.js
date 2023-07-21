@@ -272,17 +272,17 @@ const handleSaveEditedContent = async () => {
   }
 };
 
-const handleCancelEdit = () => {
-  // Close the modal and reset the states
-  setIsEditModalVisible(false);
-  setEditingCard(null);
-  setEditedContent({
-    title: "",
-    description: "",
-    draggableIndex: "", 
-    cardIndex: ""
-  });
-};
+  const handleCancelEdit = () => {
+    // Close the modal and reset the states
+    setIsEditModalVisible(false);
+    setEditingCard(null);
+    setEditedContent({
+      title: "",
+      description: "",
+      draggableIndex: "", 
+      cardIndex: ""
+    });
+  };
 
  const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -349,18 +349,26 @@ const handleSave = async () => {
   // if (token && isValidToken(token))
    {
     // Perform the save functionality here
-    const cards = droppableCards[0]?.cards;
-    if (cards && Array.isArray(cards) && cards.length > 0) {
-      const cardContent = cards.map((card) => ({
-        title: card.title,
-        description: card.description,
-      }));
+    {
+    let cardContent = [];
+    droppableCards.map((droppable, i) => {
+      const cards = droppable.cards;
+      if (cards && Array.isArray(cards) && cards.length > 0) {
+       const content = cards.map((card) => ({
+          title: card.title,
+          description: card.description,
+        }));
+        cardContent.push(content);
 
-      // Convert the card content to JSON string
-      const jsonData = JSON.stringify(cardContent, null, 2);
+      }
+    });
 
-      // Perform the saving operation with the jsonData
-      console.log('Saving card content:', jsonData);
+   
+        // Convert the card content to JSON string
+       const jsonData = JSON.stringify(cardContent, null, 2);
+        console.log(jsonData);
+        // Perform the saving operation with the jsonData
+        console.log('Saving card content:', jsonData);
 
     //     try {
          
@@ -372,20 +380,12 @@ const handleSave = async () => {
              "dayValue": (dayValue || localStorage.getItem( 'NumberOfDays')), //d
              "itinerary":jsonData,
            });
-           console.log('saved successfully')
+           console.log('saved successfully', response.data);
            return response.data;
 
 
-    //     } catch (error) {
-    //       console.log('Error fetching updated data:', error);
-    //       throw error;
-    //     }
-    
-    // } else {
-    //   console.log('No cards found.');
+   
     }
-  // } else {
-  //   navigate('/loginPrompt');
   }
 };
   const defaultActions = [
