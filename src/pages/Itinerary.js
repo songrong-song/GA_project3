@@ -402,7 +402,7 @@ const Itinerary = () => {
           <h1 className="trip-heading">Generated Itinerary</h1>
           <p className="trip-description">Reorder the items or press the edit icon to generate another activity!</p>
           <div className="button-container">
-            <Button type="primary" onClick={handleSubmit}>Generate Itinerary</Button>
+            <Button className= "custom-button" type="primary" onClick={handleSubmit}>Generate Itinerary</Button>
             <Button onClick={handleSave}>Save Itinerary</Button>
           </div>
 

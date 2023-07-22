@@ -5,6 +5,7 @@ import { isValidToken } from "./tokenUtils";
 import { useNavigate } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
 import "./ProfilePage.css";
+import Header from './Header' 
 
 export default function ProfilePage() {
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
@@ -40,6 +41,8 @@ export default function ProfilePage() {
     console.log(decodedToken)
     // Content for logged-in user
     return (
+      <>
+      <Header />
       <Row justify="center">
         <Col xs={24} sm={20} md={16} lg={12} xl={8}>
           <div className="container">
@@ -62,6 +65,7 @@ export default function ProfilePage() {
           </div>
         </Col>
       </Row>
+      </>
     );
   } else {
     // Content for logged-out user

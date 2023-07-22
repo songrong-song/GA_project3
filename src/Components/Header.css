@@ -2,26 +2,25 @@
 
 .ant-menu-horizontal {
   justify-content: flex-end;
-  background-color: #EBEAE6;
+  background-color: #FFFFFF;
 }
 
 .ant-menu-horizontal .ant-menu-item {
-  margin-right: 20px;
+  margin-right: 40px;
+  margin-left: 40px;
 }
 
 .ant-menu-horizontal .ant-menu-item:last-child {
   margin-right: 0;
 }
-/* Your global or App-level CSS file */
 .header {
   display: flex;
-  align-items: center;
+  width: 100%;
   justify-content: space-between;
-  padding: 10px; /* Add padding as needed */
-  background-color:#EBEAE6;; /* Example background color for the header */
+  padding: 10px 10px 0px 30px ; /* Add padding as needed */
+  background-color:#FFFFFF;; /* Example background color for the header */
 }
 
-/* Your global or App-level CSS file */
 .header-text {
   display: flex;
   flex-direction: row;
@@ -41,8 +40,10 @@
 }
 
 
-/* Additional styles for the menu */
-/* You can add more styling for the menu items if needed */
-.ant-menu {
-  margin: 0; /* Remove default margin */
+.ant-menu-horizontal .ant-menu-item-selected::after {
+  content: ''; /* Ensure the underline has content */
+  display: block;
+  border-bottom: 2px solid #1890ff; /* Customize the underline color and thickness */
+  margin: 0 auto; /* Center the underline within the menu item */
+  width: 50%; /* Adjust the width of the underline */
 }
