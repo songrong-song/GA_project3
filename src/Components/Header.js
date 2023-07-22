@@ -2,17 +2,20 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Menu, message, Dropdown } from 'antd';
 import { UserOutlined, HomeOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Link, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './auth/AuthProvider'; // Import AuthContext from the AuthProvider file
 import './Header.css';
 import Cookies from 'js-cookie';
 import { useCookies } from 'react-cookie';
+import LogoImage from './Images/LogoImage.svg';
+
 
 const Header = () => {
   const location = useLocation();
   const [selectedKeys, setSelectedKeys] = useState([]);
   const { logoutSuccess } = useContext(AuthContext); // Use AuthContext from the AuthProvider
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
-
+  const navigate = useNavigate();
   useEffect(() => {
     setSelectedKeys([location.pathname]);
   }, [location]);
@@ -26,9 +29,12 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    removeCookie('token', { path: '/' })
+    removeCookie('token', { path: '/' });
+    localStorage.clear();
     logoutSuccess();
     message.success('Logout successful');
+    navigate('/home')
+
   };
 
   const profileMenu = (
@@ -45,11 +51,9 @@ const Header = () => {
   const token = Cookies.get('token');
 
   return (
-
     <header className="header">
-    <div className="header-text">
-      <div className="bold-text">Itinerary Generator</div>
-      <div className="small-text"> powered by OpenAI</div>
+    <div className="logo-container">
+    <img src={LogoImage} alt="Logo" className="logo" />
     </div>
     <Menu mode="horizontal" selectedKeys={selectedKeys} style={{ justifyContent: 'flex-end' }}>
 

@@ -1,19 +1,11 @@
-// Map.js
 import React, { useEffect, useRef, useState } from "react";
-import { GoogleMap, InfoWindow, Marker } from "@react-google-maps/api"
+import { GoogleMap, Marker } from "@react-google-maps/api"
 import "./Map.css";
 
 const Map = ({ isLoaded, latitude, longitude, center, resultData }) => {
 let rand = ""
 const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  // const [latitude, setLatitude] = useState(null);
-  // const [longitude, setLongitude] = useState(null);
-  //hardcoded values to test
-//   const [latitude, setLatitude] = useState(48.8566); // Default latitude for Paris
-// const [longitude, setLongitude] = useState(2.3522); // Default longitude for Paris
-
-//   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [markers, setMarkers] = useState([]);
   let allMarkers = [];
  useEffect(() => {
@@ -56,7 +48,6 @@ const [result, setResult] = useState(null);
     <div className="container-right">
       { isLoaded && latitude && longitude ? (
         <div className="MapSection">
-          <div className="GoogleMap">
             <GoogleMap
               mapContainerStyle={{
                 width: "100%",
@@ -98,7 +89,6 @@ const [result, setResult] = useState(null);
              
             </GoogleMap>
           </div>
-        </div>
       ) : null}
     </div>
   );

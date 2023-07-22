@@ -2,6 +2,10 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end; 
+  flex-grow: 1; /* Allow the container to grow and take up available space */
+  min-width: 120px; /* Set a minimum width of 120px */
+  margin-right: 20px; /* Add margin to the right side of the container */
+  margin-top: 104px;
 }
 
 
@@ -11,6 +15,15 @@
   min-width: 20%;
   right: 40px; 
   top: 64px;
+}
+
+.timeline {
+  margin-left: 40px;
+}
+
+.card {
+  min-width:280px;
+  max-width: 480px;
 }
 
 .trip-heading {
@@ -125,8 +138,11 @@
   }
 } 
 
-
 .custom-button {
 background: linear-gradient(90deg, #FFE259 15.10%, #FFA751 85.42%);
 color: #000000;
+}
+
+.map {
+  top: 64px;
 }

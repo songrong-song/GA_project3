@@ -31,7 +31,7 @@ const Itinerary = () => {
     else {
       console.log('Invalid or no token found', token);
       localStorage.setItem("StartedAlready", true);
-      navigate('/loginPrompt');
+      navigate('/');
     }
   }, [cookies.token, navigate]);
   // const navigate = useNavigate();
@@ -45,8 +45,8 @@ const Itinerary = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isMapLoading, setIsMapLoading] = useState(false);
 
-  const [latitude, setLatitude] = useState(48.8566); // Default latitude for Paris
-  const [longitude, setLongitude] = useState(2.3522); // Default longitude for Paris
+  const [latitude, setLatitude] = useState(0); 
+  const [longitude, setLongitude] = useState(0);
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
 
 
@@ -409,7 +409,7 @@ const Itinerary = () => {
           <div className="timeline">
             <DragDropContext onDragEnd={handleDragEnd}>
 
-              <Timeline>
+              <Timeline className='timeline'>
                 {droppableCards.map((droppable, i) => (
                   <Timeline.Item key={droppable.id}>
                     <h3>{droppable.title}</h3>
@@ -431,9 +431,8 @@ const Itinerary = () => {
                                     {...provided.dragHandleProps}
                                   >
                                     <Col span={24} xs={24} sm={12} md={12} lg={24} xl={24}>
-                                      <Card
-
-                                        style={{ width: '100%' }}
+                                      <Card className='card'
+                                        // style={{ width: '100%' }}
                                         actions={[
                                           <DragOutlined key="drag" />,
                                           <EditOutlined key={`edit-${index}`} onClick={() => handleEdit(i, index, 'title', 'new value')} />,
@@ -472,7 +471,7 @@ const Itinerary = () => {
 
         </Col>
         
-        <Col className="gutter-row" span={12} xs={24} sm={12} md={12} lg={12} xl={12}>
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <div className="container-right">
             <div className="loader" style={{ display: isLoading ? 'block' : 'none' }}></div>
             {/* {result ? (
@@ -484,7 +483,7 @@ const Itinerary = () => {
                   </div> 
               */}
             {isMapLoading && isLoaded && latitude && longitude ? (
-              <Map isLoaded={true} latitude={latitude} longitude={longitude} center={{ lat: latitude, lng: longitude }} resultData={resultData} />
+              <Map className ="map" isLoaded={true} latitude={latitude} longitude={longitude} center={{ lat: latitude, lng: longitude }} resultData={resultData} />
             ) : null}
           </div>
         </Col>

@@ -22,13 +22,13 @@ export default function ProfilePage() {
     }
     else {
       console.log('Invalid or no token found', token);
-      navigate('/loginPrompt');
+      navigate('/login');
     }
   }, [cookies.token, navigate]);
 
   const handleLogout = () => {
     removeCookie('token');
-    navigate('/home')
+    navigate('/home');
   };
 
   const handleNavigateToHistoricalPage = () => {
@@ -41,10 +41,12 @@ export default function ProfilePage() {
     console.log(decodedToken)
     // Content for logged-in user
     return (
+      <div className="profile-page-container">
       <>
       <Header />
       <Row justify="center">
         <Col xs={24} sm={20} md={16} lg={12} xl={8}>
+        <div className="parent-container">
           <div className="container">
             <h2>Profile Page</h2>
             <p>Welcome, {decodedToken.userName}!</p>
@@ -63,13 +65,16 @@ export default function ProfilePage() {
             </div>
             </div>
           </div>
+          </div>
         </Col>
       </Row>
       </>
+       </div>
+
     );
   } else {
     // Content for logged-out user
-    navigate('/loginPrompt');
+    navigate('/login');
     return null; // or you can return some placeholder content here
   }
 }
