@@ -362,7 +362,7 @@ const Itinerary = () => {
         const saveData = JSON.parse(jsonData)
         // Perform the saving operation with the jsonData
         console.log('Saving card content:', Array(saveData));
-
+        
         //     try {
 
         const response = await axios.post('http://localhost:3000/api/useritinerary/saveItinerary', {
@@ -371,6 +371,7 @@ const Itinerary = () => {
           "dayValue": dayValue, //d
           "itinerary": jsonData,
         });
+        message.success('Itinerary saved successfully');
         console.log('saved successfully')
         return response.data;
 
