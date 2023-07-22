@@ -5,7 +5,6 @@ import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import React from "react";
 import Header from './Header';
-import Cookies from 'js-cookie';
 import "./RegisterPage.css";
 
 
@@ -15,6 +14,7 @@ export default function Register() {
 
   // create state to store form data
   const [formData, setFormData] = useState({});
+  const [lastMessage, setLastMessage] = useState(null); // State for the last message
 
   const handleFormChange = (fieldName, value) => {
     setFormData({ ...formData, [fieldName]: value });
@@ -24,6 +24,7 @@ export default function Register() {
     axios.post('http://localhost:3000/api/users/register', formData)
       .then(response => {
         message.success('Registration successful!');
+        console.log(response.data)
         navigate('/login');
       })
       .catch(err => {
@@ -31,6 +32,7 @@ export default function Register() {
         message.error('Registration failed. Please try again.');
       });
   };
+
 
   return (
     <div className="container">
@@ -40,7 +42,7 @@ export default function Register() {
         <Col xs={24} sm={20} md={16} lg={12} xl={8}>
           <h2>Register</h2>
 
-          <Form onFinish={handleSubmit}>
+            <Form onFinish={handleSubmit}>
             <Form.Item
               label="Name"
               name="name"
@@ -88,7 +90,7 @@ export default function Register() {
 
             <Form.Item>
     
-              <Button type="primary" htmlType="submit" onClick={handleSubmit}>
+              <Button type="primary" htmlType="submit">
                 Submit
               </Button>
               <span className="login-link">
