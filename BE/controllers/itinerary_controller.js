@@ -101,14 +101,14 @@ const itineraryControllers = {
             
             console.log("attraction1_:")
             console.log(attraction1_)
+            attraction1_ = JSON.stringify(attraction1_)
             // console.log(restaurant1_)
 
-
-            try {var attraction1 = JSON.parse(attraction1_);
-              
+            let attraction1;
+            try {attraction1 = JSON.parse(attraction1_);
             } catch (error) {
                 console.log(error)
-                var attraction1 = attraction1_!== null ? {
+                attraction1 = attraction1_!== null ? {
                 "Attraction Name": attraction1_.match(/"Attraction Name":\s*"([^"]*)"/)? attraction1_.match(/"Attraction Name":\s*"([^"]*)"/)[1]: null,
                 "Summary": attraction1_.match(/"Summary":\s*"([^"]*)"/)?attraction1_.match(/"Summary":\s*"([^"]*)"/)[1]:null,
                 "Location": {"Latitude": attraction1_.match(/"[Ll]atitude":\s*"([^"]*)"/)?attraction1_.match(/"Latitude":\s*"([^"]*)"/)[1]:null,
@@ -123,12 +123,13 @@ const itineraryControllers = {
 
             console.log("Attraction1:")
             console.log(attraction1)
-
-            try {var restaurant1 = JSON.parse(restaurant1_);
+            restaurant1_ = JSON.stringify(attraction1_)
+            let restaurant1
+            try {restaurant1 = JSON.parse(restaurant1_);
               
             } catch (error) {
                 console.log(error)
-                var restaurant1 = restaurant1_!== null ? {
+                restaurant1 = restaurant1_!== null ? {
                 "Restaurant Name": restaurant1_.match(/"Restaurant Name":\s*"([^"]*)"/)? restaurant1_.match(/"Restaurant Name":\s*"([^"]*)"/)[1]: null,
                 "Summary": restaurant1_.match(/"Summary":\s*"([^"]*)"/)? restaurant1_.match(/"Summary":\s*"([^"]*)"/)[1]:null,
                 "Location": {"Latitude": restaurant1_.match(/"[Ll]atitude":\s*"([^"]*)"/)? restaurant1_.match(/"Latitude":\s*"([^"]*)"/)[1]:null,
@@ -170,48 +171,44 @@ const itineraryControllers = {
         }
    
     },
-
     findItinerary: async (req, res) => {
-      const {destinationValue, dayValue} = req.body;
+      const { destinationValue, dayValue } = req.body;
       const durationValue = dayValue;
-      console.log("A")
+      console.log("A");
   
       try {
         const result = await ItineraryModel.find({ destination: destinationValue }).limit(durationValue);
+  
         const array_length = result.length;
-        console.log(array_length)
-        console.log(dayValue)
-    
+  
         // if arrayLength < dayValue
-        if (array_length  < dayValue) {
+        if (array_length < dayValue) {
           const difference = dayValue - array_length;
           const excludeDestinations = [];
           for (const item of result) {
             try {
               const attractionName = item.itineraries[0].attraction1['Attraction Name'];
               excludeDestinations.push(attractionName);
-              
-              
             } catch (error) {
               console.error('Error reading attraction name:', error);
               continue; // Skip to the next iteration
             }
           }
-          console.log(excludeDestinations)
+          console.log(excludeDestinations);
           for (let i = 0; i < difference; i++) {
-            console.log("C")
-            
   
             // Call your function here
             // Replace the console.log statement with your function call
-            console.log(result)
-            newAttraction = itineraryControllers.createItinerary(data = {"exclude": excludeDestinations, "destinationValue":destinationValue })
-            excludeDestinations.push(newAttraction)
-            console.log(newAttraction)
+            newAttraction = itineraryControllers.createItinerary({ "exclude": excludeDestinations, "destinationValue": destinationValue });
+            excludeDestinations.push(newAttraction);
           }
         }
+
+        setTimeout(() => {
+          // This code will execute after 1 second
+          const result_ = ItineraryModel.find({ destination: destinationValue }).limit(dayValue);
+        }, 1000);
   
-        const result_ = await ItineraryModel.find({ destination: destinationValue }).limit(dayValue);
         
   
         if (result_) {
@@ -226,7 +223,6 @@ const itineraryControllers = {
         res.status(500).json({ error: 'Fail to return the Itinerary' });
       }
     },
-  
 
 
 
