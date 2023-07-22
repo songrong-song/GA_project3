@@ -12,20 +12,28 @@ const userControllers = {
         var userId = req.body.userId;
         console.log(userId)
 
-        try {
-            const result = await userItineraryModel.find( {userId: userId} )
+        const fetchHistoricalResult = async (req, res) => {
+          // Get the registration data in the req
+          var userId = req.body.userId;
+          console.log(userId);
+        
+          try {
+            const result = await userItineraryModel.find({ userId: userId });
             if (result) {
-              // User found
-              console.log("*******************")
-              result.map((item, i) => {
+              console.log("*******************");
+              result.forEach((item, i) => {
                 console.log(item.itineraries);
-                result[i].itineraries = JSON.parse(item.itineraries);
-
+                try {
+                  const itineraries = JSON.parse(item.itineraries);
+                  result[i].itineraries = Array.isArray(itineraries) ? itineraries : [];
+                } catch (error) {
+                  console.error("Invalid JSON:", item.itineraries);
+                  result[i].itineraries = [];
+                }
               });
-              
-              //console.log(result)
-              
-              res.json(result);
+        
+              // Return the result to the frontend
+              res.status(200).json({ data: result });
             } else {
               // User not found
               res.status(404).json({ error: "Itinerary not found" });
@@ -34,9 +42,10 @@ const userControllers = {
             console.error('Error finding user:', error);
             res.status(500).json({ error: 'Fail to return the Itinerary' });
           }
-    },
+        };
+      },
 
-    saveResult: async (req, res) => {
+      saveResult: async (req, res) => {
       
       try {
         
