@@ -1,0 +1,6 @@
+Restaurant Name: Karczma Jowita 
+Summary: Karczma Jowita is a traditional and cozy restaurant located near Łeba Beach. It offers a wide variety of local dishes that are sure to please everyone. 
+Location: 
+- Latitude: 54.7713
+- Longitude: 17.7599
+Recommended Sojourn Time: 3 hours

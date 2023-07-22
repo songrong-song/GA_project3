@@ -29,7 +29,7 @@ export default function Register() {
       })
       .catch(err => {
         console.log(err);
-        message.error('Registration failed. Please try again.');
+        // message.error('Registration failed. Please try again.');
       });
   };
 

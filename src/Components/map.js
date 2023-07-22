@@ -24,7 +24,7 @@ const [result, setResult] = useState(null);
       resultData.forEach((itinerary, index) => {
         itinerary.itineraries.forEach((item, itemIndex) => {
         
-        //if (item.attraction?.Location?.latitude && item.attraction?.Location?.longitude) {
+        if (item.attraction?.Location?.latitude && item.attraction?.Location?.longitude) {
             allMarkers.push({
               id: `attraction-${index}-${itemIndex}`,
               type: "Attraction",
@@ -34,8 +34,8 @@ const [result, setResult] = useState(null);
                 lng: parseFloat(item.attraction1["Location"]["Longitude"]),
               },
             });
-         // }
-          //if (item.restaurant1?.Location?.latitude && item.restaurant1?.Location?.longitude) {
+         }
+          if (item.restaurant1?.Location?.latitude && item.restaurant1?.Location?.longitude) {
             allMarkers.push({
               id: `restaurant-${index}-${itemIndex}`,
               type: "Restaurant",
@@ -45,7 +45,7 @@ const [result, setResult] = useState(null);
                 lng: parseFloat(item.restaurant1["Location"]["Longitude"]),
               },
             });
-          //}
+          }
         });
       });
       setMarkers(allMarkers);
@@ -67,34 +67,40 @@ const [result, setResult] = useState(null);
             >
            
             
-            {resultData.map((itinerary, i) => (
-                
-              itinerary.itineraries.map((item, j) => (
-                
-                     <React.Fragment key={`${i}-${j}`}>
-                   {  rand = (Math.random() + 1).toString(36).substring(7) }
-                    <Marker
-                        key={`attraction-${i}-${j}`}
-                        position={{ 
-                            lat: parseFloat(item.attraction1["Location"]["Latitude"]), 
-                            lng: parseFloat(item.attraction1["Location"]["Longitude"]) 
-                        }}
-                        
-                    />
-                    {console.log(item.attraction1["Attraction Name"])}
-                    {console.log(item.restaurant1["Restaurant Name"])}
-                    {console.log(item.attraction1["Location"]["Latitude"])}
-                    {console.log(item.attraction1["Location"]["Longitude"])}
-                    {console.log(item.restaurant1["Location"]["Latitude"])}
-                    {console.log(item.restaurant1["Location"]["Longitude"])}
+           {resultData.map((itinerary, i) => (
+  itinerary.itineraries.map((item, j) => (
+    <React.Fragment key={`${i}-${j}`}>
+      {rand = (Math.random() + 1).toString(36).substring(7)}
+      
+      {/* Check if 'item.attraction1' and the required properties exist */}
+      {item.attraction1?.["Location"]?.["Latitude"] && item.attraction1?.["Location"]?.["Longitude"] &&
+        <Marker
+          key={`attraction-${i}-${j}`}
+          position={{
+            lat: parseFloat(item.attraction1["Location"]["Latitude"]),
+            lng: parseFloat(item.attraction1["Location"]["Longitude"])
+          }}
+        />
+      }
+      
+      {item.attraction1?.["Attraction Name"] && console.log(item.attraction1["Attraction Name"])}
+      
+      {/* Check if 'item.restaurant1' and the required properties exist */}
+      {item.restaurant1?.["Location"]?.["Latitude"] && item.restaurant1?.["Location"]?.["Longitude"] &&
+        <Marker
+          key={`restaurant-${i}-${j}`}
+          position={{
+            lat: parseFloat(item.restaurant1["Location"]["Latitude"]),
+            lng: parseFloat(item.restaurant1["Location"]["Longitude"])
+          }}
+        />
+      }
+      
+      {item.restaurant1?.["Restaurant Name"] && console.log(item.restaurant1["Restaurant Name"])}
+    </React.Fragment>
+  ))
+))}
 
-                    <Marker
-                        key={`restaurant-${i}-${j}`}
-                        position={{ lat: parseFloat(item.restaurant1["Location"]["Latitude"]), lng: parseFloat(item.restaurant1["Location"]["Longitude"]) }}
-                        
-                    />  
-               </React.Fragment>
-                ))))}
              
             </GoogleMap>
           </div>
