@@ -15,12 +15,6 @@
     margin-bottom: 20px;
   }
   
-  p {
-    font-family: 'Georgia', serif; /* Vintage serif font */
-    font-size: 18px;
-    color: #6b4226; /* Vintage dark brown text color */
-    margin-right: 10px; /* Add some spacing between paragraphs and buttons */
-  }
   
   .row {
     display: flex; /* Use Flexbox */

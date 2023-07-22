@@ -2,13 +2,19 @@
   position: absolute;
   width: 800px;
   top: 40px;
+  margin-left: 40px;
   }
 
 .step-navigation {
   display: flex;
-  justify-content: space-between;
-}
+  gap: 20px;
+  }
 
-.step-navigation .back {
-  margin-right: 10px;
+
+.step-navigation .back,
+.step-navigation .next,
+.step-navigation .submit {
+  margin-bottom: 10px; /* Add some spacing between buttons (optional) */
+    align-items: center; /* Align buttons vertically in the middle */
+
 }
