@@ -107,8 +107,8 @@ const MySavedTrip = () => {
         userId: decodedToken.userId,
       });
 
-      const resultData = response.data;
-      console.log(resultData);
+      resultData = response.data;
+      console.log(resultData)
       setResult(resultData);
     }
 
@@ -147,7 +147,7 @@ const MySavedTrip = () => {
           })),
     }));
     
-
+    console.log(newDroppableCards);
     setDroppableCards(newDroppableCards);
     renderResultCards();
 

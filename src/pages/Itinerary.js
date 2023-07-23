@@ -31,7 +31,7 @@ const Itinerary = () => {
     else {
       console.log('Invalid or no token found', token);
       localStorage.setItem("StartedAlready", true);
-      navigate('/');
+      navigate('/login');
     }
   }, [cookies.token, navigate]);
   // const navigate = useNavigate();
@@ -59,7 +59,8 @@ const Itinerary = () => {
   });
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false); // A state that tracks data loading for entire page
-
+  const [showNoResultsMessage, setShowNoResultsMessage] = useState(false);
+  
 
   useEffect(() => {
     if (destinationValue) {
@@ -88,15 +89,13 @@ const Itinerary = () => {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-
+    
 
     const response = await axios.post('http://localhost:3000/api/itinerary', {
 
       "destinationValue": (destinationValue || localStorage.getItem('Destination')),
       "dayValue": (durationValue || localStorage.getItem('NumberOfDays')),
     })
-    // "selectedActivities": selectedActivities,
-    // "selectedFood": selectedFood) })
 
     if (response.status === 200) {
       resultData = response.data;
@@ -109,11 +108,25 @@ const Itinerary = () => {
       };
 
       const generateDroppableAreas = (dayValue) => {
-        const newDroppableCards = resultData.map((itinerary, index) => ({
-          id: `result-cards-${index}`,
-          title: `Day ${index + 1}`,
-          cards: itinerary.itineraries.flatMap((item, itemIndex) => [
-            {
+        
+      if (droppableCards.length === 0) {
+        setShowNoResultsMessage(true);
+      }
+ else {
+        console.log('Error generating itinerary:');
+        setResult('Something went wrong. Please try again.');
+      }
+      
+      setIsLoading(false);
+      const newDroppableCards = [];
+
+      resultData.map((itinerary, index) => {
+      let cards = []
+      const p = itinerary.itineraries.map((item, itemIndex) => {
+          
+           if(item.attraction1){
+
+            cards.push({
               id: `result-card-${index}-${itemIndex}-attraction`,
               type: "Attraction",
               title: item.attraction1?.["Attraction Name"] || "Unknown",
@@ -132,28 +145,42 @@ const Itinerary = () => {
                 location: item.restaurant1?.Location || "Unknown",
                 sojournTime: item.restaurant1?.["Recommended Sojourn Time"] || "Unknown",
               },
-            },
-          ],
-          ),
-        }));
+            });
+           }
+           
+          
+        }
+      );
+       //if(cards.length > 0){
+        newDroppableCards.push({
+          id: `result-cards-${index}`,
+          title: `Day ${index + 1}`,
+          cards: cards
+        });
+      // }
+       
+      });
+      
+       console.log(newDroppableCards);
         setIsMapLoading(true);
         try {
           setLatitude(parseFloat(resultData[0].itineraries[0].attraction1["Location"]["Latitude"]));
           setLongitude(parseFloat(resultData[0].itineraries[0].attraction1["Location"]["Longitude"]));
-        } catch (e) {
-        }
+        } catch (e) {}
         setDroppableCards(newDroppableCards);
       };
 
       generateDroppableAreas(dayValue);
+
+    if (droppableCards.length === 0) {
+    setShowNoResultsMessage(true);
+      }
     } else {
       console.log('Error generating itinerary:');
       setResult('Something went wrong. Please try again.');
     }
     setIsLoading(false);
-
-
-  }
+  };
 
 
   // New function to fetch updated data from the server
@@ -396,6 +423,8 @@ const Itinerary = () => {
   return (
     <div>
       <Header />
+      { console.log(droppableCards.length) }
+    
       <Row gutter={16} type="flex">
         <Col className="gutter-row" span={12} xs={24} sm={12} md={12} lg={12} xl={12}>
           <div className="my-trip-container" />
@@ -405,10 +434,9 @@ const Itinerary = () => {
             <Button className= "custom-button" type="primary" onClick={handleSubmit}>Generate Itinerary</Button>
             <Button onClick={handleSave}>Save Itinerary</Button>
           </div>
-
-          <div className="timeline">
+        {droppableCards.length > 0 ? ( // Conditionally render the timeline and droppable cards only if there are results
+          <div className="timeline-container">
             <DragDropContext onDragEnd={handleDragEnd}>
-
               <Timeline className='timeline'>
                 {droppableCards.map((droppable, i) => (
                   <Timeline.Item key={droppable.id}>
@@ -468,26 +496,26 @@ const Itinerary = () => {
 
             </DragDropContext>
           </div>
-
+        ) : (
+       <Empty className= "Empty" description="No results found" style/> 
+          )}
         </Col>
-        
+         { isMapLoading && isLoaded  && droppableCards.length === 0 ? ( 
+              <p> No results found </p> 
+            ) : null} 
+
         <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <div className="container-right">
             <div className="loader" style={{ display: isLoading ? 'block' : 'none' }}></div>
-            {/* {result ? (
-                  <div>
-                            <h2>Result as Text:</h2>
-                            <pre>{formatResult(result)}</pre>
-                          </div>
-                        ) : null}
-                  </div> 
-              */}
             {isMapLoading && isLoaded && latitude && longitude ? (
               <Map className ="map" isLoaded={true} latitude={latitude} longitude={longitude} center={{ lat: latitude, lng: longitude }} resultData={resultData} />
             ) : null}
           </div>
         </Col>
       </Row>
+  
+
+
       {isEditModalVisible && (
         <Modal
           title="Edit Card Content"
