@@ -136,6 +136,7 @@
   .card-container .ant-card {
     flex: 0 0 calc(100% - 8px);
   }
+}
 
 .custom-button {
 background: linear-gradient(90deg, #FFE259 15.10%, #FFA751 85.42%);

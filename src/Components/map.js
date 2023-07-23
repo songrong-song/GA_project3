@@ -8,15 +8,12 @@ const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [markers, setMarkers] = useState([]);
   let allMarkers = [];
+
  useEffect(() => {
-
-
     if (resultData && resultData.length > 0) {
-
       resultData.forEach((itinerary, index) => {
         itinerary.itineraries.forEach((item, itemIndex) => {
         
-
         if (item.attraction1) {
             allMarkers.push({
               id: `attraction-${index}-${itemIndex}`,
@@ -39,7 +36,8 @@ const [result, setResult] = useState(null);
               },
             });
           }
-        });
+        }}
+        );
       });
       setMarkers(allMarkers);
     }

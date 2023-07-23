@@ -39,15 +39,6 @@
   font-size: 14px; /* Adjust the font size as needed */
 }
 
-
-.ant-menu-horizontal .ant-menu-item-selected::after {
-  content: ''; /* Ensure the underline has content */
-  display: block;
-  border-bottom: 2px solid #1890ff; /* Customize the underline color and thickness */
-  margin: 0 auto; /* Center the underline within the menu item */
-  width: 50%; /* Adjust the width of the underline */
-}
-
 .logo-container {
   display: flex;
   align-items: center;

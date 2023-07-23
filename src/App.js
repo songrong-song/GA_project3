@@ -12,6 +12,8 @@ import jwt from 'jsonwebtoken';
 import MySavedTrip from './Components/MySavedTrip';
 import Cookies from 'js-cookie';
 import dotenv from 'dotenv';
+
+
 dotenv.config();
 // PrivateRoute component
 const PrivateRoute = ({ component: Component, ...rest }) => {

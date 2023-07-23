@@ -53,12 +53,14 @@ export default function Login() {
   };
 
   return (
-    <div>
-     <Header />
+    <div className="login-page-container">
+    <>
+    <Header />
       <Row justify="center">
         <Col xs={24} sm={20} md={16} lg={12} xl={8}>
-          <div className="form-container">
-            <h2>Login to Itinerary Generator</h2>
+          <div className="parent-container">
+          <div className="container">
+            <h2 className="Login-Heading">Login to Itinerary Generator</h2>
 
             <Form onFinish={handleSubmit} className="login-form">
               <Form.Item
@@ -87,27 +89,24 @@ export default function Login() {
                   onChange={(e) => handleFormChange('password', e.target.value)}
                 />
               </Form.Item>
-{/* 
-              <Form.Item>
-                <Form.Item name="remember" valuePropName="checked" noStyle>
-                  <Checkbox>Remember me</Checkbox>
-                </Form.Item>
-
-                <a className="login-form-forgot" href="">
-                  Forgot password
-                </a>
-              </Form.Item> */}
 
               <Form.Item>
-                <Button type="primary" htmlType="submit" className="login-form-button">
-                  Log in
-                </Button>
-                Or <Link to="/register">register now!</Link>
+                  <Button type="primary" htmlType="submit" className="login-form-button">
+                    Log in
+                  </Button>
+                  <br/>
+                  <br/>                
+                  <p>Or</p>
+                <span className="register-link">
+                <Link to="/register">Register now!</Link>
+                </span>
               </Form.Item>
             </Form>
           </div>
+        </div>
         </Col>
       </Row>
+      </>
     </div>
   );
 }

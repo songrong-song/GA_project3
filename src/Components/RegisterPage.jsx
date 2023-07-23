@@ -35,13 +35,13 @@ export default function Register() {
 
 
   return (
-    <div className="container">
-      <Header activeMenu="register" />
-
-      <Row justify="center">
-        <Col xs={24} sm={20} md={16} lg={12} xl={8}>
-          <h2>Register</h2>
-
+    <div className="register-page-container">
+    <Header />
+    <Row justify="center">
+    <Col xs={24} sm={20} md={16} lg={12} xl={8}>
+    <div className="parent-container">
+      <div className="container">
+          <h2>Register</h2>         
             <Form onFinish={handleSubmit}>
             <Form.Item
               label="Name"
@@ -89,15 +89,18 @@ export default function Register() {
             </Form.Item>
 
             <Form.Item>
-    
-              <Button type="primary" htmlType="submit">
-                Submit
+              <Button className="register-form-button" type="primary" htmlType="submit">
+                Register
               </Button>
+              <br/>
+              <br/>
               <span className="login-link">
                 Already have an account? <Link to="/login"> Login </Link>
               </span>
             </Form.Item>
           </Form>
+        </div>
+        </div>
         </Col>
       </Row>
     </div>
