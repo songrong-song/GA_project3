@@ -16,6 +16,7 @@ const [result, setResult] = useState(null);
       resultData.forEach((itinerary, index) => {
         itinerary.itineraries.forEach((item, itemIndex) => {
         
+
         if (item.attraction1) {
             allMarkers.push({
               id: `attraction-${index}-${itemIndex}`,
@@ -26,7 +27,7 @@ const [result, setResult] = useState(null);
                 lng: parseFloat(item.attraction1["Location"]["Longitude"]),
               },
             });
-          }
+
           if (item.restaurant1) {
             allMarkers.push({
               id: `restaurant-${index}-${itemIndex}`,
@@ -83,6 +84,7 @@ const [result, setResult] = useState(null);
                     
                </React.Fragment>
                 ))))}
+
              
             </GoogleMap>
           </div>
