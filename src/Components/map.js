@@ -8,16 +8,13 @@ const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [markers, setMarkers] = useState([]);
   let allMarkers = [];
- useEffect(() => {
-
-
+  useEffect(() => {
     if (resultData && resultData.length > 0) {
+      const allMarkers = []; // Create a local array to collect markers
 
       resultData.forEach((itinerary, index) => {
         itinerary.itineraries.forEach((item, itemIndex) => {
-        
-
-        if (item.attraction1) {
+          if (item.attraction1) {
             allMarkers.push({
               id: `attraction-${index}-${itemIndex}`,
               type: "Attraction",
@@ -27,6 +24,7 @@ const [result, setResult] = useState(null);
                 lng: parseFloat(item.attraction1["Location"]["Longitude"]),
               },
             });
+          }
 
           if (item.restaurant1) {
             allMarkers.push({
@@ -41,10 +39,12 @@ const [result, setResult] = useState(null);
           }
         });
       });
-      setMarkers(allMarkers);
+
+      setMarkers(allMarkers); // Set the state after processing all the markers
     }
   }, [resultData]);
 
+  // Rest of your component code using the 'markers' state
  return (
     <div className="container-right">
       { isLoaded && latitude && longitude ? (
