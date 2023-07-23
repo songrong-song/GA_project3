@@ -68,9 +68,6 @@ const itineraryControllers = {
         }
       }
 
-
-
-
            // attraction1_ = JSON.stringify(attraction1_)
            try {
             attraction1 = JSON.parse(attraction1_);
@@ -125,11 +122,9 @@ const itineraryControllers = {
                 },
                 "Recommended Sojourn Time": sojournTimeMatch ? sojournTimeMatch[1] : null,
               };
-              console.log("2")
+      
             }
           };
-
-
 
 
       // attraction1_ = JSON.stringify(attraction1_)
@@ -143,8 +138,8 @@ const itineraryControllers = {
           // Regular expressions for strings with double quotes
           const restaurantNameRegexWithQuotes = /"Restaurant Name":\s*"([^"]*)"/;
           const summaryRegexWithQuotes = /"Summary":\s*"([^"]*)"/;
-          const latitudeRegexWithQuotes = /"[L|l]atitude":\s*"([^"]*)/;
-          const longitudeRegexWithQuotes = /"[L|l]ongitude":\s*"([^"]*)/;
+          const latitudeRegexWithQuotes = /"[L|l]atitude":\s*("?)([^"]*)/;
+          const longitudeRegexWithQuotes = /"[L|l]ongitude":\s*("?)([^"]*)/;
           const sojournTimeRegexWithQuotes = /"Recommended Sojourn Time":\s*"([^"]*)"/;
 
           const restaurantNameMatch = restaurantNameRegexWithQuotes.exec(restaurant1_);
