@@ -83,7 +83,7 @@ if (!destinationValue){
                   placeholder="Enter a destination, country or city"
                   onChange={handlePlaceChange}
                   onBlur={handlePlaceChange}
-                  value={(destinationValue || localStorage.getItem( 'Destination')) }
+                  value={(localStorage.getItem( 'Destination')) }
                 />
               </Autocomplete>
             </Form.Item>

@@ -6,6 +6,7 @@ import DestinationInput from "./DestinationInput";
 import ActivityInput from './ActivityInput';
 import FoodInput from './FoodInput';
 import { ItineraryContext } from './ItineraryContext';
+import { AuthContext } from './auth/AuthProvider';
 
 const { Step } = Steps;
 
@@ -97,7 +98,7 @@ const StepComponent = () => {
         )}
         {currentStep === 2 && (
           <Button className="submit" type="primary" onClick={handleSubmission}>
-          next
+          Next
           </Button>
         )}
       </div>

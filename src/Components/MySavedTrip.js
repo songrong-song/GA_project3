@@ -88,8 +88,8 @@ const MySavedTrip = () => {
           // You can use the decodedToken here if needed
           return decodedToken;
         } else {
-          console.log('Invalid or no token found', token);
-          navigate('/loginPrompt');
+          
+          navigate('/login');
           return;
         }
       } catch (error) {
@@ -101,14 +101,16 @@ const MySavedTrip = () => {
     }
 
     const decodedToken = await checkTokenAndNavigate()
-  
-    const response = await axios.post('http://localhost:3000/api/useritinerary', {
-      userId: decodedToken.userId,
-    });
+    console.log(decodedToken.userId)
+    if(decodedToken){
+      const response = await axios.post('http://localhost:3000/api/useritinerary', {
+        userId: decodedToken.userId,
+      });
 
-    const resultData = response.data;
-    console.log(resultData);
-    setResult(resultData);
+      resultData = response.data;
+      console.log(resultData)
+      setResult(resultData);
+    }
 
     const newDroppableCards = resultData.flatMap((itinerary, index) => ({
       id: `result-cards-${index}`,
@@ -145,7 +147,7 @@ const MySavedTrip = () => {
           })),
     }));
     
-
+    console.log(newDroppableCards);
     setDroppableCards(newDroppableCards);
     renderResultCards();
 

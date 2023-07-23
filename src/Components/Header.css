@@ -17,7 +17,7 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
-  padding: 10px 10px 0px 30px ; /* Add padding as needed */
+  padding: 15px 10px 15px 30px ; /* Add padding as needed */
   background-color:#FFFFFF;; /* Example background color for the header */
 }
 
@@ -46,4 +46,15 @@
   border-bottom: 2px solid #1890ff; /* Customize the underline color and thickness */
   margin: 0 auto; /* Center the underline within the menu item */
   width: 50%; /* Adjust the width of the underline */
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 200px; /* Set the width of the logo as needed */
+  height: auto; /* Adjust height proportionally to the width */
+  margin-right: 10px; /* Adjust margin as needed */
 }

@@ -39,7 +39,12 @@ export default function Login() {
       });
       loginSuccess(response.data.token);
       Cookies.set('token', response.data.token);
-      navigate('/home');
+      if (localStorage.getItem('StartedAlready')){
+       navigate('/generator'); 
+      }else{  
+        navigate('/home');
+      }
+
       message.success('Logged in successfully!');
     } catch (error) {
       console.log(error);
@@ -49,6 +54,7 @@ export default function Login() {
 
   return (
     <div>
+     <Header />
       <Row justify="center">
         <Col xs={24} sm={20} md={16} lg={12} xl={8}>
           <div className="form-container">
