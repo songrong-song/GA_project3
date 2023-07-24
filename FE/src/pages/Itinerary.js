@@ -1,4 +1,7 @@
+import axios from "axios";
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import {
   Button,
   Card,
@@ -13,13 +16,11 @@ import {
 import { DragOutlined, EditOutlined, SyncOutlined } from "@ant-design/icons";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useJsApiLoader } from "@react-google-maps/api";
-import axios from "axios";
 import { ItineraryContext } from "../Components/Generator/ItineraryContext";
 import Header from "../Components/Header/Header";
 import Map from "../Components/Generator/map";
-import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
 import "./Itinerary.css";
+
 const jwt = require("jsonwebtoken");
 
 let decoded = null;
@@ -98,7 +99,7 @@ const Itinerary = () => {
       console.log(resultData);
       setResult(resultData);
 
-      const generateDroppableAreas = (dayValue) => {
+      const generateDroppableAreas = () => {
         if (droppableCards.length === 0) {
           setShowNoResultsMessage(true);
         } else {

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Button, Row, Col } from "antd";
-import { useCookies } from "react-cookie";
-import { isValidToken } from "../tokenUtils";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import { Button, Row, Col } from "antd";
 import jwt from "jsonwebtoken";
+import { isValidToken } from "../tokenUtils";
 import "./ProfilePage.css";
 import Header from "../Header/Header";
 

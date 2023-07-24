@@ -1,13 +1,14 @@
 import axios from "axios";
+import React from "react";
 import { useState, useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { AuthContext } from "../auth/AuthProvider";
-import React from "react";
-import Header from "../Header/Header";
+import Cookies from "js-cookie";
+import "./LoginPage.css";
 import { Button, Form, Input, Col, Row, message } from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import "./LoginPage.css";
-import Cookies from "js-cookie";
+import { AuthContext } from "../auth/AuthProvider";
+import Header from "../Header/Header";
+
 const jwt = require("jsonwebtoken");
 
 export default function Login() {
@@ -103,16 +104,6 @@ export default function Login() {
                   onChange={(e) => handleFormChange("password", e.target.value)}
                 />
               </Form.Item>
-              {/* 
-              <Form.Item>
-                <Form.Item name="remember" valuePropName="checked" noStyle>
-                  <Checkbox>Remember me</Checkbox>
-                </Form.Item>
-
-                <a className="login-form-forgot" href="">
-                  Forgot password
-                </a>
-              </Form.Item> */}
 
               <Form.Item>
                 <Button

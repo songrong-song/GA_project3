@@ -26,7 +26,7 @@ const FoodInput = () => {
     "Spanish",
     "Greek",
     "Chinese",
-  ]; // Replace with your activity options
+  ];
 
   return (
     <div className="food-input">

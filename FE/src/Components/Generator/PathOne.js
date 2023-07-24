@@ -4,7 +4,7 @@ import StepComponent from "./StepComponent";
 import Header from "../Header/Header";
 import BigBenBottom from "../Images/BigBenBottom.png";
 
-const PathOne = (props) => {
+const PathOne = () => {
   return (
     <div>
       <Header />

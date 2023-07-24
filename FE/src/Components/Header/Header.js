@@ -1,12 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Menu, message, Dropdown } from "antd";
-import { UserOutlined, HomeOutlined, LogoutOutlined } from "@ant-design/icons";
-import { Link, useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../auth/AuthProvider"; // Import AuthContext from the AuthProvider file
-import "./Header.css";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useCookies } from "react-cookie";
+import { Menu, message, Dropdown } from "antd";
+import { UserOutlined, HomeOutlined, LogoutOutlined } from "@ant-design/icons";
+import { AuthContext } from "../auth/AuthProvider"; // Import AuthContext from the AuthProvider file
+import "./Header.css";
 import LogoImage from "../Images/LogoImage.svg";
 
 const Header = () => {

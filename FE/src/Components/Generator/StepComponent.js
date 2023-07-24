@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
-import { Steps, Button, message } from "antd";
 import { useNavigate } from "react-router-dom";
+import { Steps, Button, message } from "antd";
 import "./StepComponent.css";
 import DestinationInput from "./DestinationInput";
 import ActivityInput from "./ActivityInput";

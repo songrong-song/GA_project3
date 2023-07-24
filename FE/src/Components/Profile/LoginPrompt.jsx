@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Row, Col } from "antd";
 import { Link } from "react-router-dom";
+import { Button, Row, Col } from "antd";
 
 const LoginPrompt = () => (
   <Row justify="center">

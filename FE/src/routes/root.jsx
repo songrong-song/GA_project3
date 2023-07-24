@@ -10,11 +10,11 @@ const Root = () => {
     const fetchItinerary = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get('/api/response');
+        const response = await axios.get("/api/response");
         setItinerary(response.data);
         setIsLoading(false);
       } catch (error) {
-        console.log('Failed to fetch itinerary:', error);
+        console.log("Failed to fetch itinerary:", error);
         setIsLoading(false);
       }
     };
