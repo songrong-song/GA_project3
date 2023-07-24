@@ -1,30 +1,34 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Button, Card, Col, Empty, Input, Row, Timeline, Modal, message } from 'antd';
-import { DragOutlined, EditOutlined, SyncOutlined } from '@ant-design/icons';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { useJsApiLoader } from '@react-google-maps/api';
-import axios from 'axios';
-import { ItineraryContext } from './ItineraryContext';
-import Header from './Header';
-import { useCookies } from 'react-cookie'
-import { useNavigate } from 'react-router-dom';
-import { isValidToken } from "./tokenUtils";
-import "./MySavedTrip.css"
+import React, { useState, useEffect, useContext } from "react";
+import {
+  Button,
+  Card,
+  Col,
+  Empty,
+  Input,
+  Row,
+  Timeline,
+  Modal,
+  message,
+} from "antd";
+import { DragOutlined, EditOutlined, SyncOutlined } from "@ant-design/icons";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useJsApiLoader } from "@react-google-maps/api";
+import axios from "axios";
+import { ItineraryContext } from "../Generator/ItineraryContext";
+import Header from "../Header/Header";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import { isValidToken } from "../tokenUtils";
+import "./MySavedTrip.css";
 
-
-const jwt = require('jsonwebtoken');
-
-
+const jwt = require("jsonwebtoken");
 
 const { Meta } = Card;
 
 const MySavedTrip = () => {
-
-
-
-  const jwt = require('jsonwebtoken');
-  const { parse } = require('cookie')
-  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const jwt = require("jsonwebtoken");
+  const { parse } = require("cookie");
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
   const token = cookies.token;
 
   const { destinationValue, durationValue } = useContext(ItineraryContext);
@@ -36,7 +40,7 @@ const MySavedTrip = () => {
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [droppableCards, setDroppableCards] = useState([]);
   const [isMapLoading, setIsMapLoading] = useState(false);
-  let resultData = []
+  let resultData = [];
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,13 +48,12 @@ const MySavedTrip = () => {
       getCoordinatesForDestination(destinationValue);
     }
   }, [destinationValue]);
-      
 
   async function getCoordinatesForDestination(destination) {
     try {
       const geocoder = new window.google.maps.Geocoder();
       geocoder.geocode({ address: destination }, (results, status) => {
-        if (status === 'OK' && results[0]) {
+        if (status === "OK" && results[0]) {
           const { lat, lng } = results[0].geometry.location;
           const latitude = Number(lat()); // Convert the lat value to a valid number
           const longitude = Number(lng()); // Convert the lng value to a valid number
@@ -60,7 +63,7 @@ const MySavedTrip = () => {
         }
       });
     } catch (error) {
-      console.log('Error fetching coordinates for destination:', error);
+      console.log("Error fetching coordinates for destination:", error);
     }
   }
 
@@ -88,27 +91,29 @@ const MySavedTrip = () => {
           // You can use the decodedToken here if needed
           return decodedToken;
         } else {
-          
-          navigate('/login');
+          navigate("/login");
           return;
         }
       } catch (error) {
         // Handle any errors that occur during token validation or decoding
-        console.error('Error occurred during token validation:', error);
+        console.error("Error occurred during token validation:", error);
         // Handle the error accordingly (e.g., show an error message to the user)
         // Example: setErrorState(true);
       }
     }
 
-    const decodedToken = await checkTokenAndNavigate()
-    console.log(decodedToken.userId)
-    if(decodedToken){
-      const response = await axios.post('http://localhost:3000/api/useritinerary', {
-        userId: decodedToken.userId,
-      });
+    const decodedToken = await checkTokenAndNavigate();
+    console.log(decodedToken.userId);
+    if (decodedToken) {
+      const response = await axios.post(
+        "http://localhost:3000/api/useritinerary",
+        {
+          userId: decodedToken.userId,
+        }
+      );
 
       resultData = response.data;
-      console.log(resultData)
+      console.log(resultData);
       setResult(resultData);
     }
 
@@ -122,7 +127,8 @@ const MySavedTrip = () => {
               type: "Attraction",
               title: item.title || "Unknown",
               description: {
-                description: item.description?.description || "No description available",
+                description:
+                  item.description?.description || "No description available",
                 location: {
                   Latitude: item.description?.location?.Latitude || "Unknown",
                   Longitude: item.description?.location?.Longitude || "Unknown",
@@ -137,7 +143,8 @@ const MySavedTrip = () => {
             title: item.title || "Unknown",
             subtitle: item.subtitle || "Unknown", // Set the subtitle for each attraction
             description: {
-              description: item.description?.description || "No description available",
+              description:
+                item.description?.description || "No description available",
               location: {
                 Latitude: item.description?.location?.Latitude || "Unknown",
                 Longitude: item.description?.location?.Longitude || "Unknown",
@@ -146,18 +153,15 @@ const MySavedTrip = () => {
             },
           })),
     }));
-    
+
     console.log(newDroppableCards);
     setDroppableCards(newDroppableCards);
     renderResultCards();
-
-  }
+  };
 
   useEffect(() => {
     onLoad();
   }, []);
-
-
 
   const handleReset = () => {
     setResult(null);
@@ -199,9 +203,9 @@ const MySavedTrip = () => {
 
       return (
         <div>
-         <div className="header">
-          <h1>Saved Trips</h1>
-        </div>
+          <div className="header">
+            <h1>Saved Trips</h1>
+          </div>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
             <div className="timeline">
               <DragDropContext onDragEnd={handleDragEnd}>
@@ -209,7 +213,7 @@ const MySavedTrip = () => {
                   {droppableCards.map((droppable, i) => (
                     <Timeline.Item key={droppable.id}>
                       <h3>{droppable.title}</h3>
-                      <Row type="flex" >
+                      <Row type="flex">
                         <Droppable droppableId={droppable.id}>
                           {(provided) => (
                             <div
@@ -217,36 +221,67 @@ const MySavedTrip = () => {
                               {...provided.droppableProps}
                               className="card-container" // Add className for styling
                             >
-
                               {droppable.cards.map((card, index) => (
-                                <Draggable key={card.id} draggableId={card.id} index={index}>
+                                <Draggable
+                                  key={card.id}
+                                  draggableId={card.id}
+                                  index={index}
+                                >
                                   {(provided) => (
                                     <div
                                       ref={provided.innerRef}
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
                                     >
-                                      <Col span={24} xs={24} sm={24} md={24} lg={24} xl={24}>
+                                      <Col
+                                        span={24}
+                                        xs={24}
+                                        sm={24}
+                                        md={24}
+                                        lg={24}
+                                        xl={24}
+                                      >
                                         <Card
-
-                                          style={{ width: '100%' }}
+                                          style={{ width: "100%" }}
                                           actions={[
                                             <DragOutlined key="drag" />,
-                                            <EditOutlined key={`edit-${index}`} onClick={() => handleEdit(i, index, 'title', 'new value')} />,
-
+                                            <EditOutlined
+                                              key={`edit-${index}`}
+                                              onClick={() =>
+                                                handleEdit(
+                                                  i,
+                                                  index,
+                                                  "title",
+                                                  "new value"
+                                                )
+                                              }
+                                            />,
                                           ]}
                                         >
                                           <Meta
                                             title={
-                                              <div className="custom-card-title"> {card.title} </div>}
+                                              <div className="custom-card-title">
+                                                {" "}
+                                                {card.title}{" "}
+                                              </div>
+                                            }
                                             description={
                                               <div className="custom-card-description">
-                                                <p>Description: {card.description.description}</p>
-                                                <p>Location: {`${card.description.location.Latitude}, ${card.description.location.Longitude}`}</p>
-                                                <p>Sojourn Time: {card.description.sojournTime}</p>
+                                                <p>
+                                                  Description:{" "}
+                                                  {card.description.description}
+                                                </p>
+                                                <p>
+                                                  Location:{" "}
+                                                  {`${card.description.location.Latitude}, ${card.description.location.Longitude}`}
+                                                </p>
+                                                <p>
+                                                  Sojourn Time:{" "}
+                                                  {card.description.sojournTime}
+                                                </p>
                                               </div>
-                                            } />
-
+                                            }
+                                          />
                                         </Card>
                                       </Col>
                                     </div>
@@ -256,26 +291,21 @@ const MySavedTrip = () => {
 
                               {provided.placeholder}
                             </div>
-
                           )}
                         </Droppable>
                       </Row>
                     </Timeline.Item>
                   ))}
                 </Timeline>
-
               </DragDropContext>
             </div>
           </Col>
         </div>
-
-
       );
     }
 
     return <Empty description="No result available" />;
   };
-
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -308,8 +338,12 @@ const MySavedTrip = () => {
       setDroppableCards(updatedDroppableCards);
     } else {
       // Move card between droppable containers
-      const sourceDroppableIndex = droppableCards.findIndex((item) => item.id === sourceDroppableId);
-      const destinationDroppableIndex = droppableCards.findIndex((item) => item.id === destinationDroppableId);
+      const sourceDroppableIndex = droppableCards.findIndex(
+        (item) => item.id === sourceDroppableId
+      );
+      const destinationDroppableIndex = droppableCards.findIndex(
+        (item) => item.id === destinationDroppableId
+      );
       const sourceDroppable = droppableCards[sourceDroppableIndex];
       const destinationDroppable = droppableCards[destinationDroppableIndex];
       const sourceCards = [...sourceDroppable.cards];
@@ -338,12 +372,10 @@ const MySavedTrip = () => {
   ];
 
   return (
-
     <div>
       <Header />
       <Row justify="left">
         <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-
           <div className="timeline">
             <DragDropContext onDragEnd={handleDragEnd}>
               <Timeline>
@@ -358,7 +390,11 @@ const MySavedTrip = () => {
                           className="card-container" // Add className for styling
                         >
                           {droppable.cards.map((card, index) => (
-                            <Draggable key={card.id} draggableId={card.id} index={index}>
+                            <Draggable
+                              key={card.id}
+                              draggableId={card.id}
+                              index={index}
+                            >
                               {(provided) => (
                                 <div
                                   ref={provided.innerRef}
@@ -366,21 +402,33 @@ const MySavedTrip = () => {
                                   {...provided.dragHandleProps}
                                 >
                                   <Card
-                                    style={{ width: '100%'}}
+                                    style={{ width: "100%" }}
                                     actions={[
                                       <DragOutlined key="drag" />,
                                       // <DeleteOutlined key="delete" />,
                                       <EditOutlined key="edit" />,
-                                      <SyncOutlined key="" />
+                                      <SyncOutlined key="" />,
                                     ]}
                                   >
-                                    <Meta title={card.title} description={
-                                      <div>
-                                        <p>Description: {card.description.description}</p>
-                                        <p>Location: {`${card.description.location.Latitude}, ${card.description.location.Longitude}`}</p>
-                                        <p>Sojourn Time: {card.description.sojournTime}</p>
-                                      </div>
-                                    } />
+                                    <Meta
+                                      title={card.title}
+                                      description={
+                                        <div>
+                                          <p>
+                                            Description:{" "}
+                                            {card.description.description}
+                                          </p>
+                                          <p>
+                                            Location:{" "}
+                                            {`${card.description.location.Latitude}, ${card.description.location.Longitude}`}
+                                          </p>
+                                          <p>
+                                            Sojourn Time:{" "}
+                                            {card.description.sojournTime}
+                                          </p>
+                                        </div>
+                                      }
+                                    />
                                   </Card>
                                 </div>
                               )}
@@ -399,6 +447,6 @@ const MySavedTrip = () => {
       </Row>
     </div>
   );
-}
+};
 
 export default MySavedTrip;

@@ -1,12 +1,12 @@
-import React, { useContext, useState } from 'react';
-import { Steps, Button, message } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from "react";
+import { Steps, Button, message } from "antd";
+import { useNavigate } from "react-router-dom";
 import "./StepComponent.css";
 import DestinationInput from "./DestinationInput";
-import ActivityInput from './ActivityInput';
-import FoodInput from './FoodInput';
-import { ItineraryContext } from './ItineraryContext';
-import { AuthContext } from './auth/AuthProvider';
+import ActivityInput from "./ActivityInput";
+import FoodInput from "./FoodInput";
+import { ItineraryContext } from "./ItineraryContext";
+import { AuthContext } from "../auth/AuthProvider";
 
 const { Step } = Steps;
 
@@ -30,11 +30,11 @@ const StepComponent = () => {
     if (currentStep === 0) {
       // Validate DestinationInput
       if (!destinationValue) {
-        message.error('Please enter a destination, country, or city');
+        message.error("Please enter a destination, country, or city");
         return;
       }
       if (!durationValue) {
-        message.error('Please select the number of days');
+        message.error("Please select the number of days");
         return;
       }
     }
@@ -49,7 +49,7 @@ const StepComponent = () => {
 
   const handleSubmission = (event) => {
     setCurrentStep(currentStep + 1);
-    navigate('/generator');
+    navigate("/generator");
     event.preventDefault();
   };
 
@@ -75,15 +75,9 @@ const StepComponent = () => {
         ]}
       />
       <div className="step-content">
-        {currentStep === 0 && (
-          <DestinationInput />
-        )}
-        {currentStep === 1 && (
-          <ActivityInput />
-        )}
-        {currentStep === 2 && (
-          <FoodInput />
-        )}
+        {currentStep === 0 && <DestinationInput />}
+        {currentStep === 1 && <ActivityInput />}
+        {currentStep === 2 && <FoodInput />}
       </div>
       <div className="step-navigation">
         {currentStep > 0 && (
@@ -98,7 +92,7 @@ const StepComponent = () => {
         )}
         {currentStep === 2 && (
           <Button className="submit" type="primary" onClick={handleSubmission}>
-          Next
+            Next
           </Button>
         )}
       </div>

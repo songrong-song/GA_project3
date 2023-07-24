@@ -1,0 +1,77 @@
+.profile-page-container {
+  background-image: url("../Images/flat-lay-yellow-luggage-with-copy-space.jpg");
+  background-size: cover; /* Image will cover the entire background */
+  background-position: center;
+  min-height: 100vh; /* Ensure the container occupies the full viewport height */
+}
+
+.profile-page-container::before {
+  content: "";
+  position: absolute;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.2)
+  ); /* Linear gradient with opacity */
+}
+
+.parent-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh; /* Ensure the parent occupies at least the full height of the viewport */
+}
+
+.container {
+  text-align: left;
+  padding: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(30px);
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.row {
+  display: flex; /* Use Flexbox */
+  justify-content: center; /* Center the content horizontally */
+  align-items: center; /* Center the content vertically */
+  margin-bottom: 20px; /* Add some spacing between rows */
+}
+
+.options {
+  display: flex; /* Use Flexbox */
+  justify-content: center; /* Center the content horizontally */
+  align-items: center; /* Center the content vertically */
+  margin-bottom: 20px; /* Add some spacing between rows */
+}
+
+.ProfileButton {
+  font-family: "Courier New", monospace; /* Vintage monospaced font */
+  font-size: 15px;
+  color: #fff; /* White text color */
+  background-color: #ab967c; /* Vintage brown button background color */
+  border: 2px solid #7a6958; /* Vintage dark brown border */
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ProfileButton:hover {
+  background-color: #c2a06a; /* Lighter brown on hover */
+  transform: translateY(-2px);
+}
+
+.profile-page-container p {
+  /* Add your custom styles here */
+  font-size: 18px;
+  color: #333;
+  font-family: "Helvetica";
+}
