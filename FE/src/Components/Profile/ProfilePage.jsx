@@ -8,7 +8,7 @@ import "./ProfilePage.css";
 import Header from "../Header/Header";
 
 export default function ProfilePage() {
-  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [cookies, removeCookie] = useCookies(["token"]);
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
 
@@ -18,7 +18,7 @@ export default function ProfilePage() {
     console.log(isValidToken(token));
     if (token && isValidToken(token)) {
       const decodedToken = jwt.decode(token);
-      setUserName(decodedToken.name);
+      setUserName(decodedToken.userName);
     } else {
       console.log("Invalid or no token found", token);
       navigate("/login");
@@ -48,7 +48,7 @@ export default function ProfilePage() {
               <div className="parent-container">
                 <div className="container">
                   <h2>Profile Page</h2>
-                  <p>Welcome, {decodedToken.userName}!</p>
+                  <p>Welcome, {userName}!</p>
                   <div className="prompt">
                     <p>What do you want to do?</p>
                     <br />

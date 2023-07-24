@@ -13,7 +13,7 @@ const Header = () => {
   const location = useLocation();
   const [selectedKeys, setSelectedKeys] = useState([]);
   const { logoutSuccess } = useContext(AuthContext); // Use AuthContext from the AuthProvider
-  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [removeCookie] = useCookies(["token"]);
   const navigate = useNavigate();
   useEffect(() => {
     setSelectedKeys([location.pathname]);

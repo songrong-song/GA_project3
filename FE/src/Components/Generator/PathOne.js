@@ -2,8 +2,6 @@ import React from "react";
 import { Row, Col } from "antd";
 import StepComponent from "./StepComponent";
 import Header from "../Header/Header";
-import travel from "../Images/travel.svg";
-import TravelBottom from "../Images/TravelBottom.svg";
 import BigBenBottom from "../Images/BigBenBottom.png";
 
 const PathOne = (props) => {
@@ -38,7 +36,11 @@ const PathOne = (props) => {
           marginLeft: 0,
         }}
       >
-        <img src={BigBenBottom} style={{ width: "100%", height: "auto" }} />
+        <img
+          src={BigBenBottom}
+          alt="Big Ben"
+          style={{ width: "100%", height: "auto" }}
+        />
       </div>
     </div>
   );

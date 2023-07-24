@@ -1,7 +1,6 @@
-import React from 'react';
-import { Button, Row, Col } from 'antd';
-import { Link } from 'react-router-dom';
-const jwt = require('jsonwebtoken');
+import React from "react";
+import { Button, Row, Col } from "antd";
+import { Link } from "react-router-dom";
 
 const LoginPrompt = () => (
   <Row justify="center">
@@ -9,9 +8,11 @@ const LoginPrompt = () => (
       <div className="container">
         <h2>Profile Page</h2>
         <p>You need to be logged in to use this function.</p>
-        <Button type="primary" href="/login">Login</Button>
-        <br/>
-        <br/>
+        <Button type="primary" href="/login">
+          Login
+        </Button>
+        <br />
+        <br />
 
         <Button type="default">
           <Link to="/home">Back to Home</Link>

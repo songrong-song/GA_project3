@@ -20,7 +20,6 @@ import Map from "../Components/Generator/map";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import "./Itinerary.css";
-import { isValidToken } from "../Components/tokenUtils";
 const jwt = require("jsonwebtoken");
 
 let decoded = null;
@@ -28,7 +27,7 @@ let decoded = null;
 const { Meta } = Card;
 let resultData = [];
 const Itinerary = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [cookies] = useCookies(["token"]);
   const navigate = useNavigate();
   useEffect(() => {
     const token = cookies.token;
@@ -41,13 +40,9 @@ const Itinerary = () => {
       navigate("/login");
     }
   }, [cookies.token, navigate]);
-  // const navigate = useNavigate();
-  // const [cookies, setCookie, removeCookie] = useCookies(['token']); // Access cookies using the useCookies hook
-  // const token = cookies.token
 
-  const { destinationValue, durationValue, selectedFood, selectedActivities } =
-    useContext(ItineraryContext);
-  const [dayValue, setDayValue] = useState(0);
+  const { destinationValue, durationValue } = useContext(ItineraryContext);
+  const [dayValue] = useState(0);
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isMapLoading, setIsMapLoading] = useState(false);
@@ -64,7 +59,6 @@ const Itinerary = () => {
     description: "",
   });
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-  const [isDataLoaded, setIsDataLoaded] = useState(false); // A state that tracks data loading for entire page
   const [showNoResultsMessage, setShowNoResultsMessage] = useState(false);
 
   useEffect(() => {
@@ -104,11 +98,6 @@ const Itinerary = () => {
       console.log(resultData);
       setResult(resultData);
 
-      const formatResult = (result) => {
-        // Format the result as needed
-        return JSON.stringify(result, null, 4); // Convert object to a pretty-printed JSON string
-      };
-
       const generateDroppableAreas = (dayValue) => {
         if (droppableCards.length === 0) {
           setShowNoResultsMessage(true);
@@ -122,7 +111,7 @@ const Itinerary = () => {
 
         resultData.map((itinerary, index) => {
           let cards = [];
-          const p = itinerary.itineraries.map((item, itemIndex) => {
+          itinerary.itineraries.map((item, itemIndex) => {
             if (item.attraction1) {
               cards.push(
                 {
@@ -153,14 +142,14 @@ const Itinerary = () => {
                 }
               );
             }
+            return <></>;
           });
-          //if(cards.length > 0){
           newDroppableCards.push({
             id: `result-cards-${index}`,
             title: `Day ${index + 1}`,
             cards: cards,
           });
-          // }
+          return <></>;
         });
 
         console.log(newDroppableCards);
@@ -183,7 +172,9 @@ const Itinerary = () => {
       generateDroppableAreas(dayValue);
 
       if (droppableCards.length === 0) {
-        setShowNoResultsMessage(true);
+        if (showNoResultsMessage === false) {
+          setShowNoResultsMessage(true);
+        }
       }
     } else {
       console.log("Error generating itinerary:");
@@ -284,14 +275,6 @@ const Itinerary = () => {
       droppableCards[draggableIndex].cards[cardIndex].description.description =
         document.getElementById("edit-card-description").value;
 
-      const updatedCard = {
-        ...editingCard,
-        description: {
-          ...editingCard.description,
-          description: editedContent.description,
-        },
-      };
-
       setDroppableCards(droppableCards);
       console.log(droppableCards);
       setIsEditModalVisible(false);
@@ -332,7 +315,6 @@ const Itinerary = () => {
 
     const sourceDroppableId = result.source.droppableId;
     const destinationDroppableId = result.destination.droppableId;
-    const draggableId = result.draggableId;
 
     if (sourceDroppableId === destinationDroppableId) {
       // Reorder cards within the same droppable container
@@ -389,55 +371,37 @@ const Itinerary = () => {
   //saving itinerary
   const handleSave = async () => {
     // if (token && isValidToken(token))
-    {
-      // Perform the save functionality here
-      const cards = droppableCards[0]?.cards;
-      if (cards && Array.isArray(cards) && cards.length > 0) {
-        console.log("-------------");
-        console.log(cards);
-        const cardContent = cards.map((card) => ({
-          title: card.title,
-          description: card.description,
-        }));
 
-        // Convert the card content to JSON string
-        const jsonData = JSON.stringify(cardContent, null, 2);
-        const saveData = JSON.parse(jsonData);
-        // Perform the saving operation with the jsonData
-        console.log("Saving card content:", Array(saveData));
+    // Perform the save functionality here
+    const cards = droppableCards[0]?.cards;
+    if (cards && Array.isArray(cards) && cards.length > 0) {
+      console.log("-------------");
+      console.log(cards);
+      const cardContent = cards.map((card) => ({
+        title: card.title,
+        description: card.description,
+      }));
 
-        //     try {
+      // Convert the card content to JSON string
+      const jsonData = JSON.stringify(cardContent, null, 2);
+      const saveData = JSON.parse(jsonData);
+      // Perform the saving operation with the jsonData
+      console.log("Saving card content:", Array(saveData));
 
-        const response = await axios.post(
-          "http://localhost:3000/api/useritinerary/saveItinerary",
-          {
-            userID: decoded.userId,
-            destinationValue: destinationValue,
-            dayValue: dayValue, //d
-            itinerary: jsonData,
-          }
-        );
-        message.success("Itinerary saved successfully");
-        console.log("saved successfully");
-        return response.data;
-
-        //     } catch (error) {
-        //       console.log('Error fetching updated data:', error);
-        //       throw error;
-        //     }
-
-        // } else {
-        //   console.log('No cards found.');
-      }
-      // } else {
-      //   navigate('/loginPrompt');
+      const response = await axios.post(
+        "http://localhost:3000/api/useritinerary/saveItinerary",
+        {
+          userID: decoded.userId,
+          destinationValue: destinationValue,
+          dayValue: dayValue, //d
+          itinerary: jsonData,
+        }
+      );
+      message.success("Itinerary saved successfully");
+      console.log("saved successfully");
+      return response.data;
     }
   };
-  const defaultActions = [
-    <DragOutlined key="drag" />,
-    <EditOutlined key="edit" />,
-    <SyncOutlined key="sync" />,
-  ];
 
   return (
     <div>
@@ -590,7 +554,8 @@ const Itinerary = () => {
                 isLoaded={true}
                 latitude={latitude}
                 longitude={longitude}
-                center={{ lat: latitude, lng: longitude }}
+                center={center}
+                result={result}
                 resultData={resultData}
               />
             ) : null}

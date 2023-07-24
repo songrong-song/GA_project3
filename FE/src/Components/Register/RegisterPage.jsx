@@ -12,7 +12,6 @@ export default function Register() {
 
   // create state to store form data
   const [formData, setFormData] = useState({});
-  const [lastMessage, setLastMessage] = useState(null); // State for the last message
 
   const handleFormChange = (fieldName, value) => {
     setFormData({ ...formData, [fieldName]: value });

@@ -1,18 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  Button,
-  Card,
-  Col,
-  Empty,
-  Input,
-  Row,
-  Timeline,
-  Modal,
-  message,
-} from "antd";
+import { Card, Col, Empty, Row, Timeline } from "antd";
 import { DragOutlined, EditOutlined, SyncOutlined } from "@ant-design/icons";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useJsApiLoader } from "@react-google-maps/api";
 import axios from "axios";
 import { ItineraryContext } from "../Generator/ItineraryContext";
 import Header from "../Header/Header";
@@ -21,25 +10,19 @@ import { useNavigate } from "react-router-dom";
 import { isValidToken } from "../tokenUtils";
 import "./MySavedTrip.css";
 
-const jwt = require("jsonwebtoken");
-
 const { Meta } = Card;
 
 const MySavedTrip = () => {
   const jwt = require("jsonwebtoken");
-  const { parse } = require("cookie");
-  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
-  const token = cookies.token;
+  const [cookies] = useCookies(["token"]);
 
-  const { destinationValue, durationValue } = useContext(ItineraryContext);
+  const { destinationValue } = useContext(ItineraryContext);
 
   const [result, setResult] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [droppableCards, setDroppableCards] = useState([]);
-  const [isMapLoading, setIsMapLoading] = useState(false);
   let resultData = [];
   const navigate = useNavigate();
 
@@ -47,7 +30,7 @@ const MySavedTrip = () => {
     if (destinationValue) {
       getCoordinatesForDestination(destinationValue);
     }
-  }, [destinationValue]);
+  });
 
   async function getCoordinatesForDestination(destination) {
     try {
@@ -55,11 +38,11 @@ const MySavedTrip = () => {
       geocoder.geocode({ address: destination }, (results, status) => {
         if (status === "OK" && results[0]) {
           const { lat, lng } = results[0].geometry.location;
-          const latitude = Number(lat()); // Convert the lat value to a valid number
-          const longitude = Number(lng()); // Convert the lng value to a valid number
-          setLatitude(latitude);
-          setLongitude(longitude);
-          setCenter({ lat: latitude, lng: longitude });
+          setLatitude(Number(lat())); // Convert the lat value to a valid number
+          setLongitude(Number(lng())); // Convert the lng value to a valid number
+          if (!center) {
+            setCenter({ lat: latitude, lng: longitude });
+          }
         }
       });
     } catch (error) {
@@ -161,16 +144,7 @@ const MySavedTrip = () => {
 
   useEffect(() => {
     onLoad();
-  }, []);
-
-  const handleReset = () => {
-    setResult(null);
-  };
-
-  const formatResult = (result) => {
-    // Format the result as needed
-    return JSON.stringify(result, null, 2); // Convert object to a pretty-printed JSON string
-  };
+  });
 
   const handleEdit = (cardIndex, field, value) => {
     const updatedDroppableCards = droppableCards.map((droppable) => {
@@ -307,16 +281,11 @@ const MySavedTrip = () => {
     return <Empty description="No result available" />;
   };
 
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-  });
-
   const handleDragEnd = (result) => {
     if (!result.destination) return; // Dragged outside of a drop area
 
     const sourceDroppableId = result.source.droppableId;
     const destinationDroppableId = result.destination.droppableId;
-    const draggableId = result.draggableId;
 
     if (sourceDroppableId === destinationDroppableId) {
       // Reorder cards within the same droppable container
@@ -364,12 +333,6 @@ const MySavedTrip = () => {
       setDroppableCards(updatedDroppableCards);
     }
   };
-
-  const defaultActions = [
-    <DragOutlined key="drag" />,
-    <EditOutlined key="edit" />,
-    <SyncOutlined key="sync" />,
-  ];
 
   return (
     <div>

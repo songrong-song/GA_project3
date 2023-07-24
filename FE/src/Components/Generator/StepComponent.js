@@ -6,25 +6,13 @@ import DestinationInput from "./DestinationInput";
 import ActivityInput from "./ActivityInput";
 import FoodInput from "./FoodInput";
 import { ItineraryContext } from "./ItineraryContext";
-import { AuthContext } from "../auth/AuthProvider";
-
-const { Step } = Steps;
 
 const StepComponent = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
 
   // Accessing the context values and update functions using the useContext hook
-  const {
-    destinationValue,
-    updateDestinationValue,
-    durationValue,
-    updateDurationValue,
-    selectedActivities,
-    updateSelectedActivities,
-    selectedFood,
-    updateSelectedFood,
-  } = useContext(ItineraryContext);
+  const { destinationValue, durationValue } = useContext(ItineraryContext);
 
   const handleNextStep = (event) => {
     if (currentStep === 0) {

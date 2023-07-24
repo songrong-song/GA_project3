@@ -1,14 +1,13 @@
 import axios from "axios";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../auth/AuthProvider";
 import React from "react";
 import Header from "../Header/Header";
-import { Button, Form, Checkbox, Input, Col, Row, message } from "antd";
+import { Button, Form, Input, Col, Row, message } from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import "./LoginPage.css";
 import Cookies from "js-cookie";
-import { useEffect } from "react";
 const jwt = require("jsonwebtoken");
 
 export default function Login() {
@@ -23,7 +22,7 @@ export default function Login() {
     if (decodedToken) {
       navigate("/home");
     }
-  }, [Cookies]);
+  });
 
   const handleFormChange = (fieldName, value) => {
     setFormData({ ...formData, [fieldName]: value });
