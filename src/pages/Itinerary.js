@@ -20,7 +20,8 @@ import { ItineraryContext } from "../Components/Generator/ItineraryContext";
 import Header from "../Components/Header/Header";
 import Map from "../Components/Generator/map";
 import "./Itinerary.css";
-
+const path = require('path');
+const dotenv = require('dotenv');
 const jwt = require("jsonwebtoken");
 
 let decoded = null;
@@ -310,6 +311,20 @@ const Itinerary = () => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
+
+
+
+  console.log("SRcheck", process.env.DOTENV_CONFIG_PATH)
+  const envFilePath = path.resolve(__dirname, '.env');
+
+  // Load environment variables from .env file
+  dotenv.config({ path: envFilePath });
+
+  // Log the full path to the .env file
+  console.log('dotenv is reading from:', envFilePath);
+
+  console.log("SRcheck", process.env.DOTENV_CONFIG_PATH)
+  
 
   const handleDragEnd = (result) => {
     if (!result.destination) return; // Dragged outside of a drop area
