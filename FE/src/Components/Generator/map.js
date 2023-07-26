@@ -4,6 +4,8 @@ import "./Map.css";
 
 const Map = ({ isLoaded, latitude, longitude, center, resultData }) => {
   const [markers, setMarkers] = useState([]);
+
+  //This code is used to check and filter out incorrect data from GPT
   useEffect(() => {
     if (resultData && resultData.length > 0) {
       const allMarkers = []; // Create a local array to collect markers
@@ -53,7 +55,7 @@ const Map = ({ isLoaded, latitude, longitude, center, resultData }) => {
             center={center}
             zoom={10}
           >
-            {markers.map((itinerary, i) =>
+            {resultData.map((itinerary, i) =>
               itinerary.itineraries.map((item, j) => (
                 <React.Fragment key={`${i}-${j}`}>
                   {item.attraction1 ? (

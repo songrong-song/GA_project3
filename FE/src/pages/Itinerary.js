@@ -64,11 +64,12 @@ const Itinerary = () => {
   const [showNoResultsMessage, setShowNoResultsMessage] = useState(false);
 
   useEffect(() => {
-    if (destinationValue) {
-      getCoordinatesForDestination(destinationValue);
+    if (localStorage.getItem("Destination")) {
+      getCoordinatesForDestination(localStorage.getItem("Destination"));
     }
-  }, [destinationValue]);
+  }, []);
 
+  // Used for setting center in Map-------------------------------------------------
   async function getCoordinatesForDestination(destination) {
     try {
       const geocoder = new window.google.maps.Geocoder();
@@ -87,12 +88,13 @@ const Itinerary = () => {
     }
   }
 
+  //On press of submit button, get itinerary--------------------------------------------
   const handleSubmit = async () => {
     setIsLoading(true);
 
     const response = await axios.post("http://localhost:3000/api/itinerary", {
-      destinationValue: destinationValue || localStorage.getItem("Destination"),
-      dayValue: durationValue || localStorage.getItem("NumberOfDays"),
+      destinationValue: localStorage.getItem("Destination"),
+      dayValue: localStorage.getItem("NumberOfDays"),
     });
 
     if (response.status === 200) {
@@ -185,7 +187,7 @@ const Itinerary = () => {
     setIsLoading(false);
   };
 
-  // New function to fetch updated data from the server
+  // New function to fetch updated data from the server---------------------------------
   const fetchUpdatedData = async () => {
     try {
       const response = await axios.post("http://localhost:3000/api/itinerary", {
@@ -206,7 +208,7 @@ const Itinerary = () => {
     setIsLoading(true);
 
     const updatedData = await fetchUpdatedData();
-
+    console.log(fetchUpdatedData);
     // Update the specific card's information with the new data
     const updatedCard = {
       ...droppableCards[cardIndex].cards[itemIndex],
@@ -384,6 +386,7 @@ const Itinerary = () => {
   //saving itinerary
   const handleSave = async () => {
     // if (token && isValidToken(token))
+
     // Perform the save functionality here
     const cards = droppableCards[0]?.cards;
     if (cards && Array.isArray(cards) && cards.length > 0) {
