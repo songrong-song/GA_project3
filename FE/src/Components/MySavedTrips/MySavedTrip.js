@@ -100,7 +100,7 @@ const MySavedTrip = () => {
     }
 
     decodedToken = await checkTokenAndNavigate();
-    console.log(decodedToken.userId);
+    
     if (decodedToken) {
       const response = await axios.post(
         "http://localhost:3000/api/useritinerary",
