@@ -12,17 +12,18 @@
 }
 
 .form-container {
-   text-align: left;
-    padding: 40px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(30px);
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  margin-top: 15vh;
+  padding: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(30px);
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
-  font-family: 'Times New Roman', serif; /* Vintage serif font */
+  font-family: "Times New Roman", serif; /* Vintage serif font */
   font-size: 36px;
   color: #844c00; /* Vintage brown text color */
   margin-bottom: 20px;
@@ -34,14 +35,12 @@ h2 {
   margin: 0 auto;
 }
 
-
-
 .login-form-button {
   width: 100%;
 }
 
 .login-page-container {
-  background-image: url('Images/flat-lay-yellow-luggage-with-copy-space.jpg');
+  background-image: url("../Images/flat-lay-yellow-luggage-with-copy-space.jpg");
   background-size: cover; /* Image will cover the entire background */
   background-position: center;
   min-height: 100vh;
@@ -54,12 +53,15 @@ h2 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.2)); /* Linear gradient with opacity */
+  background: linear-gradient(
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.2)
+  ); /* Linear gradient with opacity */
 }
 
 .parent-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 80vh; 
+  min-height: 80vh;
 }

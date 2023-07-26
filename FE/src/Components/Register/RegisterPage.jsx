@@ -32,73 +32,75 @@ export default function Register() {
   };
 
   return (
-    <div className="container">
+    <div>
       <Header activeMenu="register" />
 
-      <Row justify="center">
+      <Row justify="center" className="register-page-container">
         <Col xs={24} sm={20} md={16} lg={12} xl={8}>
-          <h2>Register</h2>
+          <div className="form-container">
+            <h2>Register</h2>
 
-          <Form onFinish={handleSubmit}>
-            <Form.Item
-              label="Name"
-              name="name"
-              rules={[{ required: true, message: "Please enter your name" }]}
-            >
-              <Input
-                prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Name"
-                onChange={(e) => handleFormChange("name", e.target.value)}
-              />
-            </Form.Item>
+            <Form onFinish={handleSubmit}>
+              <Form.Item
+                label="Name"
+                name="name"
+                rules={[{ required: true, message: "Please enter your name" }]}
+              >
+                <Input
+                  prefix={<UserOutlined className="site-form-item-icon" />}
+                  placeholder="Name"
+                  onChange={(e) => handleFormChange("name", e.target.value)}
+                />
+              </Form.Item>
 
-            <Form.Item
-              label="Email"
-              name="email"
-              rules={[
-                { required: true, message: "Please enter your email" },
-                { type: "email", message: "Please enter a valid email" },
-              ]}
-            >
-              <Input
-                prefix={<MailOutlined className="site-form-item-icon" />}
-                placeholder="Email"
-                onChange={(e) => handleFormChange("email", e.target.value)}
-              />
-            </Form.Item>
+              <Form.Item
+                label="Email"
+                name="email"
+                rules={[
+                  { required: true, message: "Please enter your email" },
+                  { type: "email", message: "Please enter a valid email" },
+                ]}
+              >
+                <Input
+                  prefix={<MailOutlined className="site-form-item-icon" />}
+                  placeholder="Email"
+                  onChange={(e) => handleFormChange("email", e.target.value)}
+                />
+              </Form.Item>
 
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[
-                { required: true, message: "Please enter your password" },
-                {
-                  min: 6,
-                  message: "Password must be at least 6 characters long",
-                },
-                {
-                  pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
-                  message:
-                    "Password must contain at least one lowercase letter, one uppercase letter, and one digit",
-                },
-              ]}
-            >
-              <Input.Password
-                prefix={<LockOutlined className="site-form-item-icon" />}
-                placeholder="Password"
-                onChange={(e) => handleFormChange("password", e.target.value)}
-              />
-            </Form.Item>
+              <Form.Item
+                label="Password"
+                name="password"
+                rules={[
+                  { required: true, message: "Please enter your password" },
+                  {
+                    min: 6,
+                    message: "Password must be at least 6 characters long",
+                  },
+                  {
+                    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
+                    message:
+                      "Password must contain at least one lowercase letter, one uppercase letter, and one digit",
+                  },
+                ]}
+              >
+                <Input.Password
+                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  placeholder="Password"
+                  onChange={(e) => handleFormChange("password", e.target.value)}
+                />
+              </Form.Item>
 
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-              <span className="login-link">
-                Already have an account? <Link to="/login"> Login </Link>
-              </span>
-            </Form.Item>
-          </Form>
+              <Form.Item>
+                <Button type="primary" htmlType="submit">
+                  Submit
+                </Button>
+                <span className="login-link">
+                  Already have an account? <Link to="/login"> Login </Link>
+                </span>
+              </Form.Item>
+            </Form>
+          </div>
         </Col>
       </Row>
     </div>

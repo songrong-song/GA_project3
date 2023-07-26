@@ -58,7 +58,7 @@ export default function Login() {
   return (
     <div>
       <Header />
-      <Row justify="center">
+      <Row justify="center" className="login-page-container">
         <Col xs={24} sm={20} md={16} lg={12} xl={8}>
           <div className="form-container">
             <h2>Login to Itinerary Generator</h2>

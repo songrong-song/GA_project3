@@ -20,8 +20,8 @@ import { ItineraryContext } from "../Components/Generator/ItineraryContext";
 import Header from "../Components/Header/Header";
 import Map from "../Components/Generator/map";
 import "./Itinerary.css";
-const path = require('path');
-const dotenv = require('dotenv');
+const path = require("path");
+const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 
 let decoded = null;
@@ -312,19 +312,16 @@ const Itinerary = () => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
 
-
-
-  console.log("SRcheck", process.env.DOTENV_CONFIG_PATH)
-  const envFilePath = path.resolve(__dirname, '.env');
+  console.log("SRcheck", process.env.DOTENV_CONFIG_PATH);
+  const envFilePath = path.resolve(__dirname, ".env");
 
   // Load environment variables from .env file
   dotenv.config({ path: envFilePath });
 
   // Log the full path to the .env file
-  console.log('dotenv is reading from:', envFilePath);
+  console.log("dotenv is reading from:", envFilePath);
 
-  console.log("SRcheck", process.env.DOTENV_CONFIG_PATH)
-  
+  console.log("SRcheck", process.env.DOTENV_CONFIG_PATH);
 
   const handleDragEnd = (result) => {
     if (!result.destination) return; // Dragged outside of a drop area
@@ -387,7 +384,6 @@ const Itinerary = () => {
   //saving itinerary
   const handleSave = async () => {
     // if (token && isValidToken(token))
-
     // Perform the save functionality here
     const cards = droppableCards[0]?.cards;
     if (cards && Array.isArray(cards) && cards.length > 0) {
