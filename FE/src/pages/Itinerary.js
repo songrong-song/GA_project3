@@ -20,8 +20,8 @@ import { ItineraryContext } from "../Components/Generator/ItineraryContext";
 import Header from "../Components/Header/Header";
 import Map from "../Components/Generator/map";
 import "./Itinerary.css";
-const path = require('path');
-const dotenv = require('dotenv');
+const path = require("path");
+const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 
 let decoded = null;
@@ -64,11 +64,12 @@ const Itinerary = () => {
   const [showNoResultsMessage, setShowNoResultsMessage] = useState(false);
 
   useEffect(() => {
-    if (destinationValue) {
-      getCoordinatesForDestination(destinationValue);
+    if (localStorage.getItem("Destination")) {
+      getCoordinatesForDestination(localStorage.getItem("Destination"));
     }
-  }, [destinationValue]);
+  }, []);
 
+  // Used for setting center in Map-------------------------------------------------
   async function getCoordinatesForDestination(destination) {
     try {
       const geocoder = new window.google.maps.Geocoder();
@@ -87,12 +88,13 @@ const Itinerary = () => {
     }
   }
 
+  //On press of submit button, get itinerary--------------------------------------------
   const handleSubmit = async () => {
     setIsLoading(true);
 
     const response = await axios.post("http://localhost:3000/api/itinerary", {
-      destinationValue: destinationValue || localStorage.getItem("Destination"),
-      dayValue: durationValue || localStorage.getItem("NumberOfDays"),
+      destinationValue: localStorage.getItem("Destination"),
+      dayValue: localStorage.getItem("NumberOfDays"),
     });
 
     if (response.status === 200) {
@@ -185,7 +187,7 @@ const Itinerary = () => {
     setIsLoading(false);
   };
 
-  // New function to fetch updated data from the server
+  // New function to fetch updated data from the server---------------------------------
   const fetchUpdatedData = async () => {
     try {
       const response = await axios.post("http://localhost:3000/api/itinerary", {
@@ -206,7 +208,7 @@ const Itinerary = () => {
     setIsLoading(true);
 
     const updatedData = await fetchUpdatedData();
-
+    console.log(fetchUpdatedData);
     // Update the specific card's information with the new data
     const updatedCard = {
       ...droppableCards[cardIndex].cards[itemIndex],
@@ -312,19 +314,16 @@ const Itinerary = () => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
 
-
-
-  console.log("SRcheck", process.env.DOTENV_CONFIG_PATH)
-  const envFilePath = path.resolve(__dirname, '.env');
+  console.log("SRcheck", process.env.DOTENV_CONFIG_PATH);
+  const envFilePath = path.resolve(__dirname, ".env");
 
   // Load environment variables from .env file
   dotenv.config({ path: envFilePath });
 
   // Log the full path to the .env file
-  console.log('dotenv is reading from:', envFilePath);
+  console.log("dotenv is reading from:", envFilePath);
 
-  console.log("SRcheck", process.env.DOTENV_CONFIG_PATH)
-  
+  console.log("SRcheck", process.env.DOTENV_CONFIG_PATH);
 
   const handleDragEnd = (result) => {
     if (!result.destination) return; // Dragged outside of a drop area

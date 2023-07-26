@@ -1,15 +1,17 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Steps, Button, message } from "antd";
 import "./StepComponent.css";
 import DestinationInput from "./DestinationInput";
 import ActivityInput from "./ActivityInput";
 import FoodInput from "./FoodInput";
+import Cookies from "js-cookie";
 import { ItineraryContext } from "./ItineraryContext";
 
 const StepComponent = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Accessing the context values and update functions using the useContext hook
   const { destinationValue, durationValue } = useContext(ItineraryContext);
@@ -36,10 +38,21 @@ const StepComponent = () => {
   };
 
   const handleSubmission = (event) => {
-    setCurrentStep(currentStep + 1);
-    navigate("/generator");
-    event.preventDefault();
+    if (isLoggedIn) {
+      setCurrentStep(currentStep + 1);
+      navigate("/generator");
+      event.preventDefault();
+    } else {
+      navigate("/login");
+    }
   };
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token !== "undefined") {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   return (
     <div className="step-component">
