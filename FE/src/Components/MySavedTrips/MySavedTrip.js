@@ -3,15 +3,14 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import "./MySavedTrip.css";
-import { Card, Col, Empty, Row, Timeline } from "antd";
-import { DragOutlined, EditOutlined, SyncOutlined } from "@ant-design/icons";
+import { Card, Col, Empty, Row, Timeline, message, Button } from "antd";
 import { ItineraryContext } from "../Generator/ItineraryContext";
 import Header from "../Header/Header";
 import { isValidToken } from "../tokenUtils";
 import Cookies from "js-cookie";
 
 const { Meta } = Card;
-
+let decodedToken = "";
 const MySavedTrip = () => {
   const jwt = require("jsonwebtoken");
   console.log("Component start");
@@ -31,6 +30,7 @@ const MySavedTrip = () => {
     }
   }, []);
 
+ 
   async function getCoordinatesForDestination(destination) {
     try {
       const geocoder = new window.google.maps.Geocoder();
@@ -62,6 +62,21 @@ const MySavedTrip = () => {
     };
     return date.toLocaleString("en-US", options);
   }
+    
+    const handleDelete = async () => {
+    // if (token && isValidToken(token))
+    alert(decodedToken.userId);
+    const response = await axios.post(
+        "http://localhost:3000/api/useritinerary/deleteAllItinerary",
+        {
+          userID: decodedToken.userId,
+        }
+      );
+      message.success("Itinerary deleted successfully");
+      console.log("Deleted successfully");
+      alert(JSON.stringify(response.data));
+      return response.data;
+    }
 
   const onLoad = async () => {
     const token = Cookies.get("token");
@@ -69,9 +84,9 @@ const MySavedTrip = () => {
      function checkTokenAndNavigate() {
       try {
         if (token && isValidToken(token)) {
-          const decodedToken = jwt.decode(token);
+          const  dToken = jwt.decode(token);
           // You can use the decodedToken here if needed
-          return decodedToken;
+          return dToken;
         } else {
           navigate("/login");
           return;
@@ -84,7 +99,7 @@ const MySavedTrip = () => {
       }
     }
 
-    const decodedToken = await checkTokenAndNavigate();
+    decodedToken = await checkTokenAndNavigate();
     console.log(decodedToken.userId);
     if (decodedToken) {
       const response = await axios.post(
@@ -98,6 +113,7 @@ const MySavedTrip = () => {
       console.log(resultData);
       setResult(resultData);
     }
+     //saving itinerary
 
     const newDroppableCards = resultData.flatMap((itinerary, index) => ({
       id: `result-cards-${index}`,
@@ -145,27 +161,11 @@ const MySavedTrip = () => {
     onLoad();
   }, []);
 
-  const handleEdit = (cardIndex, field, value) => {
-    const updatedDroppableCards = droppableCards.map((droppable) => {
-      const updatedCards = droppable.cards.map((card, index) => {
-        if (index === cardIndex) {
-          return {
-            ...card,
-            [field]: value,
-          };
-        }
-        return card;
-      });
+//Edit card function
 
-      return {
-        ...droppable,
-        cards: updatedCards,
-      };
-    });
+ 
 
-    setDroppableCards(updatedDroppableCards);
-  };
-
+  
   const renderResultCards = () => {
     if (result && result.length > 0) {
       const cards = droppableCards[0].cards; // Use the cards array from droppableCards
@@ -177,12 +177,12 @@ const MySavedTrip = () => {
       return (
         <div>
           <div className="header">
-            <h1>Saved Trips</h1>
+          <button> delete</button> 
           </div>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-            <div className="timeline">
+            <div className="timeline-container">
               <DragDropContext onDragEnd={handleDragEnd}>
-                <Timeline>
+                <Timeline className="timeline">
                   {droppableCards.map((droppable, i) => (
                     <Timeline.Item key={droppable.id}>
                       <h3>{droppable.title}</h3>
@@ -216,20 +216,6 @@ const MySavedTrip = () => {
                                       >
                                         <Card
                                           style={{ width: "100%" }}
-                                          actions={[
-                                            <DragOutlined key="drag" />,
-                                            <EditOutlined
-                                              key={`edit-${index}`}
-                                              onClick={() =>
-                                                handleEdit(
-                                                  i,
-                                                  index,
-                                                  "title",
-                                                  "new value"
-                                                )
-                                              }
-                                            />,
-                                          ]}
                                         >
                                           <Meta
                                             title={
@@ -336,6 +322,13 @@ const MySavedTrip = () => {
   return (
     <div>
       <Header />
+      <div className="My-saved-trip">
+      <div className="text-and-button">
+        <div className="centered-container">
+          <h1 className="heading"> Saved Trips</h1>
+          <Button type ="primary" danger onClick={() => handleDelete()}>Delete All</Button>
+        </div>
+      </div>
       <Row justify="left">
         <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <div className="timeline">
@@ -365,12 +358,6 @@ const MySavedTrip = () => {
                                 >
                                   <Card
                                     style={{ width: "100%" }}
-                                    actions={[
-                                      <DragOutlined key="drag" />,
-                                      // <DeleteOutlined key="delete" />,
-                                      <EditOutlined key="edit" />,
-                                      <SyncOutlined key="" />,
-                                    ]}
                                   >
                                     <Meta
                                       title={card.title}
@@ -408,6 +395,7 @@ const MySavedTrip = () => {
         </Col>
       </Row>
     </div>
+  </div>
   );
 };
 
