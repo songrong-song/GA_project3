@@ -7,6 +7,14 @@ import BigBenBottom from "../Images/BigBenBottom.png";
 const PathOne = () => {
   return (
     <div>
+    <div
+      style={{
+        backgroundImage: `url(${BigBenBottom})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh", // Adjust this to set the minimum height of the container
+      }}>
       <Header />
       <Row>
         <Col
@@ -26,22 +34,7 @@ const PathOne = () => {
           />
         </Col> */}
       </Row>
-      {/* bottom image */}
-      <div
-        style={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          width: "100%",
-          marginLeft: 0,
-        }}
-      >
-        <img
-          src={BigBenBottom}
-          alt="Big Ben"
-          style={{ width: "100%", height: "auto" }}
-        />
-      </div>
+    </div>
     </div>
   );
 };
