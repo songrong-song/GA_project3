@@ -54,9 +54,6 @@ const ActivityInput = () => {
 
         <Form.Item
           name="activities"
-          rules={[
-            { required: true, message: "Please select at least one activity" },
-          ]}
         >
           <Select
             className="activity-input-selector"
@@ -65,6 +62,7 @@ const ActivityInput = () => {
             onChange={handleActivitiesChange}
             onBlur={handleBlur}
             placeholder="Select activities"
+            disabled
           >
             {activityOptions.map((activity) => (
               <Option key={activity} value={activity}>

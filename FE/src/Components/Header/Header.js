@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { useCookies } from "react-cookie";
 import { Menu, message, Dropdown } from "antd";
 import { UserOutlined, HomeOutlined, LogoutOutlined } from "@ant-design/icons";
 import { AuthContext } from "../auth/AuthProvider"; // Import AuthContext from the AuthProvider file
@@ -12,7 +11,7 @@ const Header = () => {
   const location = useLocation();
   const [selectedKeys, setSelectedKeys] = useState([]);
   const { logoutSuccess } = useContext(AuthContext); // Use AuthContext from the AuthProvider
-  const [removeCookie] = useCookies(["token"]);
+
   const navigate = useNavigate();
   useEffect(() => {
     setSelectedKeys([location.pathname]);
@@ -27,7 +26,7 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    removeCookie("token", { path: "/" });
+    Cookies.remove("token", { path: "/" });
     localStorage.clear();
     logoutSuccess();
     message.success("Logout successful");
