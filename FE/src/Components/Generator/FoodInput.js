@@ -40,9 +40,6 @@ const FoodInput = () => {
         <label htmlFor="food">Cuisine:</label>
         <Form.Item
           name="food"
-          rules={[
-            { required: false, message: "Please select at least one cuisine" },
-          ]}
         >
           <Select
             className="food-input-selector"
@@ -51,6 +48,7 @@ const FoodInput = () => {
             value={selectedFood}
             onChange={handleFoodChange}
             placeholder="Select cuisine"
+            disabled= {true}
           >
             {foodOptions.map((value) => (
               <Option key={value} value={value}>

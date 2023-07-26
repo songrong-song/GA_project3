@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import "./MySavedTrip.css";
 import { Card, Col, Empty, Row, Timeline } from "antd";
@@ -9,13 +8,13 @@ import { DragOutlined, EditOutlined, SyncOutlined } from "@ant-design/icons";
 import { ItineraryContext } from "../Generator/ItineraryContext";
 import Header from "../Header/Header";
 import { isValidToken } from "../tokenUtils";
+import Cookies from "js-cookie";
 
 const { Meta } = Card;
 
 const MySavedTrip = () => {
   const jwt = require("jsonwebtoken");
-  const [cookies] = useCookies(["token"]);
-
+  console.log("Component start");
   const { destinationValue } = useContext(ItineraryContext);
 
   const [result, setResult] = useState(null);
@@ -30,7 +29,7 @@ const MySavedTrip = () => {
     if (destinationValue) {
       getCoordinatesForDestination(destinationValue);
     }
-  });
+  }, []);
 
   async function getCoordinatesForDestination(destination) {
     try {
@@ -65,9 +64,9 @@ const MySavedTrip = () => {
   }
 
   const onLoad = async () => {
-    const token = cookies.token;
+    const token = Cookies.get("token");
 
-    async function checkTokenAndNavigate() {
+     function checkTokenAndNavigate() {
       try {
         if (token && isValidToken(token)) {
           const decodedToken = jwt.decode(token);
@@ -144,7 +143,7 @@ const MySavedTrip = () => {
 
   useEffect(() => {
     onLoad();
-  });
+  }, []);
 
   const handleEdit = (cardIndex, field, value) => {
     const updatedDroppableCards = droppableCards.map((droppable) => {

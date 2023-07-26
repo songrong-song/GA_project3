@@ -5,7 +5,7 @@ export const isValidToken = (token) => {
 
 
   try {
-    console.log(process.env.APP_KEY)
+    console.log(process.env.REACT_APP_JWT_SECRET)
 
     const decodedToken = jwt.decode(token);
 

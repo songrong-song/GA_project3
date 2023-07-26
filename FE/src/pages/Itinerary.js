@@ -62,7 +62,8 @@ const Itinerary = () => {
   });
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [showNoResultsMessage, setShowNoResultsMessage] = useState(false);
-
+  const [isGenerateClicked, setIsGenerateClicked]= useState(false);
+  
   useEffect(() => {
     if (localStorage.getItem("Destination")) {
       getCoordinatesForDestination(localStorage.getItem("Destination"));
@@ -104,7 +105,7 @@ const Itinerary = () => {
 
       const generateDroppableAreas = () => {
         if (droppableCards.length === 0) {
-          setShowNoResultsMessage(true);
+          setIsGenerateClicked(true);
         } else {
           console.log("Error generating itinerary:");
           setResult("Something went wrong. Please try again.");
@@ -444,6 +445,7 @@ const Itinerary = () => {
               className="custom-button"
               type="primary"
               onClick={handleSubmit}
+              // one more state to check if generate itinerary button has been clicked; - empty screen ; if
             >
               Generate Itinerary
             </Button>
@@ -550,7 +552,11 @@ const Itinerary = () => {
               </DragDropContext>
             </div>
           ) : (
-            <Empty className="Empty" description="No results found" style />
+            <>
+              {isGenerateClicked ? (
+               <Empty className="Empty" description="No results found" style />
+              ) : null}
+            </>
           )}
         </Col>
         {isMapLoading && isLoaded && droppableCards.length === 0 ? (
