@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { GoogleMap, Marker } from "@react-google-maps/api";
+import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import "./Map.css";
 
 const Map = ({ isLoaded, latitude, longitude, center, resultData }) => {
   const [markers, setMarkers] = useState([]);
+  const [selectedMarker, setSelectedMarker] = useState(null); // To store the selected marker
 
-  //This code is used to check and filter out incorrect data from GPT
+  // This code is used to check and filter out incorrect data from GPT
   useEffect(() => {
-    if (resultData && resultData.length > 0) {
-      const allMarkers = []; // Create a local array to collect markers
+    const allMarkers = []; // Create a local array to collect markers
 
+    if (resultData && resultData.length > 0) {
       resultData.forEach((itinerary, index) => {
         itinerary.itineraries.forEach((item, itemIndex) => {
-          if (item.attraction1) {
+          if (
+            item.attraction1 &&
+            item.attraction1["Location"] &&
+            item.attraction1["Location"]["Latitude"] &&
+            item.attraction1["Location"]["Longitude"]
+          ) {
             allMarkers.push({
               id: `attraction-${index}-${itemIndex}`,
               type: "Attraction",
@@ -21,10 +27,15 @@ const Map = ({ isLoaded, latitude, longitude, center, resultData }) => {
                 lat: parseFloat(item.attraction1["Location"]["Latitude"]),
                 lng: parseFloat(item.attraction1["Location"]["Longitude"]),
               },
+              description: item.attraction1['Summary'] || "",
             });
           }
-
-          if (item.restaurant1) {
+          if (
+            item.restaurant1 &&
+            item.restaurant1["Location"] &&
+            item.restaurant1["Location"]["Latitude"] &&
+            item.restaurant1["Location"]["Longitude"]
+          ) {
             allMarkers.push({
               id: `restaurant-${index}-${itemIndex}`,
               type: "Restaurant",
@@ -33,14 +44,20 @@ const Map = ({ isLoaded, latitude, longitude, center, resultData }) => {
                 lat: parseFloat(item.restaurant1["Location"]["Latitude"]),
                 lng: parseFloat(item.restaurant1["Location"]["Longitude"]),
               },
+              description: "Additional information about the restaurant.",
             });
           }
         });
       });
-
-      setMarkers(allMarkers); // Set the state after processing all the markers
     }
+
+    setMarkers(allMarkers); // Set the state of 'markers' with the 'allMarkers' array
   }, [resultData]);
+
+  // Function to handle marker click
+  const handleMarkerClick = (marker) => {
+    setSelectedMarker(marker === selectedMarker ? null : marker); // Toggle the selected marker
+  };
 
   // Rest of your component code using the 'markers' state
   return (
@@ -55,39 +72,23 @@ const Map = ({ isLoaded, latitude, longitude, center, resultData }) => {
             center={center}
             zoom={10}
           >
-            {resultData.map((itinerary, i) =>
-              itinerary.itineraries.map((item, j) => (
-                <React.Fragment key={`${i}-${j}`}>
-                  {item.attraction1 ? (
-                    <Marker
-                      key={`attraction-${i}-${j}`}
-                      position={{
-                        lat: parseFloat(
-                          item.attraction1["Location"]["Latitude"]
-                        ),
-                        lng: parseFloat(
-                          item.attraction1["Location"]["Longitude"]
-                        ),
-                      }}
-                    />
-                  ) : null}
-
-                  {item.restaurant1 ? (
-                    <Marker
-                      key={`restaurant-${i}-${j}`}
-                      position={{
-                        lat: parseFloat(
-                          item.restaurant1["Location"]["Latitude"]
-                        ),
-                        lng: parseFloat(
-                          item.restaurant1["Location"]["Longitude"]
-                        ),
-                      }}
-                    />
-                  ) : null}
-                </React.Fragment>
-              ))
-            )}
+            {markers.map((marker) => (
+              <Marker
+                key={marker.id}
+                position={marker.position}
+                title={marker.title}
+                onClick={() => handleMarkerClick(marker)} // Call the function when the marker is clicked
+              >
+                {selectedMarker === marker && (
+                  <InfoWindow onCloseClick={() => setSelectedMarker(null)}>
+                    <div>
+                      <h3>{marker.title}</h3>
+                      <p>{marker.description}</p>
+                    </div>
+                  </InfoWindow>
+                )}
+              </Marker>
+            ))}
           </GoogleMap>
         </div>
       ) : null}

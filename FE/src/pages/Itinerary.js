@@ -100,6 +100,7 @@ const Itinerary = () => {
 
     if (response.status === 200) {
       resultData = response.data;
+      console.log("hey check here")
       console.log(resultData);
       setResult(resultData);
 
@@ -312,20 +313,10 @@ const Itinerary = () => {
   };
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    // googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey: "AIzaSyDhOwsL88chJj2R9H17QvKDh57NxfCHCHg"
   });
-
-  console.log("SRcheck", process.env.DOTENV_CONFIG_PATH);
-  const envFilePath = path.resolve(__dirname, ".env");
-
-  // Load environment variables from .env file
-  dotenv.config({ path: envFilePath });
-
-  // Log the full path to the .env file
-  console.log("dotenv is reading from:", envFilePath);
-
-  console.log("SRcheck", process.env.DOTENV_CONFIG_PATH);
-
+  
   const handleDragEnd = (result) => {
     if (!result.destination) return; // Dragged outside of a drop area
 
