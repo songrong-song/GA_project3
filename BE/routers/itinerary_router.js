@@ -4,6 +4,8 @@ const itineraryController = require('../controllers/itinerary_controller')
 const authMiddleware = require('../middlewares/auth_middleware')
 
 router.post('/', itineraryController.findItinerary)
-router.post('/createGPT', itineraryController.createItinerary)
+router.post('/createItinerary', itineraryController.createItinerary)
+router.post('/keepItineraryOnly', itineraryController. keepItineraryOnly);
+
 
 module.exports = router

@@ -8,8 +8,6 @@ const ItineraryModel = require("../models/ItineraryModel")
 const mongoose = require('mongoose');
 const fs = require('fs');
 
-
-
 const itineraryControllers = {
 
   createItinerary: async (data) => {
@@ -208,15 +206,14 @@ const itineraryControllers = {
 
   },
 
-
   findItinerary: async (req, res) => {
     const { destinationValue, dayValue } = req.body;
     const durationValue = dayValue;
-
+  
     try {
       const result = await ItineraryModel.find({ destination: destinationValue }).limit(durationValue);
       const array_length = result.length;
-
+  
       // if arrayLength < dayValue
       if (array_length < dayValue) {
         const difference = dayValue - array_length;
@@ -232,29 +229,25 @@ const itineraryControllers = {
         }
         console.log(excludeDestinations);
         for (let i = 0; i < difference; i++) {
-
-
           // Call your function here
           // Replace the console.log statement with your function call
-          newAttraction = itineraryControllers.createItinerary({ "exclude": excludeDestinations, "destinationValue": destinationValue });
+          newAttraction = await itineraryControllers.createItinerary({ "exclude": excludeDestinations, "destinationValue": destinationValue });
           excludeDestinations.push(newAttraction);
         }
-      }
-
-      const result_ = await new Promise((resolve) => {
-        setTimeout(async () => {
-          // This code will execute after 1 second
-          const result_ = await ItineraryModel.find({ destination: destinationValue }).limit(dayValue);
-          resolve(result_);
-        }, 1000);
-      });
-
-      if (result_) {
-        // User found
-        res.json(result_);
+  
+        // Fetch new data after the loop and after the new data is generated
+        const result_ = await ItineraryModel.find({ destination: destinationValue }).limit(dayValue);
+  
+        if (result_) {
+          // User found
+          res.json(result_);
+        } else {
+          // User not found
+          res.status(404).json({ error: "Itinerary not found" });
+        }
       } else {
-        // User not found
-        res.status(404).json({ error: "Itinerary not found" });
+        // If there are enough results, send them directly
+        res.json(result);
       }
     } catch (error) {
       console.error('Error finding user:', error);
@@ -262,7 +255,37 @@ const itineraryControllers = {
     }
   },
 
+  keepItineraryOnly: async (req, res)  => {
+    const { destinationName } = req.body;
+    try {
+      // Connect to MongoDB
+      mongoose.connect(
+        `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_HOST}/${process.env.MONGO_DB}?retryWrites=true&w=majority`
+      );
 
+      // Find the itinerary with the provided destination name
+      const matchingItinerary = await ItineraryModel.findOne({ destination: destinationName });
+
+      if (!matchingItinerary) {
+        // If no itinerary found with the provided destination name, return a message
+        mongoose.disconnect();
+        return { success: false, message: "No itinerary found with the provided destination name." };
+      }
+
+      // Delete all other itineraries with different destinations
+      await ItineraryModel.deleteMany({ destination: { $ne: destinationName } });
+
+      // Close the MongoDB connection
+      mongoose.disconnect();
+
+      // If the operation was successful, return a success message
+      return { success: true, message: `Successfully kept only the itinerary with destination '${destinationName}'` };
+    } catch (error) {
+      console.error("Error keeping only the itinerary:", error);
+      mongoose.disconnect();
+      return { success: false, message: "Failed to keep only the itinerary." };
+    }
+  },
 
 }
 

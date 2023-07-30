@@ -313,8 +313,7 @@ const Itinerary = () => {
   };
 
   const { isLoaded } = useJsApiLoader({
-    // googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-    googleMapsApiKey: "AIzaSyDhOwsL88chJj2R9H17QvKDh57NxfCHCHg"
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
   
   const handleDragEnd = (result) => {

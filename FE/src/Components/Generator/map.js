@@ -5,8 +5,11 @@ import "./Map.css";
 const Map = ({ isLoaded, latitude, longitude, center, resultData }) => {
   const [markers, setMarkers] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null); // To store the selected marker
+  const [mapKey, setMapKey] = useState(0); // Add a state variable for map re-render
+
 
   // This code is used to check and filter out incorrect data from GPT
+
   useEffect(() => {
     const allMarkers = []; // Create a local array to collect markers
 
@@ -49,9 +52,12 @@ const Map = ({ isLoaded, latitude, longitude, center, resultData }) => {
           }
         });
       });
+
+      // Set the state of 'markers' with the 'allMarkers' array after collecting all the markers
+      setMarkers(allMarkers);
     }
 
-    setMarkers(allMarkers); // Set the state of 'markers' with the 'allMarkers' array
+
   }, [resultData]);
 
   // Function to handle marker click
@@ -65,6 +71,7 @@ const Map = ({ isLoaded, latitude, longitude, center, resultData }) => {
       {isLoaded && latitude && longitude ? (
         <div className="MapSection">
           <GoogleMap
+            key={mapKey} // Use mapKey as the key for GoogleMap to trigger re-render
             mapContainerStyle={{
               width: "100%",
               height: "100vh",
