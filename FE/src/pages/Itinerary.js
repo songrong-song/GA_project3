@@ -379,11 +379,19 @@ const Itinerary = () => {
     // if (token && isValidToken(token))
 
     // Perform the save functionality here
-    const cards = droppableCards[0]?.cards;
-    if (cards && Array.isArray(cards) && cards.length > 0) {
+    const allCards = []; 
+    droppableCards.forEach((droppable) => {
+      const cards = droppable.cards;
+      if (cards && Array.isArray(cards) && cards.length > 0) {
+      allCards.push(...cards);
+
       console.log("-------------");
       console.log(cards);
-      const cardContent = cards.map((card) => ({
+    }
+    });
+
+    if (allCards.length > 0){
+      const cardContent = allCards.map((card) => ({
         title: card.title,
         description: card.description,
       }));
