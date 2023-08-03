@@ -9,6 +9,7 @@ import Login from "./Components/Login/LoginPage";
 import ProfilePage from "./Components/Profile/ProfilePage";
 import jwt from "jsonwebtoken";
 import MySavedTrip from "./Components/MySavedTrips/MySavedTrip";
+import TripDetail from "./Components/MySavedTrips/TripDetail";
 import Cookies from "js-cookie";
 import dotenv from "dotenv";
 dotenv.config();
@@ -54,10 +55,10 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/loginPrompt" element={<LoginPrompt />} />
         <Route path="/login" element={<Login />} />
-
-        {/* <Route path="/guest" element={<Guest component={PathOne} />} /> */}
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/my-saved-trip" element={<MySavedTrip />} />
+        <Route path="/trip-detail" element={<TripDetail />} />
+ 
       </Routes>
     </ItineraryProvider>
   );
